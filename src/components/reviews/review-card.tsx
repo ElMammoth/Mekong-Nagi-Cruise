@@ -2,52 +2,65 @@ import { ExternalLink } from "lucide-react";
 import type { Review } from "@/content/types";
 import { cn } from "@/lib/cn";
 import { formatReviewDate, platformName } from "@/lib/reviews";
+import { PlatformLogo } from "./platform-logo";
 import { Stars } from "./stars";
 
-/** A genuine review, quoted verbatim, credited and linked to its source. */
+/**
+ * A genuine review, quoted verbatim and credited (Tripadvisor review-row pattern):
+ * initial + name, written date, stars, title, full text, source logo and link back.
+ */
 export function ReviewCard({
   review,
-  variant = "card",
+  variant = "row",
   className,
 }: {
   review: Review;
-  variant?: "card" | "quote";
+  /** `row`: inside the reviews list. `card`: standalone (next to the booking form). */
+  variant?: "row" | "card";
   className?: string;
 }) {
   const source = platformName(review.platform);
   return (
     <figure
       className={cn(
-        "flex h-full flex-col",
-        variant === "card" && "rounded-card border border-silt bg-paper p-6 shadow-card",
+        "flex flex-col gap-3",
+        variant === "card" && "rounded-md border border-line bg-surface p-6 shadow-sm",
         className,
       )}
     >
-      <Stars rating={review.rating} />
-      <blockquote lang={review.lang} cite={review.url} className="mt-4 flex-1">
-        {review.title ? (
-          <p className="font-display text-xl font-semibold text-maroon">{review.title}</p>
-        ) : null}
-        <p className={cn("text-ink", review.title && "mt-2", variant === "quote" && "text-lead")}>
-          “{review.text}”
-        </p>
-      </blockquote>
-      <figcaption className="mt-5 border-t border-silt pt-4 text-sm">
-        <span className="block font-semibold text-ink">{review.reviewer}</span>
-        <span className="text-muted">
-          {formatReviewDate(review.date)} · on{" "}
-          <a
-            href={review.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 font-semibold text-lantern hover:underline"
-          >
-            {source}
-            <ExternalLink aria-hidden="true" className="size-3.5" />
-            <span className="sr-only">(read the original review, opens in a new tab)</span>
-          </a>
+      <figcaption className="flex items-center gap-3">
+        <span
+          aria-hidden="true"
+          className="grid size-10 shrink-0 place-items-center rounded-sm bg-surface-tint font-display text-base text-primary"
+        >
+          {review.reviewer.trim().charAt(0).toUpperCase()}
+        </span>
+        <span className="min-w-0">
+          <span className="block font-display text-sm text-heading">{review.reviewer}</span>
+          <span className="block text-sm text-muted">Written {formatReviewDate(review.date)}</span>
         </span>
       </figcaption>
+      <Stars rating={review.rating} />
+      <blockquote lang={review.lang} cite={review.url}>
+        {review.title ? (
+          <p className="font-display text-base text-heading">{review.title}</p>
+        ) : null}
+        <p className={cn("text-ink", review.title && "mt-1")}>{review.text}</p>
+      </blockquote>
+      <p className="flex flex-wrap items-center gap-2 text-sm text-muted">
+        <span>Review from</span>
+        <PlatformLogo platform={review.platform} />
+        <a
+          href={review.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 rounded-sm text-primary underline-offset-4 hover:underline"
+        >
+          Read on {source}
+          <ExternalLink aria-hidden="true" className="size-3.5" />
+          <span className="sr-only">(opens in a new tab)</span>
+        </a>
+      </p>
     </figure>
   );
 }

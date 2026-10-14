@@ -5,7 +5,8 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { JsonLd } from "@/components/layout/json-ld";
 import { site } from "@/content/site";
 import { organizationJsonLd } from "@/lib/structured-data";
-import { figtree, fraunces } from "./fonts";
+import { token } from "@/lib/tokens";
+import { poppins, sourceSans } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -26,18 +27,22 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f6eee3",
+  themeColor: token("color-canvas"),
   width: "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${figtree.variable}`}>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className={`${poppins.variable} ${sourceSans.variable}`}
+    >
       <body className="flex min-h-dvh flex-col">
         <a
           href="#main"
-          className="sr-only z-50 rounded-full bg-lantern px-5 py-3 font-semibold text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+          className="sr-only z-50 rounded-sm bg-primary px-5 py-3 font-display text-on-primary focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
         >
           Skip to content
         </a>

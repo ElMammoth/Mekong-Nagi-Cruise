@@ -1,98 +1,152 @@
 # 03 · Design system — Nagi of Mekong
 
-Tokens live in `src/app/globals.css` (`@theme`) and are used as Tailwind classes
-(`bg-sand`, `text-maroon`, `text-h2`…). Change a token there and it changes everywhere.
+**One token layer.** Every design value lives in `src/app/globals.css` (`@theme`). Tailwind
+turns those tokens into utilities (`bg-surface-tint`, `text-heading`, `rounded-md`,
+`shadow-sm`, `duration-base`, `grid-cols-sidebar`…). Components use only those utilities.
+Two guards run in `npm run check`:
 
-## Identity in one line
+- `npm run test:tokens` fails on any hard-coded value in a component: arbitrary Tailwind
+  values, hex or rgb colours, off-scale radii, extra font weights, italics or raw durations.
+- `npm run test:contrast` checks every colour pairing the UI uses against WCAG AA.
 
-**Warm, unhurried, trustworthy.** A family-run boat on a big river: the visual language
-is the original logo (vermilion field, maroon script, the hand-drawn route Houay Xai →
-Pak Beng → Luang Prabang) made calmer and more legible.
+The few places that can't use CSS read the same file through `src/lib/tokens.ts`: the
+theme colour, the favicon and the social card.
 
-## Colour
+## Colour: from the flag of Laos only
 
-| Token        | Hex       | Role                                                       | Contrast                          |
-| ------------ | --------- | ---------------------------------------------------------- | --------------------------------- |
-| `ink`        | `#2A1215` | Body text                                                  | 15.3:1 on sand                    |
-| `maroon`     | `#5B1E22` | Headings, CTA band                                         | 11.0:1 on sand                    |
-| `vermilion`  | `#E2412B` | Logo red — **decoration and large display only** (≥ 24 px) | 4.2:1 on sand                     |
-| `lantern`    | `#B5301C` | Buttons, links, focus ring                                 | white on it 6.2:1 · on sand 5.4:1 |
-| `sand`       | `#F6EEE3` | Page background                                            | —                                 |
-| `paper`      | `#FFFBF5` | Cards, raised surfaces                                     | —                                 |
-| `silt`       | `#E7D9C6` | Borders, dividers                                          | —                                 |
-| `muted`      | `#6B5A55` | Secondary text                                             | 5.7:1 on sand                     |
-| `river`      | `#173F3B` | Dark sections, footer                                      | sand on it 11.6:1                 |
-| `river-mist` | `#DCE8E3` | Text on `river`                                            | 9.2:1                             |
-| `gold`       | `#E3B05C` | Eyebrows/icons on dark only                                | 5.9:1 on river                    |
+Source colours: **blue `#002868`**, **white `#FFFFFF`**, **red `#CE1126`**. Tints are those
+colours mixed with white; hover states mix the flag colours with each other.
 
-Rules: vermilion never carries small text. Every interactive element uses `lantern`.
-Dark sections use `river` (the water) or `maroon` (the logo script), never pure black.
+| Token                      | Hex                   | Derivation         | Role                                          |
+| -------------------------- | --------------------- | ------------------ | --------------------------------------------- |
+| `canvas`, `surface`        | `#FFFFFF`             | white              | Page background (dominant), cards, menus      |
+| `surface-subtle`           | `#F7F9FA`             | blue 3%            | Alternate section bands                       |
+| `surface-tint`             | `#EBEEF3`             | blue 8%            | Secondary surfaces, chips, placeholders       |
+| `line`                     | `#E0E5ED`             | blue 12%           | Dividers, card borders                        |
+| `line-strong`              | `#C2CBDB`             | blue 24%           | Decorative emphasis, empty stars              |
+| `control`                  | `#8094B4`             | blue 50%           | Form control borders (3.1:1)                  |
+| `heading`, `primary`       | `#002868`             | flag blue          | Headings, links, primary actions, blue bands  |
+| `ink`, `primary-hover`     | `#193D77`             | blue 90%           | Body text, hover on blue                      |
+| `muted`                    | `#4D6995`             | blue 70%           | Secondary text                                |
+| `on-primary-muted`         | `#CCD4E1`             | white 80% + blue   | Secondary text on blue                        |
+| `accent`                   | `#CE1126`             | flag red           | **Main CTA**, current nav item, stars, errors |
+| `accent-hover`             | `#A51633`             | red 80% + blue 20% | Main CTA hover                                |
+| `accent-soft`              | `#FBECEE`             | red 8%             | Seasonal badge background                     |
+| `brand-tripadvisor/viator` | `#002B11` / `#008768` | official logos     | Only inside the review source logos           |
 
-## Typography
+**Rules:**
 
-- **Display: Fraunces** (variable, optical size): a soft, slightly old-style serif that
-  echoes the hand-lettered logo without imitating the script. Italic is reserved for one
-  emphasised word per headline (_comfort_) and the wordmark.
-- **Text & UI: Figtree** (variable): a friendly, highly legible humanist sans.
-- Both self-hosted via `next/font/local` (no Google request, no layout shift).
+- White dominates.
+- Blue carries headings, key surfaces (the on-board band, the CTA band, the footer) and
+  primary actions.
+- Red is used sparingly: the main "Check availability" button (one per view), the current
+  page in the nav, rating stars, badges and errors.
+- No other hues.
 
-| Token          | Size (mobile → desktop) | Use                          |
-| -------------- | ----------------------- | ---------------------------- |
-| `text-display` | 40 → 76 px              | Home hero only               |
-| `text-h1`      | 34 → 56 px              | Page titles                  |
-| `text-h2`      | 28 → 42 px              | Section titles               |
-| `text-h3`      | 20 → 26 px              | Cards, steps, itinerary days |
-| `text-lead`    | 18 → 21 px              | Intros                       |
-| body           | 17 px / 1.65            | Everything else              |
+**Contrast (all AA, from `npm run test:contrast`):**
 
-Eyebrows: 14 px, semibold, uppercase, `tracking-[0.14em]`, `lantern` (or `gold` on dark).
+| Pairing                                     | Ratio              |
+| ------------------------------------------- | ------------------ |
+| ink on white / subtle / tint                | 10.6 / 10.1 / 9.1  |
+| heading or primary on white / subtle / tint | 14.0 / 13.2 / 12.0 |
+| muted on white / subtle / tint              | 5.6 / 5.3 / 4.8    |
+| white on primary / primary-hover            | 14.0 / 10.6        |
+| on-primary-muted on primary                 | 9.4                |
+| white on accent / accent-hover              | 5.6 / 7.6          |
+| accent on white / subtle / accent-soft      | 5.6 / 5.3 / 4.9    |
+| control border on white (UI, ≥ 3)           | 3.1                |
+| focus ring (blue on white, white on blue)   | 14.0               |
 
-## Space, shape, depth
+## Typography: two fonts, one weight each
 
-- 4 px base grid (Tailwind spacing). Sections `py-20 sm:py-28`; container `max-w-7xl`
-  with 16 px gutters on phones.
-- Radius: cards `1.25rem`, controls `0.75rem`, buttons and chips fully round.
-- Two shadows only: `shadow-card` (resting) and `shadow-raised` (hover, menus, dialogs).
+- **Headings and UI labels: Poppins Bold (700).** This covers h1–h6, buttons, nav items,
+  eyebrows, prices and names.
+- **Body: Source Sans 3 Regular (400).**
+- Both are self-hosted through `next/font/local` from `@fontsource`, with
+  `display: swap`, preloaded, and with size-adjusted fallbacks (so no layout shift).
+- `font-synthesis: none` means no faux bold or italic. `strong`, `em` and `address` are
+  styled by colour, not weight or slant.
+- The latin subsets have no "→". Route labels draw it as an icon (`RouteLabel`) and read
+  it as "to".
 
-## Brand devices
+| Token                                | Size (mobile → desktop)   | Use                        |
+| ------------------------------------ | ------------------------- | -------------------------- |
+| `text-display`                       | 34 → 60 px                | Home h1                    |
+| `text-h1`                            | 30 → 48 px                | Page titles, key figures   |
+| `text-h2`                            | 24 → 36 px                | Section titles             |
+| `text-h3`                            | 19 → 22 px                | Cards, itinerary days      |
+| `text-lead`                          | 18 → 20 px                | Intros                     |
+| `text-base`                          | 17 px / 1.65              | Body                       |
+| `text-sm` / `text-xs` / `text-micro` | 15 / 13 / 11 px           | Meta, captions, badges     |
+| `text-eyebrow`                       | 13 px, +0.08em, uppercase | Section eyebrows (Poppins) |
 
-- **Boat mark** (`BoatMark`): the long slow boat in a few strokes. Used in the wordmark,
-  favicon, CTA band and 404.
-- **River route** (`RouteMap`, `RouteStrip`, itinerary spine): the line from the logo.
-  Stops are vermilion rings; the river is `river` on a `river-mist` bank.
-- **Day chips** (`DayChips`): departure weekdays are always shown as chips, Monday-first.
+## Space, layout, shape, depth
 
-## Components (all in `src/components`)
-
-| Component                                                                             | Built on                           | Notes                                                         |
-| ------------------------------------------------------------------------------------- | ---------------------------------- | ------------------------------------------------------------- |
-| `SiteHeader`                                                                          | Radix `NavigationMenu`             | Keyboard and screen-reader friendly mega-menu for cruises     |
-| `MobileNav`                                                                           | Radix `Dialog`                     | Full-height sheet, focus trapped, Esc to close, CTA pinned    |
-| `FaqList`                                                                             | Radix `Accordion`                  | Multiple open, animated height (reduced-motion aware)         |
-| `BookingForm`                                                                         | Radix `RadioGroup` + native inputs | Date cards, travellers stepper, live estimate, error summary  |
-| `Button`, `ButtonLink`, `ButtonAnchor`                                                | —                                  | `primary`, `secondary`, `ghost`, `onDark`; min height 44 px   |
-| `TripCard`, `PriceList`, `Itinerary`, `Included`, `StayCard`, `CtaBand`, `PageHeader` | —                                  | Content-driven sections                                       |
-| `Packages`                                                                            | —                                  | Package cards; highlighted default, USD-first price block     |
-| `HandledForYou`                                                                       | —                                  | "On your own / with us" offer list                            |
-| `RatingSummary`, `ReviewCard`, `ReviewsSection`, `BookingReview`, `Stars`             | —                                  | Sourced, dated proof; placeholders while empty                |
-| `NextSteps`, `NextSailings`                                                           | —                                  | What happens after sending; next real departure dates         |
-| `Photo`                                                                               | `next/image` + custom loader       | Fixed-ratio frame, responsive WebP, blur preview, placeholder |
-| `Placeholder`                                                                         | —                                  | Dashed "content goes here" box (`showPlaceholders`)           |
+- **Spacing:** base `--spacing: 0.25rem`, plus `gutter` (16 px), `section` (64 → 104 px,
+  fluid) and `header` (72 px, also used for anchor offsets).
+- **Layout tokens:**
+  - `grid-cols-hero`, `intro`, `sidebar`, `toc`, `media`, `cta`, `compare`, `icon`,
+    `label`, `price`, `summary`.
+  - `w-menu`, `max-w-note`, `max-w-fact`, `w-mark`.
+- **Radius (small only):** `rounded-xs` 2 px (chips, badges, checkboxes), `rounded-sm` 4 px
+  (buttons, inputs), `rounded-md` 6 px (cards, images). No pills, no circles in the UI.
+- **Shadows (soft, blue-tinted):** `shadow-sm` (cards), `shadow-md` (menus, sticky bars),
+  `shadow-lg` (dialog), `shadow-ring` (selected option).
 
 ## Motion
 
-Two motions only: the river draws itself once (2.4 s), and menus rise 12 px when they
-open. The hero text no longer animates in, so it paints immediately (better LCP). Both are disabled by `prefers-reduced-motion`.
+| Token                        | Value        | Use                            |
+| ---------------------------- | ------------ | ------------------------------ |
+| `duration-fast`              | 120 ms       | Hover and colour changes       |
+| `duration-base`              | 200 ms       | Menus, accordion, size changes |
+| `duration-page`              | 220 ms       | Route cross-fade               |
+| `duration-slow`              | 2.4 s        | The river drawing itself once  |
+| `ease-standard` / `ease-out` | cubic-bezier | All of the above               |
 
-## Voice
+- **Page transitions** (`src/app/template.tsx`): React `<ViewTransition>` cross-fades the
+  page content.
+  - The header has its own view-transition name and stays still.
+  - Every new route lands at the top instantly. Anchor links land on their anchor;
+    back/forward keeps the browser's position.
+  - In-page anchors scroll smoothly (`scroll-behavior: smooth`, with Next's
+    `data-scroll-behavior` override during navigation).
+- **Hero Text Loop** (React Bits, adapted): a short phrase flows along a wave-shaped blue
+  ribbon. The h1 stays static.
+  - The full phrase is exposed to screen readers as hidden text.
+  - It has a pause button (WCAG 2.2.2) and pauses on hover or focus.
+  - GSAP loads lazily, only when the animation runs.
+- `prefers-reduced-motion: reduce` turns off the text loop, the page cross-fade, smooth
+  scrolling and all animations.
 
-Plain, warm, specific. Lead with the facts travellers need (days, price, what's included),
-in short sentences. Say "we". No superlatives the operator hasn't claimed.
+## Brand
 
-## Accessibility checklist (verified by `npm run test:a11y`)
+- **Logo:** the slow boat from the original logo, redrawn as clean SVG line art
+  (`BoatMark`) in flag blue, with no box. Where it stands alone it has
+  `role="img"` and the title "Nagi of Mekong", and the header link is named
+  "Nagi of Mekong, home".
+- **Route map:** the river in blue on a blue-tint bank, red stop rings, and a white disc
+  for the sun (a nod to the flag's disc).
 
-- axe-core WCAG 2.2 A/AA: 0 violations on all 10 pages at 390 px and 1440 px.
-- No horizontal scroll at 390 px.
-- Skip link, landmarks, one `h1` per page, breadcrumb with `aria-current`.
-- Visible focus ring (`lantern`, 2 px offset) on every control; touch targets ≥ 44 px.
-- Form: labels, `aria-describedby` hints/errors, focusable error summary, live status.
+## Components (all in `src/components`)
+
+| Component                                                                                 | Built on                                                             | Notes                                                                    |
+| ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| `SiteHeader`                                                                              | Radix `NavigationMenu` (List, Trigger, Content, Indicator, Viewport) | Arrow keys, Esc, hover or click; current page in red; visible focus ring |
+| `MobileNav`                                                                               | Radix `Dialog`                                                       | Focus trap, Esc, focus returns to trigger, CTA pinned                    |
+| `Button`, `ButtonLink`, `ButtonAnchor`                                                    | —                                                                    | `cta` (red), `primary` (blue), `secondary`, `ghost`, `onDark`            |
+| `RatingSummary`, `ReviewsSection`, `ReviewCard`, `BookingReview`, `PlatformLogo`, `Stars` | —                                                                    | Tripadvisor-pattern proof with official source logos                     |
+| `TextLoop`                                                                                | React Bits + GSAP                                                    | See Motion                                                               |
+| `Packages`, `HandledForYou`, `NextSteps`, `NextSailings`                                  | —                                                                    | Offer, steps and real dates                                              |
+| `Photo`                                                                                   | `next/image` + custom loader                                         | Fixed ratio, responsive WebP, blur, placeholder                          |
+| `FaqList`                                                                                 | Radix `Accordion`                                                    | Answers stay in the HTML (`forceMount`)                                  |
+| `BookingForm`                                                                             | Radix `RadioGroup`, `Checkbox`                                       | Error summary, estimate, extras                                          |
+| `RouteLabel`                                                                              | —                                                                    | "→" as an icon, read as "to"                                             |
+
+## Accessibility checklist (verified)
+
+- axe-core WCAG 2.2 A/AA: 0 violations on 11 pages at 390 px and 1440 px. No horizontal
+  scroll.
+- Skip link, landmarks, one `h1` per page, breadcrumb with `aria-current`, visible
+  2 px focus ring everywhere (white on blue surfaces).
+- Inline links in body text are underlined (not colour alone).
+- Moving content can be paused; motion respects `prefers-reduced-motion`.

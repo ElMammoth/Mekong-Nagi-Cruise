@@ -30,7 +30,7 @@ export function NextSailings({
   const dates = today ? upcomingDepartures(weekdays, parseIsoDate(today), count) : [];
   return (
     <p className={cn("text-sm text-muted", className)}>
-      <span className="font-semibold text-ink">{label}: </span>
+      <span className="text-ink">{label}: </span>
       {dates.length
         ? dates.map((d) => short.format(parseIsoDate(d))).join(" · ")
         : `every ${formatWeekdays(weekdays)}`}

@@ -8,6 +8,7 @@ import { Eyebrow } from "@/components/ui/section-heading";
 import type { PhotoSlot } from "@/content/types";
 import { cn } from "@/lib/cn";
 import { breadcrumbJsonLd } from "@/lib/structured-data";
+import { RouteLabel } from "@/components/ui/route-label";
 
 interface Crumb {
   href: string;
@@ -32,14 +33,14 @@ export function PageHeader({
 }) {
   const withPhoto = photo && isPhotoShown(photo);
   return (
-    <div className="border-b border-silt bg-paper/60">
+    <div className="border-b border-line bg-surface-subtle">
       {crumbs.length ? <JsonLd data={breadcrumbJsonLd(crumbs)} /> : null}
       <Container className="pt-8 pb-12 sm:pt-10 sm:pb-16">
         {crumbs.length ? (
           <nav aria-label="Breadcrumb" className="mb-8">
             <ol className="flex flex-wrap items-center gap-1 text-sm text-muted">
               <li>
-                <Link href="/" className="hover:text-lantern hover:underline">
+                <Link href="/" className="hover:text-primary hover:underline">
                   Home
                 </Link>
               </li>
@@ -47,12 +48,12 @@ export function PageHeader({
                 <li key={c.href} className="flex items-center gap-1">
                   <ChevronRight aria-hidden="true" className="size-4" />
                   {i === crumbs.length - 1 ? (
-                    <span aria-current="page" className="font-semibold text-ink">
-                      {c.label}
+                    <span aria-current="page" className="text-ink">
+                      <RouteLabel text={c.label} />
                     </span>
                   ) : (
-                    <Link href={c.href} className="hover:text-lantern hover:underline">
-                      {c.label}
+                    <Link href={c.href} className="hover:text-primary hover:underline">
+                      <RouteLabel text={c.label} />
                     </Link>
                   )}
                 </li>
@@ -60,11 +61,7 @@ export function PageHeader({
             </ol>
           </nav>
         ) : null}
-        <div
-          className={cn(
-            withPhoto && "grid items-center gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14",
-          )}
-        >
+        <div className={cn(withPhoto && "grid items-center gap-10 lg:grid-cols-media lg:gap-14")}>
           <div className="max-w-3xl min-w-0">
             {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
             <h1 className="text-h1">{title}</h1>

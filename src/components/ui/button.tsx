@@ -2,23 +2,28 @@ import Link from "next/link";
 import type { ComponentProps } from "react";
 import { cn } from "@/lib/cn";
 
-type Variant = "primary" | "secondary" | "ghost" | "onDark";
+/**
+ * `cta`: the main booking action, in flag red — used sparingly, once per view.
+ * `primary`: other primary actions, flag blue. `secondary`: outlined. `onDark`: on blue surfaces.
+ */
+type Variant = "cta" | "primary" | "secondary" | "ghost" | "onDark";
 type Size = "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-[1.1em] [&_svg]:shrink-0";
+  "inline-flex items-center justify-center gap-2 rounded-sm font-display text-center leading-tight transition-colors duration-fast ease-standard disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-lantern text-white shadow-sm hover:bg-lantern-dark focus-visible:outline-lantern",
+  cta: "bg-accent text-on-accent hover:bg-accent-hover",
+  primary: "bg-primary text-on-primary hover:bg-primary-hover",
   secondary:
-    "border border-maroon/25 bg-paper text-maroon hover:border-maroon/50 hover:bg-white focus-visible:outline-lantern",
-  ghost: "text-lantern underline-offset-4 hover:underline focus-visible:outline-lantern",
-  onDark: "bg-sand text-river hover:bg-white focus-visible:outline-gold",
+    "border border-control bg-surface text-primary hover:border-primary hover:bg-surface-subtle",
+  ghost: "text-primary underline-offset-4 hover:underline",
+  onDark: "inverse bg-surface text-primary hover:bg-surface-tint",
 };
 
 const sizes: Record<Size, string> = {
-  md: "min-h-11 px-5 text-[0.9375rem]",
-  lg: "min-h-13 px-7 text-base",
+  md: "min-h-11 px-5 text-sm",
+  lg: "min-h-12 px-6 text-base",
 };
 
 interface StyleProps {

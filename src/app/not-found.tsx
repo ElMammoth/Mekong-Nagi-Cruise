@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <Container className="flex flex-col items-start py-24 sm:py-32">
-      <BoatMark className="w-24 text-vermilion" />
+      <BoatMark className="w-24 text-accent" />
       <h1 className="mt-6 text-h1">This page drifted downstream</h1>
       <p className="mt-4 max-w-xl text-lead text-muted">
         The page you are looking for doesn’t exist, or has moved with the new website.

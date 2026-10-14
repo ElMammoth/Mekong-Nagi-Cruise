@@ -129,6 +129,8 @@ export interface RatingSnapshot {
   count: number;
   /** ISO date the figures were copied from the platform. */
   asOf: string;
+  /** Optional breakdown as shown on the platform: number of reviews per star level. */
+  distribution?: Partial<Record<1 | 2 | 3 | 4 | 5, number>>;
 }
 
 export interface Review {

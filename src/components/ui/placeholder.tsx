@@ -20,17 +20,17 @@ export function Placeholder({
     <div
       data-placeholder=""
       className={cn(
-        "rounded-card border-2 border-dashed p-5 text-sm",
+        "rounded-md border border-dashed p-5 text-sm",
         tone === "dark"
-          ? "border-gold/60 bg-maroon text-river-mist"
-          : "border-lantern/40 bg-paper text-muted",
+          ? "border-on-primary-muted bg-primary text-on-primary-muted"
+          : "border-control bg-surface-subtle text-muted",
         className,
       )}
     >
       <p
         className={cn(
-          "inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold tracking-wide uppercase",
-          tone === "dark" ? "bg-sand text-maroon" : "bg-vermilion/10 text-lantern",
+          "inline-block rounded-xs px-2 py-0.5 font-display text-micro tracking-label uppercase",
+          tone === "dark" ? "bg-surface text-heading" : "bg-surface-tint text-heading",
         )}
       >
         Placeholder · {label}

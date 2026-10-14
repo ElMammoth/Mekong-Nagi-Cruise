@@ -13,15 +13,17 @@ export function BoatFeatures({ tone = "dark" }: { tone?: "light" | "dark" }) {
             <span
               className={
                 tone === "dark"
-                  ? "grid size-12 shrink-0 place-items-center rounded-2xl bg-sand/10 text-gold"
-                  : "grid size-12 shrink-0 place-items-center rounded-2xl bg-vermilion/10 text-lantern"
+                  ? "grid size-12 shrink-0 place-items-center rounded-sm bg-primary-hover text-on-primary"
+                  : "grid size-12 shrink-0 place-items-center rounded-sm bg-surface-tint text-primary"
               }
             >
               <Icon aria-hidden="true" className="size-6" />
             </span>
             <div>
-              <h3 className={tone === "dark" ? "text-h3 text-sand" : "text-h3"}>{item.title}</h3>
-              <p className={tone === "dark" ? "mt-2 text-river-mist" : "mt-2 text-muted"}>
+              <h3 className={tone === "dark" ? "text-h3 text-on-primary" : "text-h3"}>
+                {item.title}
+              </h3>
+              <p className={tone === "dark" ? "mt-2 text-on-primary-muted" : "mt-2 text-muted"}>
                 {item.text}
               </p>
             </div>

@@ -23,21 +23,21 @@ export function CtaBand({
   showReview?: boolean;
 }) {
   return (
-    <section aria-labelledby="cta-title" className="py-16 sm:py-24">
+    <section aria-labelledby="cta-title" className="py-section">
       <Container>
-        <div className="relative overflow-hidden rounded-[2rem] bg-maroon px-6 py-12 text-river-mist sm:px-12 sm:py-16">
+        <div className="relative overflow-hidden rounded-md bg-primary px-6 py-12 text-on-primary-muted inverse sm:px-12 sm:py-16">
           <BoatMark
             aria-hidden="true"
-            className="pointer-events-none absolute -right-10 -bottom-6 w-[28rem] max-w-[80%] text-vermilion/25"
+            className="pointer-events-none absolute -right-8 bottom-6 w-mark text-primary-hover"
           />
-          <div className="relative grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:items-start">
+          <div className="relative grid gap-12 lg:grid-cols-cta lg:items-start">
             <div>
-              <h2 id="cta-title" className="text-h2 text-sand">
+              <h2 id="cta-title" className="text-h2 text-on-primary">
                 {title}
               </h2>
               <p className="mt-4 text-lead">{text}</p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <ButtonLink href={href} size="lg" variant="onDark">
+                <ButtonLink href={href} size="lg" variant="cta">
                   {bookingLabel}
                 </ButtonLink>
                 <ButtonAnchor href={site.contact.whatsappHref} variant="secondary" size="lg">
@@ -46,20 +46,20 @@ export function CtaBand({
                 </ButtonAnchor>
               </div>
               <p className="mt-6 inline-flex flex-wrap items-center gap-x-2">
-                <Phone aria-hidden="true" className="size-4 text-gold" />
+                <Phone aria-hidden="true" className="size-4 text-on-primary-muted" />
                 Or call{" "}
                 <a
                   href={site.contact.phoneHref}
-                  className="font-semibold text-sand underline-offset-4 hover:underline"
+                  className="text-on-primary underline-offset-4 hover:underline"
                 >
                   {site.contact.phoneDisplay}
                 </a>
-                <span className="text-river-mist/90">({site.contact.hours})</span>
-                <span className="text-river-mist/90">
+                <span>({site.contact.hours})</span>
+                <span>
                   · or email{" "}
                   <a
                     href={`mailto:${site.contact.email}`}
-                    className="font-semibold text-sand underline-offset-4 hover:underline"
+                    className="text-on-primary underline-offset-4 hover:underline"
                   >
                     {site.contact.email}
                   </a>
@@ -68,7 +68,7 @@ export function CtaBand({
             </div>
             {showReview ? <BookingReview tone="dark" /> : null}
           </div>
-          <NextSteps tone="dark" className="relative mt-12 border-t border-sand/15 pt-8" />
+          <NextSteps tone="dark" className="relative mt-12 border-t border-primary-hover pt-8" />
         </div>
       </Container>
     </section>

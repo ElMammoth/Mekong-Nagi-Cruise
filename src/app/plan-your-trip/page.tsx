@@ -52,13 +52,13 @@ export default function PlanPage() {
         crumbs={[{ href: "/plan-your-trip/", label: "FAQ" }]}
       />
 
-      <section aria-labelledby="essentials-title" className="py-16 sm:py-24">
+      <section aria-labelledby="essentials-title" className="py-section">
         <Container>
           <SectionHeading id="essentials-title" eyebrow="Essentials" title="The practical side" />
           <ul className="mt-10 grid gap-6 sm:grid-cols-2">
             {essentials.map(({ icon: Icon, title, text }) => (
-              <li key={title} className="flex gap-4 rounded-card border border-silt bg-paper p-6">
-                <Icon aria-hidden="true" className="mt-1 size-6 shrink-0 text-lantern" />
+              <li key={title} className="flex gap-4 rounded-md border border-line bg-surface p-6">
+                <Icon aria-hidden="true" className="mt-1 size-6 shrink-0 text-primary" />
                 <div>
                   <h3 className="text-h3">{title}</h3>
                   <p className="mt-2 text-muted">{text}</p>
@@ -70,21 +70,21 @@ export default function PlanPage() {
             Step-by-step route, border and packing advice:{" "}
             <Link
               href="/guides/houay-xai-to-luang-prabang/"
-              className="font-semibold text-lantern underline-offset-4 hover:underline"
+              className="text-primary underline underline-offset-4 hover:decoration-2"
             >
               the Houay Xai to Luang Prabang route guide
             </Link>
             . Coming from further away? Start in{" "}
             <Link
               href="/cruises/chiang-mai-land-and-cruise/"
-              className="font-semibold text-lantern underline-offset-4 hover:underline"
+              className="text-primary underline underline-offset-4 hover:decoration-2"
             >
               Chiang Mai
             </Link>{" "}
             or{" "}
             <Link
               href="/cruises/nan-to-luang-prabang/"
-              className="font-semibold text-lantern underline-offset-4 hover:underline"
+              className="text-primary underline underline-offset-4 hover:decoration-2"
             >
               Nan
             </Link>{" "}
@@ -93,8 +93,8 @@ export default function PlanPage() {
         </Container>
       </section>
 
-      <section aria-labelledby="boat-title" className="bg-river py-16 sm:py-24">
-        <Container className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+      <section aria-labelledby="boat-title" className="bg-primary py-section inverse">
+        <Container className="grid gap-12 lg:grid-cols-intro">
           <SectionHeading
             id="boat-title"
             tone="dark"
@@ -105,8 +105,8 @@ export default function PlanPage() {
         </Container>
       </section>
 
-      <section aria-labelledby="faq-title" className="py-16 sm:py-24">
-        <Container className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+      <section aria-labelledby="faq-title" className="py-section">
+        <Container className="grid gap-10 lg:grid-cols-intro">
           <SectionHeading id="faq-title" eyebrow="FAQ" title="Frequently asked questions" />
           <FaqList faqs={faqs} />
         </Container>

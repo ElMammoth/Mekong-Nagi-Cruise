@@ -37,35 +37,33 @@ export function Packages({
             <li
               key={pkg.id}
               className={cn(
-                "relative flex flex-col rounded-card border bg-paper p-6 shadow-card sm:p-7",
-                featured
-                  ? "border-lantern shadow-[inset_0_0_0_1px_var(--color-lantern)]"
-                  : "border-silt",
+                "relative flex flex-col rounded-md border bg-surface p-6 shadow-sm sm:p-7",
+                featured ? "border-primary shadow-ring" : "border-line",
               )}
             >
               {pkg.highlight ? (
-                <p className="absolute -top-3.5 left-6 rounded-full bg-lantern px-3 py-1 text-xs font-semibold tracking-wide text-white uppercase">
+                <p className="absolute -top-3 left-6 rounded-xs bg-accent px-2 py-1 font-display text-micro tracking-label text-on-accent uppercase">
                   {pkg.highlight}
                 </p>
               ) : null}
               <H className="text-h3">{pkg.name}</H>
               <p className="mt-2 text-muted">{pkg.summary}</p>
 
-              <ul className="mt-5 space-y-3 border-y border-silt py-5">
+              <ul className="mt-5 space-y-3 border-y border-line py-5">
                 {pkg.options.map((option) => (
                   <li key={option.id}>
                     {pkg.options.length > 1 ? (
-                      <p className="flex flex-wrap items-center gap-2 font-semibold text-ink">
+                      <p className="flex flex-wrap items-center gap-2 text-ink">
                         {option.label}
                         {option.badge ? (
-                          <span className="rounded-full bg-vermilion/10 px-2 py-0.5 text-xs font-semibold text-lantern uppercase">
+                          <span className="rounded-xs bg-accent-soft px-2 py-0.5 font-display text-micro tracking-label text-accent uppercase">
                             {option.badge}
                           </span>
                         ) : null}
                       </p>
                     ) : null}
                     <p className="flex flex-wrap items-baseline gap-x-2">
-                      <span className="font-display text-3xl font-semibold text-maroon">
+                      <span className="font-display text-3xl text-heading">
                         {primaryPrice(option)}
                       </span>
                       {secondaryPrice(option) ? (
@@ -79,7 +77,7 @@ export function Packages({
                         : ""}
                     </p>
                     {option.validTo ? (
-                      <p className="mt-1 text-sm font-semibold text-lantern">
+                      <p className="mt-1 text-sm text-primary">
                         Offer ends {formatDate(option.validTo)}
                       </p>
                     ) : null}
@@ -90,7 +88,7 @@ export function Packages({
               <ul className="mt-5 flex-1 space-y-2.5">
                 {pkg.points.map((point) => (
                   <li key={point} className="flex gap-2.5">
-                    <Check aria-hidden="true" className="mt-1 size-4 shrink-0 text-lantern" />
+                    <Check aria-hidden="true" className="mt-1 size-4 shrink-0 text-primary" />
                     {point}
                   </li>
                 ))}
@@ -99,7 +97,7 @@ export function Packages({
               <Link
                 href={`/cruises/${trip.slug}/?option=${first.id}#book`}
                 className={cn(
-                  buttonClasses({ variant: featured ? "primary" : "secondary" }),
+                  buttonClasses({ variant: featured ? "cta" : "secondary" }),
                   "mt-7 w-full",
                 )}
               >

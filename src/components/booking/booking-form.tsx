@@ -12,6 +12,7 @@ import {
 import { Checkbox, RadioGroup } from "radix-ui";
 import { CalendarDays, Check, Mail, MessageCircle, Minus, Plus, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { RouteLabel, routeText } from "@/components/ui/route-label";
 import { site } from "@/content/site";
 import type { Trip } from "@/content/types";
 import { cn } from "@/lib/cn";
@@ -141,7 +142,7 @@ export function BookingForm({
     if (channel === "whatsapp") {
       window.open(whatsappUrl(body), "_blank", "noopener,noreferrer");
     } else {
-      window.location.href = mailtoUrl(`Booking request: ${trip!.shortName}`, body);
+      window.location.href = mailtoUrl(`Booking request: ${routeText(trip!.shortName)}`, body);
     }
     setSentVia(channel);
   }
@@ -150,22 +151,22 @@ export function BookingForm({
   const fieldId = (name: string) => `${id}-${name}`;
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="grid gap-10 lg:grid-cols-[1fr_22rem]">
+    <form onSubmit={handleSubmit} noValidate className="grid gap-10 lg:grid-cols-sidebar">
       <div className="space-y-10">
         {errorList.length > 0 ? (
           <div
             ref={errorSummaryRef}
             tabIndex={-1}
             role="alert"
-            className="rounded-xl border-2 border-lantern bg-paper p-5 focus:outline-none"
+            className="rounded-sm border-2 border-accent bg-surface p-5 focus:outline-none"
           >
-            <h3 className="font-sans text-base font-semibold text-lantern">
+            <h3 className="text-base text-accent">
               Please check {errorList.length === 1 ? "one detail" : `${errorList.length} details`}
             </h3>
             <ul className="mt-2 list-disc space-y-1 pl-5">
               {errorList.map(([field, message]) => (
                 <li key={field}>
-                  <a href={`#${fieldId(field)}`} className="text-lantern underline">
+                  <a href={`#${fieldId(field)}`} className="text-primary underline">
                     {message}
                   </a>
                 </li>
@@ -176,13 +177,11 @@ export function BookingForm({
 
         {/* 1. Trip */}
         <fieldset className="space-y-4">
-          <legend className="font-display text-h3 font-semibold text-maroon">
+          <legend className="font-display text-h3 text-heading">
             <StepNumber n={1} /> Your trip
           </legend>
           {lockTrip ? (
-            <p className="rounded-xl border border-silt bg-paper p-4 font-semibold text-maroon">
-              {trip.name}
-            </p>
+            <p className="rounded-sm border border-line bg-surface p-4 text-heading">{trip.name}</p>
           ) : (
             <Field label="Cruise or journey" htmlFor={fieldId("trip")} error={errors.trip}>
               {(d) => (
@@ -197,7 +196,7 @@ export function BookingForm({
                   >
                     {trips.map((t) => (
                       <option key={t.slug} value={t.slug}>
-                        {t.shortName}
+                        {routeText(t.shortName)}
                       </option>
                     ))}
                   </select>
@@ -209,7 +208,7 @@ export function BookingForm({
 
         {/* 2. Date */}
         <fieldset className="space-y-4">
-          <legend className="font-display text-h3 font-semibold text-maroon">
+          <legend className="font-display text-h3 text-heading">
             <StepNumber n={2} /> {trip.departures.label}
           </legend>
           <p className="-mt-2 text-muted">
@@ -227,24 +226,22 @@ export function BookingForm({
                 const d = parseIsoDate(iso);
                 return (
                   <ChoiceCard key={iso} value={iso} ariaLabel={dateLabel(iso)}>
-                    <span className="block text-sm font-semibold text-muted">
+                    <span className="block text-sm text-muted">
                       {d.toLocaleDateString("en-GB", { weekday: "long" })}
                     </span>
-                    <span className="block font-display text-xl font-semibold text-maroon">
+                    <span className="block font-display text-xl text-heading">
                       {d.toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
                     </span>
                   </ChoiceCard>
                 );
               })}
               <ChoiceCard value={FLEXIBLE} ariaLabel="Another date or I’m flexible">
-                <span className="block text-sm font-semibold text-muted">Another date</span>
-                <span className="block font-display text-xl font-semibold text-maroon">
-                  I’m flexible
-                </span>
+                <span className="block text-sm text-muted">Another date</span>
+                <span className="block font-display text-xl text-heading">I’m flexible</span>
               </ChoiceCard>
             </RadioGroup.Root>
           ) : (
-            <p className="flex items-center gap-2 rounded-xl border border-silt bg-paper p-4 text-muted">
+            <p className="flex items-center gap-2 rounded-sm border border-line bg-surface p-4 text-muted">
               <CalendarDays aria-hidden="true" className="size-5" />
               Loading the next departures…
             </p>
@@ -253,7 +250,7 @@ export function BookingForm({
 
         {/* 3. Travellers & option */}
         <fieldset className="space-y-5">
-          <legend className="font-display text-h3 font-semibold text-maroon">
+          <legend className="font-display text-h3 text-heading">
             <StepNumber n={3} /> Travellers & stay
           </legend>
           <Field
@@ -264,13 +261,13 @@ export function BookingForm({
           >
             {(d) => (
               <>
-                <div className="inline-flex items-center rounded-full border border-maroon/25 bg-paper">
+                <div className="inline-flex items-center rounded-sm border border-control bg-surface">
                   <button
                     type="button"
                     onClick={() => setTravellers((n) => Math.max(1, n - 1))}
                     disabled={travellers <= 1}
                     aria-label="One traveller fewer"
-                    className="grid size-11 place-items-center rounded-full text-maroon hover:bg-sand disabled:opacity-40"
+                    className="grid size-11 place-items-center rounded-sm text-heading hover:bg-surface-tint disabled:opacity-40"
                   >
                     <Minus aria-hidden="true" className="size-4" />
                   </button>
@@ -289,14 +286,14 @@ export function BookingForm({
                       )
                     }
                     aria-invalid={Boolean(errors.travellers) || undefined}
-                    className="w-14 [appearance:textfield] bg-transparent text-center text-lg font-semibold text-maroon focus:outline-none [&::-webkit-inner-spin-button]:appearance-none"
+                    className="w-14 appearance-none bg-transparent text-center text-lg text-heading focus:outline-none [&::-webkit-inner-spin-button]:appearance-none"
                   />
                   <button
                     type="button"
                     onClick={() => setTravellers((n) => Math.min(MAX_TRAVELLERS, n + 1))}
                     disabled={travellers >= MAX_TRAVELLERS}
                     aria-label="One more traveller"
-                    className="grid size-11 place-items-center rounded-full text-maroon hover:bg-sand disabled:opacity-40"
+                    className="grid size-11 place-items-center rounded-sm text-heading hover:bg-surface-tint disabled:opacity-40"
                   >
                     <Plus aria-hidden="true" className="size-4" />
                   </button>
@@ -307,7 +304,7 @@ export function BookingForm({
 
           {options.length > 1 ? (
             <div>
-              <p id={fieldId("option-label")} className="mb-2 font-semibold text-ink">
+              <p id={fieldId("option-label")} className="mb-2 font-display text-sm text-heading">
                 Night in Pak Beng
               </p>
               <RadioGroup.Root
@@ -322,7 +319,7 @@ export function BookingForm({
                     value={o.id}
                     ariaLabel={`${o.label}, ${formatMoney(o.perPerson)} per person`}
                   >
-                    <span className="block font-semibold text-maroon">{o.label}</span>
+                    <span className="block font-display text-sm text-heading">{o.label}</span>
                     <span className="block text-sm text-muted">
                       {formatMoney(o.perPerson)} per person
                     </span>
@@ -334,8 +331,8 @@ export function BookingForm({
 
           {trip.extras?.length ? (
             <div role="group" aria-labelledby={fieldId("extras-label")}>
-              <p id={fieldId("extras-label")} className="font-semibold text-ink">
-                Also ask us about <span className="font-normal text-muted">(optional)</span>
+              <p id={fieldId("extras-label")} className="font-display text-sm text-heading">
+                Also ask us about <span className="font-sans text-base text-muted">(optional)</span>
               </p>
               <p className="text-sm text-muted">We’ll include it in our reply. No commitment.</p>
               <ul className="mt-3 space-y-2">
@@ -352,10 +349,10 @@ export function BookingForm({
                             value === true ? [...list, extra] : list.filter((e) => e !== extra),
                           )
                         }
-                        className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-md border border-maroon/35 bg-paper data-[state=checked]:border-lantern data-[state=checked]:bg-lantern"
+                        className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-xs border border-control bg-surface data-[state=checked]:border-primary data-[state=checked]:bg-primary"
                       >
                         <Checkbox.Indicator>
-                          <Check aria-hidden="true" className="size-4 text-white" />
+                          <Check aria-hidden="true" className="size-4 text-on-primary" />
                         </Checkbox.Indicator>
                       </Checkbox.Root>
                       <label htmlFor={extraId} className="cursor-pointer">
@@ -371,7 +368,7 @@ export function BookingForm({
 
         {/* 4. Contact */}
         <fieldset className="space-y-5">
-          <legend className="font-display text-h3 font-semibold text-maroon">
+          <legend className="font-display text-h3 text-heading">
             <StepNumber n={4} /> Your details
           </legend>
           <div className="grid gap-5 sm:grid-cols-2">
@@ -454,10 +451,10 @@ export function BookingForm({
 
       {/* Summary */}
       <aside aria-label="Booking summary" className="lg:sticky lg:top-24 lg:self-start">
-        <div className="rounded-card border border-silt bg-paper p-6 shadow-card">
+        <div className="rounded-md border border-line bg-surface p-6 shadow-sm">
           <h3 className="text-h3">Your request</h3>
-          <dl className="mt-4 space-y-3 text-[0.9375rem]">
-            <SummaryRow term="Trip" value={trip.shortName} />
+          <dl className="mt-4 space-y-3 text-sm">
+            <SummaryRow term="Trip" value={<RouteLabel text={trip.shortName} />} />
             <SummaryRow
               term="Date"
               value={date === FLEXIBLE ? "Flexible" : date ? dateLabel(date) : "Not chosen yet"}
@@ -466,13 +463,11 @@ export function BookingForm({
             {option ? <SummaryRow term="Option" value={option.label} /> : null}
             {extras.length ? <SummaryRow term="Also asking" value={extras.join("; ")} /> : null}
           </dl>
-          <div className="mt-5 border-t border-silt pt-5" aria-live="polite">
+          <div className="mt-5 border-t border-line pt-5" aria-live="polite">
             {estimate ? (
               <>
                 <p className="text-sm text-muted">Estimated total</p>
-                <p className="font-display text-3xl font-semibold text-maroon">
-                  {formatAmount(total!, "USD")}
-                </p>
+                <p className="font-display text-3xl text-heading">{formatAmount(total!, "USD")}</p>
                 <p className="mt-1 text-sm text-muted">
                   Based on published prices
                   {travellers === 1 && option?.singleSupplement ? ", incl. single supplement" : ""}.
@@ -485,7 +480,14 @@ export function BookingForm({
           </div>
 
           <div className="mt-6 space-y-3">
-            <Button type="submit" name="channel" value="whatsapp" size="lg" className="w-full">
+            <Button
+              type="submit"
+              name="channel"
+              value="whatsapp"
+              size="lg"
+              variant="cta"
+              className="w-full"
+            >
               <MessageCircle aria-hidden="true" />
               Send on WhatsApp
             </Button>
@@ -508,12 +510,12 @@ export function BookingForm({
 
           <div role="status" aria-live="polite">
             {sentVia ? (
-              <p className="mt-4 flex gap-2 rounded-xl bg-river p-4 text-sm text-sand">
-                <Send aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-gold" />
+              <p className="mt-4 flex gap-2 rounded-sm bg-primary p-4 text-sm text-on-primary">
+                <Send aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-on-primary-muted" />
                 <span>
                   Your request is ready in {sentVia === "whatsapp" ? "WhatsApp" : "your email app"}.
                   Press send there. Nothing opened? Write to{" "}
-                  <a href={`mailto:${site.contact.email}`} className="font-semibold underline">
+                  <a href={`mailto:${site.contact.email}`} className="underline">
                     {site.contact.email}
                   </a>{" "}
                   or call {site.contact.phoneDisplay}.
@@ -532,7 +534,7 @@ function StepNumber({ n }: { n: number }) {
   return (
     <span
       aria-hidden="true"
-      className="mr-2 inline-grid size-8 place-items-center rounded-full bg-vermilion/10 align-middle font-sans text-base text-lantern"
+      className="mr-2 inline-grid size-8 place-items-center rounded-sm bg-surface-tint align-middle font-display text-sm text-primary"
     >
       {n}
     </span>
@@ -552,7 +554,7 @@ function ChoiceCard({
     <RadioGroup.Item
       value={value}
       aria-label={ariaLabel}
-      className="rounded-xl border border-silt bg-paper p-4 text-left transition-colors hover:border-maroon/40 data-[state=checked]:border-lantern data-[state=checked]:bg-vermilion/5 data-[state=checked]:shadow-[inset_0_0_0_1px_var(--color-lantern)]"
+      className="rounded-sm border border-line bg-surface p-4 text-left transition-colors hover:border-primary data-[state=checked]:border-primary data-[state=checked]:bg-surface-tint data-[state=checked]:shadow-ring"
     >
       {children}
     </RadioGroup.Item>
@@ -582,15 +584,15 @@ function Field({
       .join(" ") || undefined;
   return (
     <div className="space-y-1.5">
-      <label htmlFor={htmlFor} className="block font-semibold text-ink">
+      <label htmlFor={htmlFor} className="block font-display text-sm text-heading">
         {label}
         {required ? (
-          <span className="text-lantern" aria-hidden="true">
+          <span className="text-accent" aria-hidden="true">
             {" "}
             *
           </span>
         ) : null}
-        {optional ? <span className="font-normal text-muted"> (optional)</span> : null}
+        {optional ? <span className="font-sans text-base text-muted"> (optional)</span> : null}
       </label>
       {children(describedBy)}
       {hint ? (
@@ -599,7 +601,7 @@ function Field({
         </p>
       ) : null}
       {error ? (
-        <p id={`${htmlFor}-error`} className="text-sm font-semibold text-lantern">
+        <p id={`${htmlFor}-error`} className="text-sm text-accent">
           {error}
         </p>
       ) : null}
@@ -607,18 +609,18 @@ function Field({
   );
 }
 
-function SummaryRow({ term, value }: { term: string; value: string }) {
+function SummaryRow({ term, value }: { term: string; value: ReactNode }) {
   return (
     <div className="flex justify-between gap-4">
       <dt className="text-muted">{term}</dt>
-      <dd className="text-right font-semibold text-ink">{value}</dd>
+      <dd className="text-right text-ink">{value}</dd>
     </div>
   );
 }
 
 function inputClass(invalid: boolean) {
   return cn(
-    "block min-h-12 w-full rounded-control border bg-paper px-4 text-base text-ink transition-colors placeholder:text-muted/70 focus:border-lantern focus:outline-2 focus:outline-offset-0 focus:outline-lantern/30",
-    invalid ? "border-lantern" : "border-maroon/25 hover:border-maroon/45",
+    "block min-h-12 w-full rounded-sm border bg-surface px-4 text-base text-ink transition-colors duration-fast placeholder:text-muted focus:border-primary focus:outline-2 focus:outline-offset-0 focus:outline-focus",
+    invalid ? "border-accent" : "border-control hover:border-primary",
   );
 }

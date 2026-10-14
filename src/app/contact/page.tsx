@@ -45,14 +45,12 @@ export default function ContactPage() {
       >
         <dl className="mt-10 grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
           {channels.map(({ icon: Icon, term, value, href }) => (
-            <div key={term} className="grid grid-cols-[auto_1fr] gap-x-3">
-              <Icon aria-hidden="true" className="row-span-2 mt-1 size-5 text-lantern" />
-              <dt className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">
-                {term}
-              </dt>
-              <dd className="mt-0.5 min-w-0 font-semibold break-words text-ink">
+            <div key={term} className="grid grid-cols-icon gap-x-3">
+              <Icon aria-hidden="true" className="row-span-2 mt-1 size-5 text-primary" />
+              <dt className="font-display text-eyebrow text-muted uppercase">{term}</dt>
+              <dd className="mt-0.5 min-w-0 break-words text-ink">
                 {href ? (
-                  <a href={href} className="hover:text-lantern hover:underline">
+                  <a href={href} className="hover:text-primary hover:underline">
                     {value}
                   </a>
                 ) : (
@@ -64,14 +62,14 @@ export default function ContactPage() {
         </dl>
       </PageHeader>
 
-      <section id="booking" aria-labelledby="booking-title" className="scroll-mt-20 py-14 sm:py-20">
+      <section id="booking" aria-labelledby="booking-title" className="py-14 sm:py-20">
         <Container>
           <SectionHeading
             id="booking-title"
             title="Your booking request"
             intro="Four short steps. Your message opens in WhatsApp or your email app, ready to send."
           />
-          <NextSteps className="mt-10 rounded-card border border-silt bg-paper p-6" />
+          <NextSteps className="mt-10 rounded-md border border-line bg-surface p-6" />
           <div className="mt-12">
             <BookingForm trips={trips} asideFooter={<BookingReview />} />
           </div>

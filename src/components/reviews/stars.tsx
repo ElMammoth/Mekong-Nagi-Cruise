@@ -9,6 +9,7 @@ export function Stars({
 }: {
   rating: number;
   className?: string;
+  /** A size-* token utility. */
   size?: string;
 }) {
   const percent = Math.max(0, Math.min(100, (rating / 5) * 100));
@@ -26,9 +27,9 @@ export function Stars({
     <span
       role="img"
       aria-label={`Rated ${rating} out of 5`}
-      className={cn("relative inline-flex text-lantern", className)}
+      className={cn("relative inline-flex text-accent", className)}
     >
-      <span className="inline-flex opacity-35">{row(false)}</span>
+      <span className="inline-flex text-line-strong">{row(false)}</span>
       <span
         className="absolute inset-y-0 left-0 inline-flex overflow-hidden"
         style={{ width: `${percent}%` }}

@@ -43,7 +43,7 @@ export function Photo({
 
   return (
     <div
-      className={cn("relative overflow-hidden rounded-card bg-river-mist", className)}
+      className={cn("relative overflow-hidden rounded-md bg-surface-tint", className)}
       style={{ aspectRatio: photo.ratio }}
     >
       {entry ? (
@@ -70,10 +70,10 @@ function PhotoPlaceholder({ photo }: { photo: PhotoSlot }) {
     <div
       aria-hidden="true"
       data-placeholder=""
-      className="absolute inset-0 flex flex-col items-center justify-center gap-2 border-2 border-dashed border-river/25 p-4 text-center text-river"
+      className="absolute inset-0 flex flex-col items-center justify-center gap-2 border border-dashed border-control p-4 text-center text-primary"
     >
       <svg
-        className="pointer-events-none absolute inset-0 size-full text-river/10"
+        className="pointer-events-none absolute inset-0 size-full text-line"
         viewBox="0 0 400 300"
         preserveAspectRatio="none"
         fill="none"
@@ -86,11 +86,11 @@ function PhotoPlaceholder({ photo }: { photo: PhotoSlot }) {
         />
       </svg>
       <Camera className="relative size-6" />
-      <p className="relative text-xs font-semibold tracking-[0.12em] uppercase">
+      <p className="relative font-display text-eyebrow uppercase">
         Photo · {photo.ratio.replace("/", ":")}
       </p>
-      <p className="relative max-w-[18rem] text-sm leading-snug">{photo.alt}</p>
-      <p className="relative font-mono text-[0.6875rem] break-all">photos/{photo.file}.jpg</p>
+      <p className="relative max-w-note text-sm leading-snug">{photo.alt}</p>
+      <p className="relative text-micro break-all">photos/{photo.file}.jpg</p>
     </div>
   );
 }

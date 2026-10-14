@@ -44,12 +44,12 @@ export default function ChartersPage() {
           </ButtonAnchor>
         </div>
       </PageHeader>
-      <section aria-label="What we offer" className="py-16 sm:py-24">
+      <section aria-label="What we offer" className="py-section">
         <Container>
           <ul className="grid gap-6 md:grid-cols-3">
             {points.map(({ icon: Icon, title, text }) => (
-              <li key={title} className="rounded-card border border-silt bg-paper p-7 shadow-card">
-                <Icon aria-hidden="true" className="size-7 text-lantern" />
+              <li key={title} className="rounded-md border border-line bg-surface p-7 shadow-sm">
+                <Icon aria-hidden="true" className="size-7 text-primary" />
                 <h2 className="mt-4 text-h3">{title}</h2>
                 <p className="mt-2 text-muted">{text}</p>
               </li>

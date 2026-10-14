@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import { RouteMap } from "@/components/brand/route-map";
+import { TextLoop } from "@/components/effects/text-loop";
 import { JsonLd } from "@/components/layout/json-ld";
 import { Photo, isPhotoShown } from "@/components/media/photo";
 import { RatingSummary } from "@/components/reviews/rating-summary";
@@ -46,13 +47,13 @@ export default function HomePage() {
     <>
       {/* 1 · Hero: the outcome, the days, the price, the action, the proof */}
       <section aria-labelledby="hero-title" className="overflow-hidden">
-        <Container className="grid items-center gap-10 pt-10 pb-16 sm:pt-16 lg:grid-cols-[1.05fr_1fr] lg:gap-12 lg:pt-20 lg:pb-24">
+        <Container className="grid items-center gap-10 pt-10 pb-16 sm:pt-16 lg:grid-cols-hero lg:gap-12 lg:pt-20 lg:pb-24">
           <div>
             <Eyebrow>{site.offerName}</Eyebrow>
             <h1 id="hero-title" className="text-display">
-              Houay Xai to Luang Prabang, <span className="text-vermilion italic">in comfort</span>{" "}
-              and safety
+              Houay Xai to Luang Prabang, in comfort and safety
             </h1>
+            <RatingSummary className="mt-5" />
             <p className="mt-6 max-w-xl text-lead text-muted">
               Two days down the Mekong with a night in Pak Beng. We pick you up from your hotel in
               Chiang Khong or Houay Xai, help you through the border, serve lunch on board and drop
@@ -61,20 +62,16 @@ export default function HomePage() {
 
             <dl className="mt-8 flex flex-wrap gap-x-10 gap-y-5">
               <div>
-                <dt className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">
-                  Departures
-                </dt>
+                <dt className="font-display text-eyebrow text-muted uppercase">Departures</dt>
                 <dd className="mt-1.5">
                   <DayChips days={downstream.departures.weekdays} />
                 </dd>
               </div>
               {from ? (
                 <div>
-                  <dt className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">
-                    From
-                  </dt>
+                  <dt className="font-display text-eyebrow text-muted uppercase">From</dt>
                   <dd className="mt-0.5">
-                    <span className="font-display text-2xl font-semibold text-maroon">
+                    <span className="font-display text-2xl text-heading">
                       {formatAmount(from, "USD")}
                     </span>
                     <span className="text-muted"> per person</span>
@@ -85,7 +82,7 @@ export default function HomePage() {
             <NextSailings weekdays={downstream.departures.weekdays} className="mt-4" />
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <ButtonLink href={downstreamBookingHref} size="lg">
+              <ButtonLink href={downstreamBookingHref} size="lg" variant="cta">
                 {bookingLabel}
               </ButtonLink>
               <ButtonAnchor href={site.contact.whatsappHref} size="lg" variant="secondary">
@@ -94,32 +91,43 @@ export default function HomePage() {
               </ButtonAnchor>
             </div>
             <p className="mt-3 text-sm text-muted">{site.contact.replyPromise}</p>
-            <RatingSummary className="mt-8" />
           </div>
 
           <Photo
             photo={photos.hero}
             eager
             sizes="(min-width: 1024px) 45vw, 100vw"
-            className="shadow-raised"
+            className="shadow-md"
             fallback={<RouteMap className="mx-auto w-full max-w-xl lg:max-w-none" />}
           />
         </Container>
+        {/* A short phrase flows along the river; the h1 above stays static. */}
+        <TextLoop
+          text={site.loopPhrase}
+          shape="wave"
+          curviness={14}
+          fontSize={30}
+          letterSpacing={3}
+          ribbonWidth={58}
+          viewHeight={120}
+          speed={60}
+          fit="slice"
+          svgClassName="h-16 w-full sm:h-auto"
+          className="-mt-4 pb-6"
+        />
       </section>
 
       {/* 2 · Facts */}
-      <section aria-label="Key facts" className="border-y border-silt bg-paper">
+      <section aria-label="Key facts" className="border-y border-line bg-surface">
         <Container>
-          <ul className="grid grid-cols-3 divide-x divide-silt">
+          <ul className="grid grid-cols-3 divide-x divide-line">
             {site.facts.map((fact) => (
               <li
                 key={fact.label}
                 className="flex flex-col gap-1 px-3 py-6 first:pl-0 sm:flex-row sm:items-baseline sm:justify-center sm:gap-4 sm:px-6 sm:py-8"
               >
-                <span className="font-display text-4xl font-semibold text-vermilion sm:text-5xl">
-                  {fact.value}
-                </span>
-                <span className="max-w-[12rem] text-sm text-muted sm:text-base">{fact.label}</span>
+                <span className="font-display text-h1 text-primary">{fact.value}</span>
+                <span className="max-w-fact text-sm text-muted sm:text-base">{fact.label}</span>
               </li>
             ))}
           </ul>
@@ -127,7 +135,7 @@ export default function HomePage() {
       </section>
 
       {/* 3 · The offer: everything handled */}
-      <Container className="py-20 sm:py-28">
+      <Container className="py-section">
         <HandledForYou
           action={
             <>
@@ -139,16 +147,16 @@ export default function HomePage() {
       </Container>
 
       {/* 4 · Proof, right after the promise */}
-      <div className="border-y border-silt bg-paper/60 py-20 sm:py-28">
+      <div className="border-y border-line bg-surface-subtle py-section">
         <Container>
           <ReviewsSection />
         </Container>
       </div>
 
       {/* 5 · The journey */}
-      <section aria-labelledby="journey-title" className="py-20 sm:py-28">
+      <section aria-labelledby="journey-title" className="py-section">
         <Container>
-          <div className="grid items-center gap-12 lg:grid-cols-[1fr_1fr]">
+          <div className="grid items-center gap-12 lg:grid-cols-2">
             <div>
               <SectionHeading
                 id="journey-title"
@@ -160,7 +168,7 @@ export default function HomePage() {
                 {[day1, day2].map((day) =>
                   day ? (
                     <li key={day.label} className="flex gap-4">
-                      <span className="grid size-12 shrink-0 place-items-center rounded-full bg-vermilion/10 font-semibold text-lantern">
+                      <span className="grid size-12 shrink-0 place-items-center rounded-sm bg-surface-tint font-display text-primary">
                         {day.label.replace("Day ", "D")}
                       </span>
                       <div>
@@ -178,7 +186,7 @@ export default function HomePage() {
               </ol>
               <Link
                 href="/cruises/downstream/"
-                className="mt-8 inline-flex items-center gap-1.5 font-semibold text-lantern hover:underline"
+                className="mt-8 inline-flex items-center gap-1.5 text-primary hover:underline"
               >
                 See the full downstream itinerary
                 <ArrowRight aria-hidden="true" className="size-4" />
@@ -201,7 +209,7 @@ export default function HomePage() {
       {/* 6 · Packages and prices */}
       <section
         aria-labelledby="packages-title"
-        className="border-y border-silt bg-paper/60 py-20 sm:py-28"
+        className="border-y border-line bg-surface-subtle py-section"
       >
         <Container>
           <div className="flex flex-wrap items-end justify-between gap-6">
@@ -213,7 +221,7 @@ export default function HomePage() {
             />
             <Link
               href="/where-to-stay/"
-              className="inline-flex items-center gap-1.5 font-semibold text-lantern hover:underline"
+              className="inline-flex items-center gap-1.5 text-primary hover:underline"
             >
               Compare the Pak Beng hotels
               <ArrowRight aria-hidden="true" className="size-4" />
@@ -227,9 +235,9 @@ export default function HomePage() {
       </section>
 
       {/* 7 · On board and the people */}
-      <section aria-labelledby="onboard-title" className="bg-river py-20 sm:py-28">
+      <section aria-labelledby="onboard-title" className="bg-primary py-section inverse">
         <Container>
-          <div className="grid gap-14 lg:grid-cols-[0.8fr_1.2fr]">
+          <div className="grid gap-14 lg:grid-cols-intro">
             <SectionHeading
               id="onboard-title"
               tone="dark"
@@ -249,7 +257,7 @@ export default function HomePage() {
                       sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
                     />
                     {photo.caption ? (
-                      <figcaption className="mt-3 text-sm text-river-mist">
+                      <figcaption className="mt-3 text-sm text-on-primary-muted">
                         {photo.caption}
                       </figcaption>
                     ) : null}
@@ -262,7 +270,7 @@ export default function HomePage() {
       </section>
 
       {/* 8 · Other ways to travel */}
-      <section aria-labelledby="journeys-title" className="py-20 sm:py-28">
+      <section aria-labelledby="journeys-title" className="py-section">
         <Container>
           <div className="flex flex-wrap items-end justify-between gap-6">
             <SectionHeading
@@ -273,7 +281,7 @@ export default function HomePage() {
             />
             <Link
               href="/guides/houay-xai-to-luang-prabang/"
-              className="inline-flex items-center gap-1.5 font-semibold text-lantern hover:underline"
+              className="inline-flex items-center gap-1.5 text-primary hover:underline"
             >
               Read the route guide
               <ArrowRight aria-hidden="true" className="size-4" />
@@ -292,8 +300,8 @@ export default function HomePage() {
       </section>
 
       {/* 9 · Objections */}
-      <section aria-labelledby="faq-title" className="border-t border-silt bg-paper py-20 sm:py-28">
-        <Container className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+      <section aria-labelledby="faq-title" className="border-t border-line bg-surface py-section">
+        <Container className="grid gap-10 lg:grid-cols-intro">
           <div>
             <SectionHeading
               id="faq-title"
@@ -302,7 +310,7 @@ export default function HomePage() {
             />
             <Link
               href="/plan-your-trip/"
-              className="mt-6 inline-flex items-center gap-1.5 font-semibold text-lantern hover:underline"
+              className="mt-6 inline-flex items-center gap-1.5 text-primary hover:underline"
             >
               All questions about visas, food and weather
               <ArrowRight aria-hidden="true" className="size-4" />

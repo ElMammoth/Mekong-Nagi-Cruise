@@ -6,16 +6,16 @@ import type { Faq } from "@/content/types";
 
 export function FaqList({ faqs }: { faqs: readonly Faq[] }) {
   return (
-    <Accordion.Root type="multiple" className="divide-y divide-silt border-y border-silt">
+    <Accordion.Root type="multiple" className="divide-y divide-line border-y border-line">
       {faqs.map((faq) => (
         <Accordion.Item key={faq.question} value={faq.question}>
           <Accordion.Header asChild>
             <h3 className="font-sans">
-              <Accordion.Trigger className="group flex w-full items-center justify-between gap-6 py-5 text-left text-lg font-semibold text-maroon hover:text-lantern">
+              <Accordion.Trigger className="group flex w-full items-center justify-between gap-6 rounded-sm py-5 text-left font-display text-base text-heading hover:text-primary-hover">
                 {faq.question}
                 <Plus
                   aria-hidden="true"
-                  className="size-5 shrink-0 text-lantern transition-transform duration-300 group-data-[state=open]:rotate-45"
+                  className="size-5 shrink-0 text-primary transition-transform duration-base group-data-[state=open]:rotate-45"
                 />
               </Accordion.Trigger>
             </h3>
@@ -23,7 +23,7 @@ export function FaqList({ faqs }: { faqs: readonly Faq[] }) {
           {/* forceMount keeps answers in the static HTML (indexable, find-in-page); closed ones are `hidden`. */}
           <Accordion.Content
             forceMount
-            className="overflow-hidden text-muted data-[state=closed]:hidden data-[state=closed]:animate-[collapse_0.25s_ease] data-[state=open]:animate-[expand_0.3s_ease]"
+            className="overflow-hidden text-muted data-[state=closed]:hidden data-[state=open]:animate-expand"
           >
             <p className="max-w-prose pb-5">{faq.answer}</p>
           </Accordion.Content>

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { photos } from "@/content/photos";
-import { ratings, reviews } from "@/content/reviews";
+import { ratings, reviews, reviewsRetrievedAt } from "@/content/reviews";
 import { trips } from "@/content/trips";
 import { buildInquiryMessage } from "@/lib/inquiry";
 import { formatReviewDate, ratingProblems, reviewProblems } from "@/lib/reviews";
@@ -11,6 +11,18 @@ describe("reviews", () => {
   it("every pasted review is complete and links to its platform", () => {
     for (const review of reviews) {
       expect(reviewProblems(review), review.reviewer).toEqual([]);
+    }
+  });
+
+  it("has a valid retrieval date once data is pasted in", () => {
+    if (ratings.length || reviews.length) expect(reviewsRetrievedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    if (reviewsRetrievedAt) expect(reviewsRetrievedAt <= toIsoDate(new Date())).toBe(true);
+  });
+
+  it("rating breakdowns never exceed the review count", () => {
+    for (const rating of ratings) {
+      const total = Object.values(rating.distribution ?? {}).reduce((a, b) => a + (b ?? 0), 0);
+      expect(total).toBeLessThanOrEqual(rating.count);
     }
   });
 

@@ -1,54 +1,163 @@
 @import "tailwindcss";
 
 /*
- * Nagi of Mekong — design tokens.
- * Palette is drawn from the original logo (vermilion field, maroon script) and the river itself.
- * Every text/background pairing used in the UI meets WCAG AA; see docs/03-design-system.md.
+ * Nagi of Mekong — design tokens. The ONLY place design values live.
+ *
+ * Palette: derived solely from the flag of Laos — blue #002868, white #FFFFFF, red #CE1126.
+ * Tints are those colours mixed with white (percentages in the comments); hover states mix
+ * flag colours with each other. Every text/background pairing used is checked by
+ * `npm run test:contrast` (scripts/check-contrast.mjs) and listed in docs/03-design-system.md.
+ *
+ * Components use these tokens through Tailwind utilities (bg-surface-tint, text-heading,
+ * rounded-md, shadow-sm, duration-base, grid-cols-sidebar…), never raw values.
  */
 @theme {
-  /* Colour */
-  --color-ink: #2a1215; /* body text, maroon-black from the logo script */
-  --color-maroon: #5b1e22; /* headings on light, dark surfaces */
-  --color-vermilion: #e2412b; /* logo red — decoration & large display only */
-  --color-lantern: #b5301c; /* actions & links: 6.2:1 with white, 5.4:1 on sand */
-  --color-lantern-dark: #932512; /* hover/pressed */
-  --color-sand: #f6eee3; /* page background */
-  --color-paper: #fffbf5; /* cards, raised surfaces */
-  --color-silt: #e7d9c6; /* borders, dividers */
-  --color-muted: #6b5a55; /* secondary text: 5.7:1 on sand */
-  --color-river: #173f3b; /* deep river green — dark sections */
-  --color-river-mist: #dce8e3; /* text & fills on river */
-  --color-gold: #e3b05c; /* accents on dark surfaces only */
+  /* ── Colour ─────────────────────────────────────────────── */
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
 
-  /* Type */
-  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
-  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  /* Flag */
+  --color-flag-blue: #002868;
+  --color-flag-red: #ce1126;
+  --color-flag-white: #ffffff;
 
-  /* Fluid type scale (1.25 ratio at mobile → ~1.333 at desktop) */
-  --text-display: clamp(2.5rem, 1.6rem + 4.2vw, 4.75rem);
-  --text-display--line-height: 1.02;
+  /* Surfaces */
+  --color-canvas: #ffffff; /* page background (white dominant) */
+  --color-surface: #ffffff; /* cards, menus, dialogs */
+  --color-surface-subtle: #f7f9fa; /* blue 3% — alternate section band */
+  --color-surface-tint: #ebeef3; /* blue 8% — secondary surfaces, chips, placeholders */
+  --color-line: #e0e5ed; /* blue 12% — dividers and card borders */
+  --color-line-strong: #c2cbdb; /* blue 24% — emphasised dividers (decorative) */
+  --color-control: #8094b4; /* blue 50% — form control borders (3.1:1, WCAG 1.4.11) */
+
+  /* Text */
+  --color-heading: #002868; /* flag blue */
+  --color-ink: #193d77; /* blue 90% — body text */
+  --color-muted: #4d6995; /* blue 70% — secondary text */
+
+  /* Actions */
+  --color-primary: #002868; /* flag blue — primary actions, links, key surfaces */
+  --color-primary-hover: #193d77; /* blue 90% */
+  --color-on-primary: #ffffff;
+  --color-on-primary-muted: #ccd4e1; /* white 80% + blue — secondary text on blue */
+  --color-accent: #ce1126; /* flag red — main CTA and small accents only */
+  --color-accent-hover: #a51633; /* red 80% + blue 20% */
+  --color-accent-soft: #fbecee; /* red 8% — badge backgrounds */
+  --color-on-accent: #ffffff;
+  --color-focus: #002868;
+  --color-focus-inverse: #ffffff;
+
+  /* Third-party brand marks (official logo colours, used only inside those logos) */
+  --color-brand-tripadvisor: #002b11;
+  --color-brand-viator: #008768;
+
+  /* ── Typography ─────────────────────────────────────────── */
+  --font-*: initial;
+  --font-display: var(--font-poppins), system-ui, sans-serif; /* Poppins Bold only */
+  --font-sans: var(--font-source-sans), system-ui, sans-serif; /* Source Sans 3 Regular only */
+
+  --font-weight-*: initial;
+  --font-weight-regular: 400;
+  --font-weight-bold: 700;
+
+  --text-*: initial;
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.45;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.5;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.65;
+  --text-lg: 1.1875rem;
+  --text-lg--line-height: 1.55;
+  --text-xl: 1.375rem;
+  --text-xl--line-height: 1.35;
+  --text-2xl: 1.625rem;
+  --text-2xl--line-height: 1.25;
+  --text-3xl: 2rem;
+  --text-3xl--line-height: 1.2;
+  --text-display: clamp(2.125rem, 1.55rem + 2.9vw, 3.75rem);
+  --text-display--line-height: 1.08;
   --text-display--letter-spacing: -0.02em;
-  --text-h1: clamp(2.125rem, 1.6rem + 2.4vw, 3.5rem);
-  --text-h1--line-height: 1.08;
+  --text-h1: clamp(1.875rem, 1.5rem + 1.9vw, 3rem);
+  --text-h1--line-height: 1.12;
   --text-h1--letter-spacing: -0.015em;
-  --text-h2: clamp(1.75rem, 1.4rem + 1.5vw, 2.625rem);
-  --text-h2--line-height: 1.12;
+  --text-h2: clamp(1.5rem, 1.28rem + 1.1vw, 2.25rem);
+  --text-h2--line-height: 1.18;
   --text-h2--letter-spacing: -0.01em;
-  --text-h3: clamp(1.25rem, 1.12rem + 0.55vw, 1.625rem);
-  --text-h3--line-height: 1.25;
-  --text-lead: clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem);
+  --text-h3: clamp(1.1875rem, 1.12rem + 0.35vw, 1.375rem);
+  --text-h3--line-height: 1.3;
+  --text-lead: clamp(1.125rem, 1.08rem + 0.25vw, 1.25rem);
   --text-lead--line-height: 1.6;
+  --text-eyebrow: 0.8125rem;
+  --text-eyebrow--line-height: 1.4;
+  --text-eyebrow--letter-spacing: 0.08em;
+  --text-micro: 0.6875rem;
+  --text-micro--line-height: 1.4;
 
-  /* Shape & depth */
-  --radius-card: 1.25rem;
-  --radius-control: 0.75rem;
-  --shadow-card: 0 1px 2px rgb(42 18 21 / 0.06), 0 8px 24px -12px rgb(42 18 21 / 0.18);
-  --shadow-raised: 0 2px 4px rgb(42 18 21 / 0.06), 0 24px 48px -24px rgb(42 18 21 / 0.32);
+  --tracking-*: initial;
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0;
+  --tracking-label: 0.04em;
+  --tracking-eyebrow: 0.08em;
 
-  /* Motion */
-  --ease-river: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --leading-*: initial;
+  --leading-none: 1;
+  --leading-tight: 1.2;
+  --leading-snug: 1.4;
+  --leading-normal: 1.65;
 
-  --animate-draw: draw 2.4s var(--ease-river) 0.2s both;
+  /* ── Space & layout ─────────────────────────────────────── */
+  --spacing: 0.25rem; /* base unit: p-4 = 1rem */
+  --spacing-gutter: 1rem;
+  --spacing-section: clamp(4rem, 2.8rem + 5vw, 6.5rem);
+  --spacing-header: 4.5rem; /* header height, used for anchor offsets */
+
+  --container-menu: 42rem;
+  --container-note: 18rem;
+  --container-fact: 12rem;
+  --container-mark: 28rem;
+
+  --grid-template-columns-hero: 1.05fr 1fr;
+  --grid-template-columns-intro: 0.8fr 1.2fr; /* heading left, content right */
+  --grid-template-columns-sidebar: minmax(0, 1fr) 22rem; /* content + booking block */
+  --grid-template-columns-toc: 16rem minmax(0, 1fr);
+  --grid-template-columns-media: 1.15fr 1fr;
+  --grid-template-columns-cta: 1.3fr 1fr;
+  --grid-template-columns-compare: 1fr 1.25fr;
+  --grid-template-columns-icon: auto 1fr;
+  --grid-template-columns-label: 7rem 1fr;
+  --grid-template-columns-price: 1fr auto;
+  --grid-template-columns-summary: 18rem minmax(0, 1fr); /* rating summary + review list */
+
+  /* ── Shape & depth ──────────────────────────────────────── */
+  --radius-*: initial;
+  --radius-xs: 2px; /* chips, badges, checkboxes */
+  --radius-sm: 4px; /* buttons, inputs, menu items */
+  --radius-md: 6px; /* cards, panels, images */
+
+  --shadow-*: initial;
+  --shadow-sm: 0 1px 2px rgb(0 40 104 / 0.05), 0 1px 3px rgb(0 40 104 / 0.04);
+  --shadow-md: 0 2px 4px rgb(0 40 104 / 0.04), 0 8px 24px rgb(0 40 104 / 0.07);
+  --shadow-lg: 0 4px 8px rgb(0 40 104 / 0.05), 0 16px 40px rgb(0 40 104 / 0.1);
+  --shadow-ring: inset 0 0 0 1px var(--color-primary);
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+
+  /* ── Motion ─────────────────────────────────────────────── */
+  --ease-*: initial;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-linear: linear;
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-page: 220ms; /* route fade */
+  --duration-slow: 2400ms; /* the river drawing itself */
+
+  --animate-*: initial;
+  --animate-draw: draw var(--duration-slow) var(--ease-out) 0.2s both;
+  --animate-rise: rise var(--duration-base) var(--ease-out) both;
+  --animate-expand: expand var(--duration-base) var(--ease-standard);
   @keyframes draw {
     from {
       stroke-dashoffset: 1;
@@ -57,43 +166,88 @@
       stroke-dashoffset: 0;
     }
   }
-  --animate-rise: rise 0.7s var(--ease-river) both;
   @keyframes rise {
     from {
       opacity: 0;
-      transform: translateY(12px);
+      transform: translateY(4px);
     }
     to {
       opacity: 1;
       transform: none;
     }
   }
+  @keyframes expand {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+}
+
+/* Motion durations as utilities (Tailwind has no duration namespace). */
+@utility duration-fast {
+  transition-duration: var(--duration-fast);
+}
+@utility duration-base {
+  transition-duration: var(--duration-base);
+}
+
+/* Marks a dark (blue) surface: focus rings switch to white inside it. */
+@utility inverse {
+  --focus-ring: var(--color-focus-inverse);
 }
 
 @layer base {
   :root {
     color-scheme: light;
+    /* Only `main` takes part in page transitions; header and footer stay put. */
+    view-transition-name: none;
+  }
+
+  * {
+    /* Only two faces exist: never fake a bold or an italic. */
+    font-synthesis: none;
   }
 
   html {
     -webkit-text-size-adjust: 100%;
-    scroll-padding-top: 6rem;
+    scroll-padding-top: calc(var(--spacing-header) + var(--spacing) * 4);
   }
 
   body {
-    @apply bg-sand font-sans text-ink antialiased;
-    font-size: 1.0625rem;
-    line-height: 1.65;
-    text-rendering: optimizeLegibility;
+    @apply bg-canvas font-sans text-base font-regular text-ink antialiased;
   }
 
   h1,
   h2,
   h3,
-  h4 {
-    @apply font-display text-maroon;
-    font-optical-sizing: auto;
+  h4,
+  h5,
+  h6 {
+    @apply font-display font-bold text-heading;
     text-wrap: balance;
+  }
+
+  /* Hierarchy comes from size, colour and spacing — not from extra weights or italics. */
+  strong,
+  b,
+  th,
+  dt {
+    font-weight: var(--font-weight-regular);
+  }
+  strong,
+  b {
+    color: var(--color-heading);
+  }
+  em,
+  i,
+  cite,
+  address,
+  dfn,
+  var {
+    font-style: normal;
   }
 
   p,
@@ -103,15 +257,17 @@
   }
 
   ::selection {
-    @apply bg-vermilion text-white;
+    @apply bg-primary text-on-primary;
   }
 
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-lantern;
+    outline: 2px solid var(--focus-ring, var(--color-focus));
+    outline-offset: 2px;
   }
 
   @media (prefers-reduced-motion: no-preference) {
     html {
+      /* In-page anchors glide; route changes reset scroll instantly (see PageTransition). */
       scroll-behavior: smooth;
     }
   }
@@ -128,7 +284,7 @@
 }
 
 @layer components {
-  /* Long-form copy (privacy, trip notes) */
+  /* Long-form copy (privacy, guide) */
   .prose-river {
     @apply max-w-prose space-y-4 text-ink;
   }
@@ -136,27 +292,73 @@
     @apply mt-10 text-h3;
   }
   .prose-river ul {
-    @apply list-disc space-y-1 pl-5 marker:text-vermilion;
+    @apply list-disc space-y-1 pl-5 marker:text-accent;
   }
   .prose-river a {
-    @apply font-medium text-lantern underline decoration-1 underline-offset-4 hover:decoration-2;
+    @apply text-primary underline decoration-1 underline-offset-4 hover:decoration-2;
   }
 }
 
-/* Radix Accordion height animation */
-@keyframes expand {
-  from {
-    height: 0;
-  }
+/* ── Page transitions (React <ViewTransition> in src/app/template.tsx) ───────── */
+::view-transition {
+  pointer-events: none;
+}
+/* The header is anchored: it never fades or moves between pages. */
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 1;
+}
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
+::view-transition-old(.page) {
+  animation: page-fade-out var(--duration-page) var(--ease-standard) both;
+}
+::view-transition-new(.page) {
+  animation: page-fade-in var(--duration-page) var(--ease-standard) both;
+}
+@keyframes page-fade-out {
   to {
-    height: var(--radix-accordion-content-height);
+    opacity: 0;
   }
 }
-@keyframes collapse {
+@keyframes page-fade-in {
   from {
-    height: var(--radix-accordion-content-height);
+    opacity: 0;
   }
-  to {
-    height: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
   }
+}
+
+/* SVG labels drawn over the map keep a canvas-coloured halo for legibility. */
+@utility halo {
+  paint-order: stroke;
+  stroke-linejoin: round;
+}
+
+@layer base {
+  /* Code samples (placeholders) use the body font too: two fonts, no exceptions. */
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: inherit;
+    font-size: inherit;
+  }
+}
+
+/* Size changes (navigation menu viewport). */
+@utility transition-size {
+  transition-property: width, height;
+  transition-duration: var(--duration-base);
+  transition-timing-function: var(--ease-standard);
 }

@@ -19,7 +19,12 @@ migrated and the issues to confirm with the owner.
 ## Stack
 
 Next.js 16 (App Router, static export) · React 19 · TypeScript (strict) · Tailwind CSS 4 ·
-Radix UI primitives · lucide icons · self-hosted Fraunces + Figtree · Vitest · axe-core.
+Radix UI primitives · lucide icons · self-hosted Poppins Bold + Source Sans 3 Regular ·
+GSAP (hero text loop only, lazy-loaded) · Vitest · axe-core.
+
+All design values (colour, type, spacing, radius, shadow, motion) are tokens in
+`src/app/globals.css`; see [`docs/03-design-system.md`](docs/03-design-system.md). The palette
+comes only from the flag of Laos.
 
 No server, database or third-party scripts. `npm run build` produces plain HTML/CSS/JS in
 `out/` that can be hosted anywhere.
@@ -29,7 +34,9 @@ No server, database or third-party scripts. `npm run build` produces plain HTML/
 ```bash
 npm install
 npm run dev          # http://localhost:3000
-npm run check        # typecheck + lint + format + unit tests + build
+npm run check        # typecheck + lint + format + token guard + contrast + unit tests + build
+npm run test:tokens  # fails on hard-coded design values in components
+npm run test:contrast # WCAG AA check of every colour pairing in the token layer
 npm run test:a11y    # after a build: axe-core on every page, mobile + desktop
 SCREENSHOTS=1 npm run test:a11y   # also writes ./screenshots/*.png
 ```
@@ -65,8 +72,10 @@ Tripadvisor and Viator block automated access, so they are pasted by hand:
 
 1. Open the [Tripadvisor](https://www.tripadvisor.fr/Attraction_Review-g737155-d15773080-Reviews-Nagi_of_Mekong_Cruise-Huay_Xai_Bokeo_Province.html)
    and [Viator](https://www.viator.com/tours/Northern-Thailand/Nagi-of-Mekong-cruise/d22518-223302P2) pages.
-2. In `src/content/reviews.ts`, add one entry to `ratings` per platform: the average
-   rating, the number of reviews and today's date (`asOf`).
+2. In `src/content/reviews.ts`, set `reviewsRetrievedAt` to today's date and add one entry
+   to `ratings` per platform: the average rating, the number of reviews and the date
+   (`asOf`). Optionally add `distribution` (number of 5★, 4★… reviews) to show the
+   Tripadvisor-style breakdown bars.
 3. Add 4 reviews to `reviews`: 3 with `placement: "offer"` (cards next to the prices) and
    1 short one with `placement: "booking"` (next to the booking form). Copy the text,
    reviewer name, date and star rating exactly, and the link to the review (or the listing).
@@ -76,6 +85,16 @@ Tripadvisor and Viator block automated access, so they are pasted by hand:
 
 The reviews are deliberately **not** marked up as structured data: Google doesn't allow
 review stars for reviews collected on other sites.
+
+Source badges use the official Tripadvisor and Viator logos
+(`src/components/reviews/platform-logo.tsx`).
+
+## Hero text loop
+
+The moving ribbon in the hero is React Bits' Text Loop (`src/components/effects/text-loop.tsx`,
+licence in `REACT-BITS-LICENSE.md` next to it). Change its phrase in `src/content/site.ts`
+(`loopPhrase`). It pauses on hover/focus, has a pause button, and doesn't move for visitors
+who prefer reduced motion.
 
 ## Photos
 

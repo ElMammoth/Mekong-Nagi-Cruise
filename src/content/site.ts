@@ -34,6 +34,9 @@ export const site = {
     { value: "3", label: "downstream departures a week" },
   ],
 
+  /** Short phrase looped in the hero ribbon (complements the h1, never replaces it). */
+  loopPhrase: "Door to door on the Mekong",
+
   /** Name of the core offer (docs/04-offer-brief.md §4). */
   offerName: "The two-day Mekong cruise, door to door",
 

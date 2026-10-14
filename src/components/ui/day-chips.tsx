@@ -20,8 +20,8 @@ export function DayChips({
           key={d}
           aria-hidden="true"
           className={cn(
-            "rounded-full px-2.5 py-0.5 text-sm font-semibold",
-            tone === "dark" ? "bg-river-mist/15 text-sand" : "bg-vermilion/10 text-lantern",
+            "rounded-xs px-2 py-0.5 text-sm",
+            tone === "dark" ? "bg-primary-hover text-on-primary" : "bg-surface-tint text-primary",
           )}
         >
           {weekdayName(d, "short")}

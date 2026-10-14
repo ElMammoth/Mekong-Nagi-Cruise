@@ -35,18 +35,23 @@ export function NextSteps({
           <span
             aria-hidden="true"
             className={cn(
-              "grid size-10 shrink-0 place-items-center rounded-full",
-              tone === "dark" ? "bg-sand/10 text-gold" : "bg-vermilion/10 text-lantern",
+              "grid size-10 shrink-0 place-items-center rounded-sm",
+              tone === "dark" ? "bg-primary-hover text-on-primary" : "bg-surface-tint text-primary",
             )}
           >
             <Icon className="size-5" />
           </span>
           <div>
-            <p className={cn("font-semibold", tone === "dark" ? "text-sand" : "text-ink")}>
+            <p
+              className={cn(
+                "font-display text-sm",
+                tone === "dark" ? "text-on-primary" : "text-heading",
+              )}
+            >
               <span className="sr-only">Step {i + 1}: </span>
               {title}
             </p>
-            <p className={cn("text-sm", tone === "dark" ? "text-river-mist" : "text-muted")}>
+            <p className={cn("text-sm", tone === "dark" ? "text-on-primary-muted" : "text-muted")}>
               {text}
             </p>
           </div>

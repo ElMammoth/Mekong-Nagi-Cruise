@@ -22,8 +22,8 @@ export function Eyebrow({
   return (
     <p
       className={cn(
-        "mb-3 text-sm font-semibold tracking-[0.14em] uppercase",
-        tone === "dark" ? "text-gold" : "text-lantern",
+        "mb-3 font-display text-eyebrow uppercase",
+        tone === "dark" ? "text-on-primary-muted" : "text-muted",
       )}
     >
       {children}
@@ -46,12 +46,17 @@ export function SectionHeading({
       {eyebrow ? <Eyebrow tone={tone}>{eyebrow}</Eyebrow> : null}
       <Heading
         id={id}
-        className={cn(Heading === "h1" ? "text-h1" : "text-h2", tone === "dark" && "text-sand")}
+        className={cn(
+          Heading === "h1" ? "text-h1" : "text-h2",
+          tone === "dark" && "text-on-primary",
+        )}
       >
         {title}
       </Heading>
       {intro ? (
-        <div className={cn("mt-4 text-lead", tone === "dark" ? "text-river-mist" : "text-muted")}>
+        <div
+          className={cn("mt-4 text-lead", tone === "dark" ? "text-on-primary-muted" : "text-muted")}
+        >
           {intro}
         </div>
       ) : null}

@@ -6,9 +6,9 @@ export function Itinerary({ days }: { days: readonly ItineraryDay[] }) {
   return (
     <ol className="space-y-10">
       {days.map((day) => (
-        <li key={day.label} className="grid gap-4 sm:grid-cols-[7rem_1fr] sm:gap-8">
+        <li key={day.label} className="grid gap-4 sm:grid-cols-label sm:gap-8">
           <div>
-            <span className="inline-flex rounded-full bg-river px-3 py-1 text-sm font-semibold text-sand">
+            <span className="inline-flex rounded-xs bg-primary px-2.5 py-1 font-display text-sm text-on-primary">
               {day.label}
             </span>
           </div>
@@ -21,21 +21,21 @@ export function Itinerary({ days }: { days: readonly ItineraryDay[] }) {
                 {day.meals}
               </p>
             ) : null}
-            <ol className="relative mt-5 space-y-5 border-l-2 border-river/25 pl-6">
+            <ol className="relative mt-5 space-y-5 border-l-2 border-line-strong pl-6">
               {day.stops.map((stop) => (
                 <li key={stop.title} className="relative">
                   <span
                     aria-hidden="true"
-                    className="absolute top-1.5 -left-[calc(1.5rem+7px)] size-3 rounded-full border-2 border-sand bg-vermilion"
+                    className="absolute top-2 -left-7 size-2.5 rounded-xs bg-accent"
                   />
-                  <p className="font-semibold text-maroon">{stop.title}</p>
+                  <p className="font-display text-base text-heading">{stop.title}</p>
                   {stop.text ? <p className="mt-0.5 text-muted">{stop.text}</p> : null}
                 </li>
               ))}
             </ol>
             {day.note ? (
-              <p className="mt-5 flex gap-2 rounded-xl bg-gold/20 p-4 text-sm text-ink">
-                <Info aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-lantern" />
+              <p className="mt-5 flex gap-2 rounded-sm bg-surface-tint p-4 text-sm text-ink">
+                <Info aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-primary" />
                 {day.note}
               </p>
             ) : null}

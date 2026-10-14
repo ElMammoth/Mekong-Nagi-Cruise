@@ -17,15 +17,18 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:a11y": "node scripts/a11y-check.mjs",
-    "check": "npm run typecheck && npm run lint && npm run format:check && npm run test && npm run build"
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm run test:tokens && npm run test:contrast && npm run test && npm run build",
+    "test:tokens": "node scripts/check-tokens.mjs",
+    "test:contrast": "node scripts/check-contrast.mjs"
   },
   "engines": {
     "node": ">=20.9"
   },
   "dependencies": {
-    "@fontsource-variable/figtree": "^5.3.0",
-    "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource/poppins": "^5.3.0",
+    "@fontsource/source-sans-3": "^5.3.1",
     "clsx": "^2.1.1",
+    "gsap": "^3.15.0",
     "lucide-react": "^1.57.0",
     "next": "^16.4.0",
     "radix-ui": "^1.8.1",

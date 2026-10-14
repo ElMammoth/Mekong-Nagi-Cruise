@@ -16,6 +16,12 @@ import type { RatingSnapshot, Review, ReviewPlatform } from "./types";
  * reviews collected on other sites.
  */
 
+/**
+ * Date the reviews and ratings below were last copied from the platforms (ISO "YYYY-MM-DD").
+ * `null` until real data is pasted in; shown on the site next to the reviews.
+ */
+export const reviewsRetrievedAt: string | null = null;
+
 export const reviewPlatforms: Record<ReviewPlatform, { name: string; listingUrl: string }> = {
   tripadvisor: {
     name: "Tripadvisor",

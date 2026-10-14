@@ -3,3 +3,4 @@ out
 node_modules
 package-lock.json
 public
+src/components/effects/REACT-BITS-LICENSE.md

@@ -26,6 +26,7 @@ import { availableOptions } from "@/lib/departures";
 import { pageMetadata } from "@/lib/metadata";
 import { formatAmount, fromPriceUSD } from "@/lib/money";
 import { tripJsonLd } from "@/lib/structured-data";
+import { cn } from "@/lib/cn";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -71,11 +72,11 @@ export default async function TripPage({ params }: Props) {
         <RatingSummary className="mt-6" />
       </PageHeader>
 
-      <Container className="grid gap-14 py-14 sm:py-20 lg:grid-cols-[1fr_21rem] lg:gap-16">
+      <Container className="grid gap-14 py-14 sm:py-20 lg:grid-cols-sidebar lg:gap-16">
         <div className="min-w-0 space-y-20">
           {/* Key facts */}
           <section aria-label="Key facts">
-            <dl className="grid gap-6 rounded-card border border-silt bg-paper p-6 sm:grid-cols-3">
+            <dl className="grid gap-6 rounded-md border border-line bg-surface p-6 sm:grid-cols-3">
               <Fact icon={<Clock className="size-5" />} term="Duration">
                 {trip.duration}
               </Fact>
@@ -133,7 +134,7 @@ export default async function TripPage({ params }: Props) {
                   <li key={item} className="flex gap-3">
                     <span
                       aria-hidden="true"
-                      className="mt-2.5 size-2 shrink-0 rounded-full bg-vermilion"
+                      className="mt-2.5 size-2 shrink-0 rounded-sm bg-accent"
                     />
                     {item}
                   </li>
@@ -145,27 +146,28 @@ export default async function TripPage({ params }: Props) {
 
         {/* Sticky summary (desktop) */}
         <aside aria-label="Book this trip" className="hidden lg:block">
-          <div className="sticky top-24 rounded-card border border-silt bg-paper p-6 shadow-card">
+          <div className="sticky top-24 rounded-md border border-line bg-surface p-6 shadow-sm">
             {from ? (
               <p>
-                <span className="block text-xs font-semibold tracking-[0.12em] text-muted uppercase">
-                  From
-                </span>
-                <span className="font-display text-4xl font-semibold text-maroon">
+                <span className="block font-display text-eyebrow text-muted uppercase">From</span>
+                <span className="font-display text-3xl text-heading">
                   {formatAmount(from, "USD")}
                 </span>
                 <span className="text-muted"> / person</span>
               </p>
             ) : (
-              <p className="font-display text-2xl font-semibold text-maroon">Price on request</p>
+              <p className="font-display text-2xl text-heading">Price on request</p>
             )}
-            <p className="mt-4 text-sm font-semibold text-muted">{trip.departures.label}</p>
+            <p className="mt-4 text-sm text-muted">{trip.departures.label}</p>
             <DayChips days={trip.departures.weekdays} className="mt-1.5" />
             <NextSailings weekdays={trip.departures.weekdays} className="mt-3" />
             {trip.departures.note ? (
               <p className="mt-2 text-sm text-muted">{trip.departures.note} Ask early.</p>
             ) : null}
-            <a href="#book" className={buttonClasses({ size: "lg" }) + " mt-6 w-full"}>
+            <a
+              href="#book"
+              className={cn(buttonClasses({ size: "lg", variant: "cta" }), "mt-6 w-full")}
+            >
               {bookingLabel}
             </a>
             <ButtonAnchor
@@ -182,14 +184,14 @@ export default async function TripPage({ params }: Props) {
       </Container>
 
       {/* Proof right before the price (docs/04-offer-brief.md §6) */}
-      <div className="border-t border-silt bg-paper/60 py-16 sm:py-24">
+      <div className="border-t border-line bg-surface-subtle py-section">
         <Container>
           <ReviewsSection id="trip-reviews-title" />
         </Container>
       </div>
 
       {hasPackages ? (
-        <section aria-labelledby="prices-title" className="border-t border-silt py-16 sm:py-24">
+        <section aria-labelledby="prices-title" className="border-t border-line py-section">
           <Container>
             <SectionHeading
               id="prices-title"
@@ -209,7 +211,7 @@ export default async function TripPage({ params }: Props) {
       <section
         id="book"
         aria-labelledby="book-title"
-        className="scroll-mt-20 border-t border-silt bg-paper/60 py-16 sm:py-24"
+        className="border-t border-line bg-surface-subtle py-section"
       >
         <Container>
           <SectionHeading
@@ -220,7 +222,7 @@ export default async function TripPage({ params }: Props) {
           />
           <NextSteps
             dayOne={firstStop ? `${firstStop} on day one` : undefined}
-            className="mt-10 rounded-card border border-silt bg-paper p-6"
+            className="mt-10 rounded-md border border-line bg-surface p-6"
           />
           <div className="mt-12">
             <BookingForm
@@ -234,7 +236,7 @@ export default async function TripPage({ params }: Props) {
       </section>
 
       {/* Other journeys */}
-      <section aria-labelledby="more-title" className="pt-16 sm:pt-24">
+      <section aria-labelledby="more-title" className="pt-section">
         <Container>
           <SectionHeading id="more-title" eyebrow="More ways to travel" title="Other journeys" />
           <ul className="mt-10 grid gap-6 lg:grid-cols-3">
@@ -250,22 +252,22 @@ export default async function TripPage({ params }: Props) {
       <CtaBand href="#book" showReview={false} />
 
       {/* Mobile booking bar */}
-      <div className="sticky bottom-0 z-30 border-t border-silt bg-paper/95 backdrop-blur lg:hidden">
+      <div className="sticky bottom-0 z-30 border-t border-line bg-surface shadow-md lg:hidden">
         <Container className="flex items-center justify-between gap-4 py-3">
           <p className="text-sm leading-tight">
             {from ? (
               <>
                 <span className="text-muted">From </span>
-                <span className="font-display text-xl font-semibold text-maroon">
+                <span className="font-display text-xl text-heading">
                   {formatAmount(from, "USD")}
                 </span>
                 <span className="text-muted"> / person</span>
               </>
             ) : (
-              <span className="font-semibold text-maroon">Price on request</span>
+              <span className="text-heading">Price on request</span>
             )}
           </p>
-          <a href="#book" className={buttonClasses()}>
+          <a href="#book" className={buttonClasses({ variant: "cta" })}>
             {bookingLabel}
           </a>
         </Container>
@@ -286,12 +288,12 @@ function Fact({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid grid-cols-[auto_1fr] gap-x-3">
-      <span aria-hidden="true" className="row-span-2 mt-0.5 text-lantern">
+    <div className="grid grid-cols-icon gap-x-3">
+      <span aria-hidden="true" className="row-span-2 mt-0.5 text-primary">
         {icon}
       </span>
-      <dt className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">{term}</dt>
-      <dd className="mt-1 font-semibold text-ink">{children}</dd>
+      <dt className="font-display text-eyebrow text-muted uppercase">{term}</dt>
+      <dd className="mt-1 text-ink">{children}</dd>
     </div>
   );
 }

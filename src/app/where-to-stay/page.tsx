@@ -57,7 +57,7 @@ export default function WhereToStayPage() {
         <section
           key={group.place}
           aria-labelledby={`stay-${group.place}`}
-          className="py-14 sm:py-20 [&+section]:border-t [&+section]:border-silt"
+          className="py-14 sm:py-20 [&+section]:border-t [&+section]:border-line"
         >
           <Container>
             <SectionHeading id={`stay-${group.place}`} title={group.title} intro={group.intro} />

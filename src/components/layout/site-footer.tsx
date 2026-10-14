@@ -1,28 +1,30 @@
 import Link from "next/link";
-import { Wordmark } from "@/components/brand/wordmark";
+import { BoatMark } from "@/components/brand/boat-mark";
 import { Container } from "@/components/ui/container";
+import { RouteLabel } from "@/components/ui/route-label";
 import { cruiseLinks, primaryLinks } from "@/content/navigation";
 import { site } from "@/content/site";
+
+const linkClass = "rounded-sm hover:text-on-primary hover:underline";
+const headingClass = "font-display text-eyebrow text-on-primary uppercase";
 
 export function SiteFooter() {
   const { contact } = site;
   return (
-    <footer className="bg-river text-river-mist">
+    <footer className="bg-primary text-on-primary-muted inverse">
       <Container className="grid gap-12 py-16 md:grid-cols-12">
         <div className="md:col-span-4">
-          <Wordmark tone="dark" />
+          <BoatMark title={site.name} className="h-8 w-auto text-on-primary" />
           <p className="mt-5 max-w-xs">{site.tagline}.</p>
         </div>
 
         <nav aria-label="Cruises" className="md:col-span-3">
-          <h2 className="font-sans text-sm font-semibold tracking-[0.14em] text-gold uppercase">
-            Cruises
-          </h2>
+          <h2 className={headingClass}>Cruises</h2>
           <ul className="mt-4 space-y-2">
             {cruiseLinks.map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className="hover:text-white hover:underline">
-                  {link.label}
+                <Link href={link.href} className={linkClass}>
+                  <RouteLabel text={link.label} />
                 </Link>
               </li>
             ))}
@@ -30,13 +32,11 @@ export function SiteFooter() {
         </nav>
 
         <nav aria-label="Footer" className="md:col-span-2">
-          <h2 className="font-sans text-sm font-semibold tracking-[0.14em] text-gold uppercase">
-            Visit
-          </h2>
+          <h2 className={headingClass}>Visit</h2>
           <ul className="mt-4 space-y-2">
             {primaryLinks.map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className="hover:text-white hover:underline">
+                <Link href={link.href} className={linkClass}>
                   {link.label}
                 </Link>
               </li>
@@ -45,20 +45,15 @@ export function SiteFooter() {
         </nav>
 
         <div className="md:col-span-3">
-          <h2 className="font-sans text-sm font-semibold tracking-[0.14em] text-gold uppercase">
-            Talk to us
-          </h2>
-          <address className="mt-4 space-y-2 not-italic">
+          <h2 className={headingClass}>Talk to us</h2>
+          <address className="mt-4 space-y-2">
             <p>
-              <a href={contact.whatsappHref} className="hover:text-white hover:underline">
+              <a href={contact.whatsappHref} className={linkClass}>
                 WhatsApp {contact.phoneDisplay}
               </a>
             </p>
             <p>
-              <a
-                href={`mailto:${contact.email}`}
-                className="break-all hover:text-white hover:underline"
-              >
+              <a href={`mailto:${contact.email}`} className={`${linkClass} break-all`}>
                 {contact.email}
               </a>
             </p>
@@ -70,12 +65,12 @@ export function SiteFooter() {
           </address>
         </div>
       </Container>
-      <div className="border-t border-river-mist/15">
+      <div className="border-t border-primary-hover">
         <Container className="flex flex-col gap-2 py-6 text-sm sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} {site.name}
           </p>
-          <Link href="/privacy/" className="hover:text-white hover:underline">
+          <Link href="/privacy/" className={linkClass}>
             Privacy
           </Link>
         </Container>

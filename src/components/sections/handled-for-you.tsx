@@ -19,24 +19,24 @@ export function HandledForYou({
   action?: ReactNode;
 }) {
   return (
-    <section aria-labelledby={id} className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+    <section aria-labelledby={id} className="grid gap-10 lg:grid-cols-intro lg:gap-16">
       <div>
         <SectionHeading id={id} eyebrow="Door to door" title={title} intro={intro} />
         {action ? <div className="mt-8">{action}</div> : null}
       </div>
-      <div className="rounded-card border border-silt bg-paper shadow-card">
+      <div className="rounded-md border border-line bg-surface shadow-sm">
         <div
           aria-hidden="true"
-          className="hidden grid-cols-[1fr_1.25fr] gap-6 border-b border-silt px-6 py-3 text-xs font-semibold tracking-[0.12em] text-muted uppercase sm:grid"
+          className="hidden grid-cols-compare gap-6 border-b border-line px-6 py-3 font-display text-eyebrow text-muted uppercase sm:grid"
         >
           <span>On your own, you’d sort out…</span>
           <span>With us</span>
         </div>
-        <ul className="divide-y divide-silt">
+        <ul className="divide-y divide-line">
           {site.handledForYou.map((item) => (
             <li
               key={item.task}
-              className="grid gap-1 px-6 py-4 sm:grid-cols-[1fr_1.25fr] sm:items-center sm:gap-6"
+              className="grid gap-1 px-6 py-4 sm:grid-cols-compare sm:items-center sm:gap-6"
             >
               <span className="flex items-center gap-2 text-muted">
                 <span className="sr-only">On your own: </span>
@@ -46,8 +46,8 @@ export function HandledForYou({
                   className="hidden size-4 shrink-0 sm:ml-auto sm:block"
                 />
               </span>
-              <span className="flex gap-2.5 font-semibold text-ink">
-                <Check aria-hidden="true" className="mt-1 size-4 shrink-0 text-lantern" />
+              <span className="flex gap-2.5 text-heading">
+                <Check aria-hidden="true" className="mt-1 size-4 shrink-0 text-primary" />
                 <span>
                   <span className="sr-only">Included: </span>
                   {item.handled}

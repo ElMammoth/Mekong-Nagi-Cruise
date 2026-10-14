@@ -1,33 +1,34 @@
 import localFont from "next/font/local";
 
-/* Self-hosted variable fonts (no third-party requests). Latin subset only. */
-export const fraunces = localFont({
+/*
+ * Two fonts, one weight each, self-hosted (no third-party request).
+ * `display: swap` keeps text visible while loading; next/font preloads the files and
+ * generates size-adjusted fallbacks, so the swap causes no layout shift.
+ */
+export const poppins = localFont({
   src: [
     {
-      path: "../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2",
+      path: "../../node_modules/@fontsource/poppins/files/poppins-latin-700-normal.woff2",
+      weight: "700",
       style: "normal",
-      weight: "100 900",
-    },
-    {
-      path: "../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-opsz-italic.woff2",
-      style: "italic",
-      weight: "100 900",
     },
   ],
-  variable: "--font-fraunces",
+  variable: "--font-poppins",
   display: "swap",
-  fallback: ["Georgia", "serif"],
+  preload: true,
+  fallback: ["system-ui", "sans-serif"],
 });
 
-export const figtree = localFont({
+export const sourceSans = localFont({
   src: [
     {
-      path: "../../node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2",
+      path: "../../node_modules/@fontsource/source-sans-3/files/source-sans-3-latin-400-normal.woff2",
+      weight: "400",
       style: "normal",
-      weight: "300 900",
     },
   ],
-  variable: "--font-figtree",
+  variable: "--font-source-sans",
   display: "swap",
+  preload: true,
   fallback: ["system-ui", "sans-serif"],
 });

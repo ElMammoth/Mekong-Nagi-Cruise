@@ -70,7 +70,7 @@ export default function RouteGuidePage() {
         crumbs={[{ href: path, label: "Route guide" }]}
       >
         <div className="mt-8 flex flex-wrap gap-3">
-          <ButtonLink href={downstreamBookingHref} size="lg">
+          <ButtonLink href={downstreamBookingHref} size="lg" variant="cta">
             {bookingLabel}
           </ButtonLink>
           <ButtonAnchor href={site.contact.whatsappHref} size="lg" variant="secondary">
@@ -80,15 +80,13 @@ export default function RouteGuidePage() {
         </div>
       </PageHeader>
 
-      <Container className="grid gap-12 py-14 sm:py-20 lg:grid-cols-[16rem_1fr] lg:gap-16">
+      <Container className="grid gap-12 py-14 sm:py-20 lg:grid-cols-toc lg:gap-16">
         <nav aria-label="On this page" className="lg:sticky lg:top-24 lg:self-start">
-          <p className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">
-            On this page
-          </p>
-          <ol className="mt-3 space-y-2 border-l border-silt pl-4 text-[0.9375rem]">
+          <p className="font-display text-eyebrow text-muted uppercase">On this page</p>
+          <ol className="mt-3 space-y-2 border-l border-line pl-4 text-sm">
             {toc.map((item) => (
               <li key={item.id}>
-                <a href={`#${item.id}`} className="text-ink hover:text-lantern hover:underline">
+                <a href={`#${item.id}`} className="text-ink hover:text-primary hover:underline">
                   {item.label}
                 </a>
               </li>
@@ -248,7 +246,7 @@ export default function RouteGuidePage() {
 
 function GuideSection({ id, title, children }: { id: string; title: string; children: ReactNode }) {
   return (
-    <section aria-labelledby={id} className="scroll-mt-24">
+    <section aria-labelledby={id}>
       <h2 id={id} className="text-h2">
         {title}
       </h2>

@@ -31,20 +31,26 @@ export function RouteMap({ className }: { className?: string }) {
           <g mask="url(#hill-mask)">
             <path
               d="M230 200 L320 96 L384 150 L452 72 L548 160 L640 108 V280 H230Z"
-              className="fill-river/12"
+              className="fill-surface-tint"
             />
             <path
               d="M290 230 L366 156 L428 206 L500 134 L584 210 L640 176 V290 H290Z"
-              className="fill-river/16"
+              className="fill-line"
             />
           </g>
-          <circle cx="566" cy="58" r="26" className="fill-gold/50" />
+          <circle
+            cx="566"
+            cy="58"
+            r="26"
+            className="fill-surface stroke-line-strong"
+            strokeWidth="2"
+          />
         </g>
 
         {/* River: wide soft bank + the drawn line */}
         <path
           d="M70 60 C110 100 50 140 100 175 S150 250 130 280 S220 340 300 330 C360 322 400 300 450 305 S540 300 570 240"
-          className="stroke-river-mist"
+          className="stroke-surface-tint"
           strokeWidth="26"
           strokeLinecap="round"
           fill="none"
@@ -53,15 +59,15 @@ export function RouteMap({ className }: { className?: string }) {
           d="M70 60 C110 100 50 140 100 175 S150 250 130 280 S220 340 300 330 C360 322 400 300 450 305 S540 300 570 240"
           pathLength={1}
           strokeDasharray="1"
-          className="animate-draw stroke-river"
+          className="animate-draw stroke-primary"
           strokeWidth="3"
           strokeLinecap="round"
           fill="none"
         />
 
         {/* Boat on day two */}
-        <g transform="translate(372 286) rotate(-6)" className="text-maroon" aria-hidden="true">
-          <BoatMark width="78" height="30" />
+        <g transform="translate(362 290) rotate(-6)" className="text-heading" aria-hidden="true">
+          <BoatMark width="100" height="16" strokeWidth="5" />
         </g>
 
         {/* Stops */}
@@ -92,19 +98,15 @@ function Stop({
 }) {
   return (
     <g>
-      <circle cx={x} cy={y} r="11" className="fill-paper stroke-lantern" strokeWidth="3" />
-      <circle cx={x} cy={y} r="4" className="fill-lantern" />
-      <text
-        x={x + dx}
-        y={y + dy}
-        className="fill-maroon stroke-sand [stroke-width:8px] text-[30px] font-semibold italic [paint-order:stroke] [stroke-linejoin:round]"
-      >
+      <circle cx={x} cy={y} r="11" className="fill-surface stroke-accent" strokeWidth="3" />
+      <circle cx={x} cy={y} r="4" className="fill-accent" />
+      <text x={x + dx} y={y + dy} className="fill-heading stroke-canvas stroke-8 text-3xl halo">
         {label}
       </text>
       <text
         x={x + dx}
         y={y + dy + 24}
-        className="fill-muted stroke-sand [stroke-width:6px] font-sans text-[17px] font-semibold tracking-[0.12em] uppercase [paint-order:stroke] [stroke-linejoin:round]"
+        className="fill-muted stroke-canvas stroke-6 font-sans text-base tracking-eyebrow uppercase halo"
       >
         {sub}
       </text>

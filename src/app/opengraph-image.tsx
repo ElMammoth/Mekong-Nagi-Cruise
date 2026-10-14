@@ -1,11 +1,19 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { ImageResponse } from "next/og";
+import { BoatMark } from "@/components/brand/boat-mark";
 import { site } from "@/content/site";
+import { token } from "@/lib/tokens";
 
 export const dynamic = "force-static";
 export const alt = "Nagi of Mekong: slow-boat cruises from Houay Xai to Luang Prabang";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+const font = (file: string) =>
+  readFileSync(path.join(process.cwd(), "node_modules/@fontsource", file));
+
+/** Social card, built from the same tokens and fonts as the site. */
 export default function OpengraphImage() {
   return new ImageResponse(
     <div
@@ -16,33 +24,33 @@ export default function OpengraphImage() {
         flexDirection: "column",
         justifyContent: "space-between",
         padding: 72,
-        background: "#f6eee3",
-        color: "#5b1e22",
-        fontFamily: "Georgia, serif",
+        background: token("color-canvas"),
+        color: token("color-heading"),
+        fontFamily: "Source Sans 3",
+        borderTop: `16px solid ${token("color-primary")}`,
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-        <div
-          style={{
-            width: 72,
-            height: 72,
-            borderRadius: 18,
-            background: "#e2412b",
-            display: "flex",
-          }}
-        />
-        <div style={{ fontSize: 40, fontStyle: "italic", fontWeight: 700 }}>{site.name}</div>
-      </div>
+      <BoatMark width={300} height={48} stroke={token("color-primary")} strokeWidth={4} />
       <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-        <div style={{ fontSize: 72, lineHeight: 1.05, fontWeight: 700, maxWidth: 980 }}>
-          Cruise the majestic Mekong in comfort and safety
+        <div style={{ fontFamily: "Poppins", fontSize: 68, lineHeight: 1.08, maxWidth: 1000 }}>
+          Houay Xai to Luang Prabang, in comfort and safety
         </div>
-        <div style={{ fontSize: 32, color: "#6b5a55" }}>
-          Houay Xai → Pak Beng → Luang Prabang · 2 days · from US$140
+        <div style={{ fontSize: 34, color: token("color-muted") }}>
+          {`${site.name} · 2 days on the Mekong · from US$140`}
         </div>
       </div>
-      <div style={{ display: "flex", height: 10, background: "#173f3b", borderRadius: 5 }} />
+      <div style={{ display: "flex", height: 8, width: 160, background: token("color-accent") }} />
     </div>,
-    size,
+    {
+      ...size,
+      fonts: [
+        { name: "Poppins", data: font("poppins/files/poppins-latin-700-normal.woff"), weight: 700 },
+        {
+          name: "Source Sans 3",
+          data: font("source-sans-3/files/source-sans-3-latin-400-normal.woff"),
+          weight: 400,
+        },
+      ],
+    },
   );
 }

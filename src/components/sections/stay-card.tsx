@@ -3,35 +3,32 @@ import type { Stay } from "@/content/types";
 
 export function StayCard({ stay, price }: { stay: Stay; price?: string }) {
   return (
-    <article className="flex h-full flex-col rounded-card border border-silt bg-paper p-6 shadow-card">
-      <p className="text-sm font-semibold tracking-[0.12em] text-lantern uppercase">
+    <article className="flex h-full flex-col rounded-md border border-line bg-surface p-6 shadow-sm">
+      <p className="font-display text-eyebrow text-primary uppercase">
         {stay.place} · {stay.tier}
       </p>
       <h3 className="mt-2 text-h3">{stay.name}</h3>
       <p className="mt-3 text-muted">{stay.description}</p>
-      <ul className="mt-4 space-y-1.5 text-[0.9375rem]">
+      <ul className="mt-4 space-y-1.5 text-sm">
         {stay.facts.map((fact) => (
           <li key={fact} className="flex gap-2">
-            <span
-              aria-hidden="true"
-              className="mt-2.5 size-1.5 shrink-0 rounded-full bg-vermilion"
-            />
+            <span aria-hidden="true" className="mt-2.5 size-1.5 shrink-0 rounded-xs bg-accent" />
             {fact}
           </li>
         ))}
       </ul>
       <div className="mt-auto space-y-2 pt-5">
         {price ? (
-          <p className="border-t border-silt pt-4 text-[0.9375rem]">
+          <p className="border-t border-line pt-4 text-sm">
             <span className="text-muted">Cruise package </span>
-            <span className="font-semibold text-maroon">{price}</span>
+            <span className="text-heading">{price}</span>
             <span className="text-muted"> per person</span>
           </p>
         ) : null}
         {stay.url ? (
           <a
             href={stay.url}
-            className="inline-flex items-center gap-1.5 font-semibold text-lantern hover:underline"
+            className="inline-flex items-center gap-1.5 text-primary hover:underline"
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -43,7 +40,7 @@ export function StayCard({ stay, price }: { stay: Stay; price?: string }) {
         {stay.contact ? (
           <a
             href={`mailto:${stay.contact}`}
-            className="inline-flex items-center gap-1.5 font-semibold break-all text-lantern hover:underline"
+            className="inline-flex items-center gap-1.5 break-all text-primary hover:underline"
           >
             <Mail aria-hidden="true" className="size-4 shrink-0" />
             {stay.contact}
