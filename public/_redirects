@@ -1,0 +1,17 @@
+# Old GoDaddy URLs → new pages (Netlify / Cloudflare Pages format; see README for other hosts)
+/home-%26-downstream-cruise     /cruises/downstream/                301
+/home-&-downstream-cruise       /cruises/downstream/                301
+/upstream-cruises               /cruises/upstream/                  301
+/pre-cruise-program             /cruises/chiang-mai-land-and-cruise/ 301
+/nan-luang-prabang-1            /cruises/nan-to-luang-prabang/      301
+/pleasure-%26-meeting-afloat    /private-charters/                  301
+/pleasure-&-meeting-afloat      /private-charters/                  301
+/homely-stay-in-houy-xai        /where-to-stay/                     301
+/combination-cruise-and         /cruises/upstream/                  301
+/combination-cruise-and/*       /                                   301
+/new-entry-procedures           /plan-your-trip/                    301
+/pak-beng-elephant-park         /                                   301
+/pak-beng-elepjant-park         /                                   301
+/photo-gallery                  /                                   301
+/privacy-policy                 /privacy/                           301
+/m/*                            /                                   301

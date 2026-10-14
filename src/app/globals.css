@@ -1,0 +1,162 @@
+@import "tailwindcss";
+
+/*
+ * Nagi of Mekong — design tokens.
+ * Palette is drawn from the original logo (vermilion field, maroon script) and the river itself.
+ * Every text/background pairing used in the UI meets WCAG AA; see docs/03-design-system.md.
+ */
+@theme {
+  /* Colour */
+  --color-ink: #2a1215; /* body text, maroon-black from the logo script */
+  --color-maroon: #5b1e22; /* headings on light, dark surfaces */
+  --color-vermilion: #e2412b; /* logo red — decoration & large display only */
+  --color-lantern: #b5301c; /* actions & links: 6.2:1 with white, 5.4:1 on sand */
+  --color-lantern-dark: #932512; /* hover/pressed */
+  --color-sand: #f6eee3; /* page background */
+  --color-paper: #fffbf5; /* cards, raised surfaces */
+  --color-silt: #e7d9c6; /* borders, dividers */
+  --color-muted: #6b5a55; /* secondary text: 5.7:1 on sand */
+  --color-river: #173f3b; /* deep river green — dark sections */
+  --color-river-mist: #dce8e3; /* text & fills on river */
+  --color-gold: #e3b05c; /* accents on dark surfaces only */
+
+  /* Type */
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+
+  /* Fluid type scale (1.25 ratio at mobile → ~1.333 at desktop) */
+  --text-display: clamp(2.5rem, 1.6rem + 4.2vw, 4.75rem);
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.02em;
+  --text-h1: clamp(2.125rem, 1.6rem + 2.4vw, 3.5rem);
+  --text-h1--line-height: 1.08;
+  --text-h1--letter-spacing: -0.015em;
+  --text-h2: clamp(1.75rem, 1.4rem + 1.5vw, 2.625rem);
+  --text-h2--line-height: 1.12;
+  --text-h2--letter-spacing: -0.01em;
+  --text-h3: clamp(1.25rem, 1.12rem + 0.55vw, 1.625rem);
+  --text-h3--line-height: 1.25;
+  --text-lead: clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem);
+  --text-lead--line-height: 1.6;
+
+  /* Shape & depth */
+  --radius-card: 1.25rem;
+  --radius-control: 0.75rem;
+  --shadow-card: 0 1px 2px rgb(42 18 21 / 0.06), 0 8px 24px -12px rgb(42 18 21 / 0.18);
+  --shadow-raised: 0 2px 4px rgb(42 18 21 / 0.06), 0 24px 48px -24px rgb(42 18 21 / 0.32);
+
+  /* Motion */
+  --ease-river: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  --animate-draw: draw 2.4s var(--ease-river) 0.2s both;
+  @keyframes draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  --animate-rise: rise 0.7s var(--ease-river) both;
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    @apply bg-sand font-sans text-ink antialiased;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display text-maroon;
+    font-optical-sizing: auto;
+    text-wrap: balance;
+  }
+
+  p,
+  li,
+  dd {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    @apply bg-vermilion text-white;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-lantern;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Long-form copy (privacy, trip notes) */
+  .prose-river {
+    @apply max-w-prose space-y-4 text-ink;
+  }
+  .prose-river h2 {
+    @apply mt-10 text-h3;
+  }
+  .prose-river ul {
+    @apply list-disc space-y-1 pl-5 marker:text-vermilion;
+  }
+  .prose-river a {
+    @apply font-medium text-lantern underline decoration-1 underline-offset-4 hover:decoration-2;
+  }
+}
+
+/* Radix Accordion height animation */
+@keyframes expand {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+@keyframes collapse {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
