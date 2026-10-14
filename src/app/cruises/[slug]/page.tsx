@@ -4,9 +4,14 @@ import { CalendarDays, Clock, MessageCircle, Users } from "lucide-react";
 import { RouteStrip } from "@/components/brand/route-strip";
 import { BookingForm } from "@/components/booking/booking-form";
 import { JsonLd } from "@/components/layout/json-ld";
+import { RatingSummary } from "@/components/reviews/rating-summary";
+import { BookingReview, ReviewsSection } from "@/components/reviews/reviews-section";
 import { CtaBand } from "@/components/sections/cta-band";
 import { Included } from "@/components/sections/included";
 import { Itinerary } from "@/components/sections/itinerary";
+import { NextSailings } from "@/components/sections/next-sailings";
+import { NextSteps } from "@/components/sections/next-steps";
+import { Packages } from "@/components/sections/packages";
 import { PageHeader } from "@/components/sections/page-header";
 import { PriceList } from "@/components/sections/price-list";
 import { TripCard } from "@/components/sections/trip-card";
@@ -14,9 +19,11 @@ import { ButtonAnchor, buttonClasses } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { DayChips } from "@/components/ui/day-chips";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { bookingLabel } from "@/content/navigation";
 import { site } from "@/content/site";
 import { getTrip, trips } from "@/content/trips";
 import { availableOptions } from "@/lib/departures";
+import { pageMetadata } from "@/lib/metadata";
 import { formatAmount, fromPriceUSD } from "@/lib/money";
 import { tripJsonLd } from "@/lib/structured-data";
 
@@ -33,13 +40,11 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const trip = getTrip((await params).slug);
   if (!trip) return {};
-  const path = `/cruises/${trip.slug}/`;
-  return {
+  return pageMetadata({
     title: trip.seo.title,
     description: trip.seo.description,
-    alternates: { canonical: path },
-    openGraph: { title: trip.seo.title, description: trip.seo.description, url: path },
-  };
+    path: `/cruises/${trip.slug}/`,
+  });
 }
 
 export default async function TripPage({ params }: Props) {
@@ -48,7 +53,10 @@ export default async function TripPage({ params }: Props) {
 
   const options = availableOptions(trip.options);
   const from = fromPriceUSD(options);
-  const others = trips.filter((t) => t.slug !== trip.slug).slice(0, 2);
+  const others = trips.filter((t) => t.slug !== trip.slug).slice(0, 3);
+  const firstStop = trip.itinerary[0]?.stops[0]?.title;
+  const short = trip.shortName.split(" · ")[1] ?? trip.name;
+  const hasPackages = Boolean(trip.packages?.length) && options.length > 0;
 
   return (
     <>
@@ -56,11 +64,11 @@ export default async function TripPage({ params }: Props) {
         eyebrow={trip.kind}
         title={trip.name}
         intro={trip.summary}
-        crumbs={[
-          { href: `/cruises/${trip.slug}/`, label: trip.shortName.split(" · ")[1] ?? trip.name },
-        ]}
+        crumbs={[{ href: `/cruises/${trip.slug}/`, label: short }]}
+        photo={trip.photo}
       >
         <RouteStrip stops={trip.route} className="mt-6" />
+        <RatingSummary className="mt-6" />
       </PageHeader>
 
       <Container className="grid gap-14 py-14 sm:py-20 lg:grid-cols-[1fr_21rem] lg:gap-16">
@@ -80,6 +88,18 @@ export default async function TripPage({ params }: Props) {
             </dl>
           </section>
 
+          <section aria-labelledby="included-title">
+            <SectionHeading
+              id="included-title"
+              eyebrow="Handled for you"
+              title="What’s included"
+              intro="Everything below is part of the price, so there’s nothing to organise on the way."
+            />
+            <div className="mt-8">
+              <Included included={trip.included} notIncluded={trip.notIncluded} />
+            </div>
+          </section>
+
           <section aria-labelledby="itinerary-title">
             <SectionHeading id="itinerary-title" eyebrow="Day by day" title="Itinerary" />
             <div className="mt-10">
@@ -87,27 +107,23 @@ export default async function TripPage({ params }: Props) {
             </div>
           </section>
 
-          <section aria-labelledby="prices-title">
-            <SectionHeading
-              id="prices-title"
-              eyebrow="Prices"
-              title={options.length ? "Prices per person" : "Prices on request"}
-              intro={options.length ? undefined : trip.priceOnRequest}
-            />
-            {options.length ? (
-              <div className="mt-8">
-                <PriceList options={options} />
-                {trip.minimum ? <p className="mt-4 text-muted">{trip.minimum}</p> : null}
-              </div>
-            ) : null}
-          </section>
-
-          <section aria-labelledby="included-title">
-            <SectionHeading id="included-title" eyebrow="The details" title="What’s included" />
-            <div className="mt-8">
-              <Included included={trip.included} notIncluded={trip.notIncluded} />
-            </div>
-          </section>
+          {hasPackages ? null : (
+            <section aria-labelledby="prices-title">
+              <SectionHeading
+                id="prices-title"
+                eyebrow="Prices"
+                title={options.length ? "Prices per person" : "Prices on request"}
+                intro={options.length ? undefined : trip.priceOnRequest}
+              />
+              {options.length ? (
+                <div className="mt-8">
+                  <PriceList options={options} />
+                  {trip.minimum ? <p className="mt-4 text-muted">{trip.minimum}</p> : null}
+                  <NextSailings weekdays={trip.departures.weekdays} className="mt-6" />
+                </div>
+              ) : null}
+            </section>
+          )}
 
           {trip.goodToKnow.length ? (
             <section aria-labelledby="know-title">
@@ -145,8 +161,12 @@ export default async function TripPage({ params }: Props) {
             )}
             <p className="mt-4 text-sm font-semibold text-muted">{trip.departures.label}</p>
             <DayChips days={trip.departures.weekdays} className="mt-1.5" />
+            <NextSailings weekdays={trip.departures.weekdays} className="mt-3" />
+            {trip.departures.note ? (
+              <p className="mt-2 text-sm text-muted">{trip.departures.note} Ask early.</p>
+            ) : null}
             <a href="#book" className={buttonClasses({ size: "lg" }) + " mt-6 w-full"}>
-              Choose a date
+              {bookingLabel}
             </a>
             <ButtonAnchor
               href={site.contact.whatsappHref}
@@ -161,6 +181,30 @@ export default async function TripPage({ params }: Props) {
         </aside>
       </Container>
 
+      {/* Proof right before the price (docs/04-offer-brief.md §6) */}
+      <div className="border-t border-silt bg-paper/60 py-16 sm:py-24">
+        <Container>
+          <ReviewsSection id="trip-reviews-title" />
+        </Container>
+      </div>
+
+      {hasPackages ? (
+        <section aria-labelledby="prices-title" className="border-t border-silt py-16 sm:py-24">
+          <Container>
+            <SectionHeading
+              id="prices-title"
+              eyebrow="Prices per person"
+              title="Same boat, choose your night in Pak Beng"
+              intro="Every package includes the pick-up, the border help, both lunches, the stops and the transfers. What changes is where you sleep."
+            />
+            <div className="mt-14">
+              <Packages trip={trip} />
+            </div>
+            <NextSailings weekdays={trip.departures.weekdays} className="mt-8" />
+          </Container>
+        </section>
+      ) : null}
+
       {/* Booking */}
       <section
         id="book"
@@ -170,12 +214,21 @@ export default async function TripPage({ params }: Props) {
         <Container>
           <SectionHeading
             id="book-title"
-            eyebrow="Request a booking"
+            eyebrow={bookingLabel}
             title={`Book the ${trip.shortName.split(" · ")[0]?.toLowerCase()} ${trip.kind === "River cruise" ? "cruise" : "journey"}`}
-            intro="Pick a departure and tell us who is coming. We confirm availability and the final price within 24 hours."
+            intro="Pick a departure and tell us who is coming. Sending a request is free and doesn’t commit you."
+          />
+          <NextSteps
+            dayOne={firstStop ? `${firstStop} on day one` : undefined}
+            className="mt-10 rounded-card border border-silt bg-paper p-6"
           />
           <div className="mt-12">
-            <BookingForm trips={trips} defaultTrip={trip.slug} lockTrip />
+            <BookingForm
+              trips={trips}
+              defaultTrip={trip.slug}
+              lockTrip
+              asideFooter={<BookingReview />}
+            />
           </div>
         </Container>
       </section>
@@ -184,7 +237,7 @@ export default async function TripPage({ params }: Props) {
       <section aria-labelledby="more-title" className="pt-16 sm:pt-24">
         <Container>
           <SectionHeading id="more-title" eyebrow="More ways to travel" title="Other journeys" />
-          <ul className="mt-10 grid gap-6 md:grid-cols-2">
+          <ul className="mt-10 grid gap-6 lg:grid-cols-3">
             {others.map((t) => (
               <li key={t.slug}>
                 <TripCard trip={t} />
@@ -194,7 +247,7 @@ export default async function TripPage({ params }: Props) {
         </Container>
       </section>
 
-      <CtaBand />
+      <CtaBand href="#book" showReview={false} />
 
       {/* Mobile booking bar */}
       <div className="sticky bottom-0 z-30 border-t border-silt bg-paper/95 backdrop-blur lg:hidden">
@@ -213,7 +266,7 @@ export default async function TripPage({ params }: Props) {
             )}
           </p>
           <a href="#book" className={buttonClasses()}>
-            Choose a date
+            {bookingLabel}
           </a>
         </Container>
       </div>

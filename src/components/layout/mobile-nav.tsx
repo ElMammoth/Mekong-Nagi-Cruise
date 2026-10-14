@@ -6,7 +6,7 @@ import { Dialog, VisuallyHidden } from "radix-ui";
 import { Menu, MessageCircle, Phone, X } from "lucide-react";
 import { Wordmark } from "@/components/brand/wordmark";
 import { ButtonAnchor, ButtonLink } from "@/components/ui/button";
-import { bookingHref, cruiseLinks, primaryLinks } from "@/content/navigation";
+import { bookingHref, bookingLabel, cruiseLinks, primaryLinks } from "@/content/navigation";
 import { site } from "@/content/site";
 
 export function MobileNav() {
@@ -77,7 +77,7 @@ export function MobileNav() {
 
           <div className="space-y-3 border-t border-silt bg-paper p-4">
             <ButtonLink href={bookingHref} onClick={close} size="lg" className="w-full">
-              Request a booking
+              {bookingLabel}
             </ButtonLink>
             <div className="grid grid-cols-2 gap-3">
               <ButtonAnchor href={site.contact.whatsappHref} variant="secondary">

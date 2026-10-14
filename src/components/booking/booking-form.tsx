@@ -1,8 +1,16 @@
 "use client";
 
-import { useId, useMemo, useRef, useState, useSyncExternalStore, type FormEvent } from "react";
-import { RadioGroup } from "radix-ui";
-import { CalendarDays, Mail, MessageCircle, Minus, Plus, Send } from "lucide-react";
+import {
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type FormEvent,
+  type ReactNode,
+} from "react";
+import { Checkbox, RadioGroup } from "radix-ui";
+import { CalendarDays, Check, Mail, MessageCircle, Minus, Plus, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { site } from "@/content/site";
 import type { Trip } from "@/content/types";
@@ -11,7 +19,6 @@ import {
   availableOptions,
   formatWeekdays,
   parseIsoDate,
-  toIsoDate,
   upcomingDepartures,
 } from "@/lib/departures";
 import {
@@ -22,16 +29,17 @@ import {
   type InquiryErrors,
 } from "@/lib/inquiry";
 import { estimateTotal, formatAmount, formatMoney } from "@/lib/money";
+import { useToday } from "@/lib/use-today";
 
 const FLEXIBLE = "flexible";
 const MAX_TRAVELLERS = 40;
 
 const noopSubscribe = () => () => {};
-/** Today's date on the client only, so static HTML never shows stale departures. */
-function useToday(): string | null {
+/** `?option=le-grande` preselects a package (links from the package cards). */
+function useOptionFromUrl(): string | null {
   return useSyncExternalStore(
     noopSubscribe,
-    () => toIsoDate(new Date()),
+    () => new URLSearchParams(window.location.search).get("option"),
     () => null,
   );
 }
@@ -49,17 +57,26 @@ interface BookingFormProps {
   defaultTrip?: string;
   /** Hide the trip selector (used on a trip's own page). */
   lockTrip?: boolean;
+  /** Extra content under the summary card, e.g. a review. */
+  asideFooter?: ReactNode;
 }
 
-export function BookingForm({ trips, defaultTrip, lockTrip = false }: BookingFormProps) {
+export function BookingForm({
+  trips,
+  defaultTrip,
+  lockTrip = false,
+  asideFooter,
+}: BookingFormProps) {
   const id = useId();
   const today = useToday();
+  const urlOption = useOptionFromUrl();
   const errorSummaryRef = useRef<HTMLDivElement>(null);
 
   const [tripSlug, setTripSlug] = useState(defaultTrip ?? trips[0]?.slug ?? "");
   const [date, setDate] = useState<string>("");
   const [travellers, setTravellers] = useState(2);
   const [optionId, setOptionId] = useState<string>("");
+  const [extras, setExtras] = useState<string[]>([]);
   const [errors, setErrors] = useState<InquiryErrors>({});
   const [sentVia, setSentVia] = useState<"whatsapp" | "email" | null>(null);
 
@@ -74,7 +91,7 @@ export function BookingForm({ trips, defaultTrip, lockTrip = false }: BookingFor
     [trip, today],
   );
 
-  const option = options.find((o) => o.id === optionId) ?? options[0];
+  const option = options.find((o) => o.id === (optionId || urlOption)) ?? options[0];
   const total = option ? estimateTotal(option, travellers) : undefined;
   const estimate =
     total !== undefined
@@ -87,6 +104,7 @@ export function BookingForm({ trips, defaultTrip, lockTrip = false }: BookingFor
     setTripSlug(slug);
     setDate("");
     setOptionId("");
+    setExtras([]);
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -106,6 +124,7 @@ export function BookingForm({ trips, defaultTrip, lockTrip = false }: BookingFor
       travellers,
       option: option ? `${option.label} (${formatMoney(option.perPerson)} per person)` : undefined,
       estimate,
+      extras: extras.length ? extras : undefined,
       diet: text("diet") || undefined,
       message: text("message") || undefined,
     };
@@ -312,6 +331,42 @@ export function BookingForm({ trips, defaultTrip, lockTrip = false }: BookingFor
               </RadioGroup.Root>
             </div>
           ) : null}
+
+          {trip.extras?.length ? (
+            <div role="group" aria-labelledby={fieldId("extras-label")}>
+              <p id={fieldId("extras-label")} className="font-semibold text-ink">
+                Also ask us about <span className="font-normal text-muted">(optional)</span>
+              </p>
+              <p className="text-sm text-muted">We’ll include it in our reply. No commitment.</p>
+              <ul className="mt-3 space-y-2">
+                {trip.extras.map((extra, i) => {
+                  const extraId = fieldId(`extra-${i}`);
+                  const checked = extras.includes(extra);
+                  return (
+                    <li key={extra} className="flex items-start gap-3">
+                      <Checkbox.Root
+                        id={extraId}
+                        checked={checked}
+                        onCheckedChange={(value) =>
+                          setExtras((list) =>
+                            value === true ? [...list, extra] : list.filter((e) => e !== extra),
+                          )
+                        }
+                        className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-md border border-maroon/35 bg-paper data-[state=checked]:border-lantern data-[state=checked]:bg-lantern"
+                      >
+                        <Checkbox.Indicator>
+                          <Check aria-hidden="true" className="size-4 text-white" />
+                        </Checkbox.Indicator>
+                      </Checkbox.Root>
+                      <label htmlFor={extraId} className="cursor-pointer">
+                        {extra}
+                      </label>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ) : null}
         </fieldset>
 
         {/* 4. Contact */}
@@ -409,6 +464,7 @@ export function BookingForm({ trips, defaultTrip, lockTrip = false }: BookingFor
             />
             <SummaryRow term="Travellers" value={String(travellers)} />
             {option ? <SummaryRow term="Option" value={option.label} /> : null}
+            {extras.length ? <SummaryRow term="Also asking" value={extras.join("; ")} /> : null}
           </dl>
           <div className="mt-5 border-t border-silt pt-5" aria-live="polite">
             {estimate ? (
@@ -466,6 +522,7 @@ export function BookingForm({ trips, defaultTrip, lockTrip = false }: BookingFor
             ) : null}
           </div>
         </div>
+        {asideFooter ? <div className="mt-6">{asideFooter}</div> : null}
       </aside>
     </form>
   );

@@ -1,8 +1,13 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
+import { JsonLd } from "@/components/layout/json-ld";
+import { Photo, isPhotoShown } from "@/components/media/photo";
 import { Container } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/section-heading";
+import type { PhotoSlot } from "@/content/types";
+import { cn } from "@/lib/cn";
+import { breadcrumbJsonLd } from "@/lib/structured-data";
 
 interface Crumb {
   href: string;
@@ -14,16 +19,21 @@ export function PageHeader({
   title,
   intro,
   crumbs = [],
+  photo,
   children,
 }: {
   eyebrow?: string;
   title: string;
   intro?: ReactNode;
+  /** Trail after "Home". The last crumb is the current page. Also emitted as BreadcrumbList. */
   crumbs?: Crumb[];
+  photo?: PhotoSlot;
   children?: ReactNode;
 }) {
+  const withPhoto = photo && isPhotoShown(photo);
   return (
     <div className="border-b border-silt bg-paper/60">
+      {crumbs.length ? <JsonLd data={breadcrumbJsonLd(crumbs)} /> : null}
       <Container className="pt-8 pb-12 sm:pt-10 sm:pb-16">
         {crumbs.length ? (
           <nav aria-label="Breadcrumb" className="mb-8">
@@ -50,11 +60,18 @@ export function PageHeader({
             </ol>
           </nav>
         ) : null}
-        <div className="max-w-3xl">
-          {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
-          <h1 className="text-h1">{title}</h1>
-          {intro ? <div className="mt-5 text-lead text-muted">{intro}</div> : null}
-          {children}
+        <div
+          className={cn(
+            withPhoto && "grid items-center gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14",
+          )}
+        >
+          <div className="max-w-3xl min-w-0">
+            {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
+            <h1 className="text-h1">{title}</h1>
+            {intro ? <div className="mt-5 text-lead text-muted">{intro}</div> : null}
+            {children}
+          </div>
+          {withPhoto ? <Photo photo={photo} eager sizes="(min-width: 1024px) 40vw, 100vw" /> : null}
         </div>
       </Container>
     </div>

@@ -1,17 +1,18 @@
-import type { Metadata } from "next";
 import { Coffee, Presentation, Users } from "lucide-react";
 import { CtaBand } from "@/components/sections/cta-band";
 import { PageHeader } from "@/components/sections/page-header";
 import { ButtonAnchor } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
+import { photos } from "@/content/photos";
 import { site } from "@/content/site";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Private charters, meetings and events on the Mekong",
+export const metadata = pageMetadata({
+  title: "Private Mekong boat charter for groups and events",
   description:
-    "Small-group meetings, training, incentives and special events aboard the Nagi of Mekong for up to 40 people, with coffee breaks and lunch on board.",
-  alternates: { canonical: "/private-charters/" },
-};
+    "Charter the Nagi of Mekong for meetings, training, incentives or a special event for up to 40 people, with coffee breaks and lunch on board.",
+  path: "/private-charters/",
+});
 
 const points = [
   { icon: Users, title: "Up to 40 people", text: "Aboard one of our large boats." },
@@ -32,6 +33,7 @@ export default function ChartersPage() {
         title="Meetings, training and special events on the river"
         intro="We arrange small-group meetings, training, incentives and special events on board the Nagi of Mekong."
         crumbs={[{ href: "/private-charters/", label: "Private charters" }]}
+        photo={photos.charter}
       >
         <div className="mt-8 flex flex-wrap gap-3">
           <ButtonAnchor href={`mailto:${site.contact.email}?subject=${subject}`} size="lg">
@@ -61,6 +63,7 @@ export default function ChartersPage() {
       <CtaBand
         title="Plan an event afloat"
         text={`Write to us with your date and group size. ${site.contact.replyPromise}`}
+        showReview={false}
       />
     </>
   );

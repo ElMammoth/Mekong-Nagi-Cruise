@@ -64,7 +64,28 @@ export interface Trip {
   notIncluded: string[];
   itinerary: ItineraryDay[];
   goodToKnow: string[];
+  /**
+   * Optional grouping of `options` into packages shown as side-by-side cards.
+   * Trips without packages show a simple price list.
+   */
+  packages?: Package[];
+  /** Optional extras the traveller can tick in the booking form ("Also ask us about…"). */
+  extras?: string[];
+  /** Header photo for the trip page. */
+  photo?: PhotoSlot;
   seo: { title: string; description: string };
+}
+
+export interface Package {
+  id: string;
+  name: string;
+  summary: string;
+  /** Price options (by id) that belong to this package. Unavailable ones are skipped. */
+  optionIds: string[];
+  /** Short factual label on the card, e.g. "Everything included". */
+  highlight?: string;
+  /** What this package adds or leaves out, in plain words. */
+  points: string[];
 }
 
 export interface Stay {
@@ -82,4 +103,45 @@ export interface Stay {
 export interface Faq {
   question: string;
   answer: string;
+}
+
+export type PhotoRatio = "16/9" | "3/2" | "4/3" | "1/1" | "4/5";
+
+/** A photo slot. Drop `photos/<file>.jpg` in the repo and it appears on the next build. */
+export interface PhotoSlot {
+  /** File name without extension: lowercase words joined by hyphens. */
+  file: string;
+  /** Describes what the photo shows. Update it if your photo shows something else. */
+  alt: string;
+  ratio: PhotoRatio;
+  /** Brief for the photographer (see docs/06-shot-list.md). Not shown on the site. */
+  shot: string;
+  caption?: string;
+}
+
+export type ReviewPlatform = "tripadvisor" | "viator";
+
+export interface RatingSnapshot {
+  platform: ReviewPlatform;
+  /** Average rating exactly as displayed, out of 5. */
+  rating: number;
+  /** Number of reviews exactly as displayed. */
+  count: number;
+  /** ISO date the figures were copied from the platform. */
+  asOf: string;
+}
+
+export interface Review {
+  platform: ReviewPlatform;
+  reviewer: string;
+  /** As shown on the platform: "YYYY-MM" or "YYYY-MM-DD". */
+  date: string;
+  rating: 1 | 2 | 3 | 4 | 5;
+  title?: string;
+  /** Verbatim text. */
+  text: string;
+  /** BCP 47 language of the text when it isn't English, e.g. "fr". */
+  lang?: string;
+  url: string;
+  placement?: "offer" | "booking";
 }

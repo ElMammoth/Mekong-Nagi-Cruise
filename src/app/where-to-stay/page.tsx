@@ -1,21 +1,22 @@
-import type { Metadata } from "next";
 import { CtaBand } from "@/components/sections/cta-band";
 import { PageHeader } from "@/components/sections/page-header";
 import { StayCard } from "@/components/sections/stay-card";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { downstreamBookingHref } from "@/content/navigation";
 import { stays } from "@/content/stays";
 import { getTrip } from "@/content/trips";
 import type { Stay } from "@/content/types";
 import { availableOptions } from "@/lib/departures";
+import { pageMetadata } from "@/lib/metadata";
 import { formatMoney } from "@/lib/money";
 
-export const metadata: Metadata = {
-  title: "Where to stay in Pak Beng, Luang Prabang and Houay Xai",
+export const metadata = pageMetadata({
+  title: "Pak Beng hotels for your Mekong cruise",
   description:
-    "Hotels for your Mekong cruise: standard and deluxe options in Pak Beng, Villa Mira in Luang Prabang and a budget dorm by the pier in Houay Xai.",
-  alternates: { canonical: "/where-to-stay/" },
-};
+    "Standard and deluxe Pak Beng (Pakbeng) hotels with cruise package prices, plus Villa Mira in Luang Prabang and a dorm by the Houay Xai pier.",
+  path: "/where-to-stay/",
+});
 
 const groups: { place: Stay["place"]; title: string; intro: string }[] = [
   {
@@ -48,7 +49,7 @@ export default function WhereToStayPage() {
     <>
       <PageHeader
         eyebrow="Where to stay"
-        title="Hotels along the route"
+        title="Pak Beng hotels and stays along the route"
         intro="Choose your comfort level for the night in Pak Beng, and find places for the nights before and after your cruise in Luang Prabang and Houay Xai."
         crumbs={[{ href: "/where-to-stay/", label: "Where to stay" }]}
       />
@@ -72,7 +73,7 @@ export default function WhereToStayPage() {
           </Container>
         </section>
       ))}
-      <CtaBand />
+      <CtaBand href={downstreamBookingHref} />
     </>
   );
 }

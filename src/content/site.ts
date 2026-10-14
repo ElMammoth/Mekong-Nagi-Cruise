@@ -4,9 +4,9 @@
 export const site = {
   name: "Nagi of Mekong",
   url: "https://nagiofmekong.com",
-  title: "Nagi of Mekong — Slow-boat cruises from Houay Xai to Luang Prabang",
+  title: "Mekong slow boat cruise, Houay Xai to Luang Prabang · Nagi of Mekong",
   description:
-    "Two-day Mekong river cruises between Houay Xai and Luang Prabang with a night in Pak Beng. Departures every Sunday, Wednesday and Friday. Lunch, transfers and an English-speaking host included.",
+    "Two days on the Mekong from Houay Xai (Chiang Khong) to Luang Prabang via Pak Beng, door to door: pick-up, border help, lunch and hotel included. From US$140.",
   tagline: "Cruise the majestic Mekong river in comfort and safety",
   locale: "en",
 
@@ -32,6 +32,42 @@ export const site = {
     { value: "2", label: "days on the river" },
     { value: "40", label: "seats, usually with room to spare" },
     { value: "3", label: "downstream departures a week" },
+  ],
+
+  /** Name of the core offer (docs/04-offer-brief.md §4). */
+  offerName: "The two-day Mekong cruise, door to door",
+
+  /**
+   * The offer, as the problems a traveller would otherwise solve alone, each matched to
+   * something already included in the downstream cruise (see docs/04-offer-brief.md).
+   */
+  handledForYou: [
+    {
+      task: "Getting from your hotel to the pier",
+      handled: "Hotel pick-up in Chiang Khong or Houay Xai and transfer to the pier",
+    },
+    {
+      task: "The Thai–Lao border and visa on arrival",
+      handled: "Help with the border crossing and the visa on arrival",
+    },
+    { task: "Carrying bags through the border and on board", handled: "Luggage handling" },
+    {
+      task: "Finding food for a long day on the river",
+      handled: "A freshly cooked lunch each day, with vegan, vegetarian and halal options",
+    },
+    {
+      task: "Finding a bed in Pak Beng",
+      handled: "One night at the hotel you choose, with breakfast",
+    },
+    {
+      task: "Knowing where to stop along the way",
+      handled: "Village stops and Pak Ou cave, with an English-speaking host",
+    },
+    {
+      task: "Getting from the Luang Prabang pier into town",
+      handled: "Transfer to your hotel in Luang Prabang",
+    },
+    { task: "Worrying about the unexpected", handled: "Travel insurance and life vests for all" },
   ],
 
   boat: [

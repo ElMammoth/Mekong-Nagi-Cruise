@@ -1,0 +1,3 @@
+# Content type for the generated social card (Netlify / Cloudflare Pages).
+/opengraph-image
+  Content-Type: image/png

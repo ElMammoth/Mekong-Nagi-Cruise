@@ -10,6 +10,8 @@ export interface InquiryInput {
   travellers: number;
   option?: string;
   estimate?: string;
+  /** "Also ask us about…" items ticked in the form. */
+  extras?: string[];
   diet?: string;
   message?: string;
 }
@@ -41,6 +43,7 @@ export function buildInquiryMessage(input: InquiryInput): string {
     `Travellers: ${input.travellers}`,
     input.option ? `Option: ${input.option}` : undefined,
     input.estimate ? `Estimate shown on website: ${input.estimate}` : undefined,
+    input.extras?.length ? `Please also tell me about: ${input.extras.join("; ")}` : undefined,
     input.diet ? `Dietary needs: ${input.diet}` : undefined,
     "",
     `Name: ${input.name.trim()}`,

@@ -1,3 +1,4 @@
+import { photos } from "./photos";
 import type { Trip } from "./types";
 
 /**
@@ -130,10 +131,47 @@ export const trips: Trip[] = [
       "Cruise-only seats are available on every departure.",
       "Book by email or WhatsApp; we confirm within 24 hours.",
     ],
+    packages: [
+      {
+        id: "standard",
+        name: "Cruise + Standard hotel",
+        summary: "The whole trip, with a simple air-conditioned room in Pak Beng.",
+        optionIds: ["standard"],
+        highlight: "Everything included",
+        points: [
+          "Air-conditioned room with breakfast in Pak Beng",
+          "Pick-up, border help, both lunches, stops and transfers",
+          "English-speaking host and travel insurance",
+        ],
+      },
+      {
+        id: "deluxe",
+        name: "Cruise + Deluxe lodge",
+        summary: "The same trip, with your night at a Pak Beng lodge with a swimming pool.",
+        optionIds: ["le-grande", "sanctuary", "sanctuary-summer-2026"],
+        points: [
+          "Le Grande Pak Beng: about 50 villas, most with a river view and balcony",
+          "Sanctuary Pak Beng Lodge: 48 rooms",
+          "Swimming pool and breakfast at both",
+        ],
+      },
+      {
+        id: "cruise-only",
+        name: "Cruise only",
+        summary: "Already have a bed in Pak Beng? Take the boat on its own.",
+        optionIds: ["cruise-only"],
+        points: [
+          "Same boat, host, lunches, stops and transfers",
+          "You arrange your own night in Pak Beng",
+        ],
+      },
+    ],
+    extras: ["A night in Houay Xai before the cruise", "Nights in Luang Prabang after the cruise"],
+    photo: photos.boatExterior,
     seo: {
-      title: "Downstream Mekong cruise, Houay Xai to Luang Prabang",
+      title: "Houay Xai to Luang Prabang slow boat cruise, 2 days",
       description:
-        "Two-day slow-boat cruise from Houay Xai to Luang Prabang with a night in Pak Beng. Sundays, Wednesdays and Fridays. From US$140 per person.",
+        "Two-day Mekong cruise from Houay Xai (Huay Xai), across from Chiang Khong, to Luang Prabang via Pak Beng. Pick-up, lunch and border help included. From US$140.",
     },
   },
   {
@@ -208,10 +246,15 @@ export const trips: Trip[] = [
       "Combine it with two or three days overland in northern Thailand, from Chiang Khong to Chiang Mai via Chiang Rai. Ask us for a plan.",
       "Premium hotels in Pak Beng are available for a small extra cost.",
     ],
+    extras: [
+      "A premium hotel in Pak Beng (Sanctuary Pak Beng Lodge or Le Grande Pak Beng)",
+      "A plan for continuing overland to Chiang Rai and Chiang Mai",
+    ],
+    photo: photos.upstream,
     seo: {
-      title: "Upstream Mekong cruise, Luang Prabang to Houay Xai",
+      title: "Luang Prabang to Houay Xai slow boat cruise, 2 days",
       description:
-        "Two-day slow-boat cruise up the Mekong from Luang Prabang to Houay Xai via Pak Beng. Mondays and Thursdays. US$190 per person.",
+        "Two days up the Mekong from Luang Prabang to Houay Xai (Huay Xai) via Pak Beng, arriving in time to cross to Chiang Khong. Mondays and Thursdays. US$190.",
     },
   },
   {
@@ -297,10 +340,12 @@ export const trips: Trip[] = [
       "Choose your arrival day to match a boat departure: Tuesday, Thursday or Sunday.",
       "We can add tours in Chiang Mai or build a tailor-made program.",
     ],
+    extras: ["Tours and excursions in Chiang Mai", "A tailor-made program"],
+    photo: photos.chiangMai,
     seo: {
-      title: "Chiang Mai to Luang Prabang: 5-day land and Mekong cruise",
+      title: "Chiang Mai to Luang Prabang by slow boat: 5-day tour",
       description:
-        "Five days from Chiang Mai to Luang Prabang via the White Temple, the Golden Triangle and a two-day Mekong cruise. US$455 per person.",
+        "Chiang Mai to Luang Prabang in five days: the White Temple, the Golden Triangle, a night in Chiang Khong and the two-day Mekong cruise via Pak Beng. US$455.",
     },
   },
   {
@@ -395,8 +440,9 @@ export const trips: Trip[] = [
       "A Lao visa obtained in advance is required for this route.",
       "Arrival days in Nan: Monday, Wednesday or Friday.",
     ],
+    photo: photos.nan,
     seo: {
-      title: "Nan to Luang Prabang: 4-day overland and Mekong journey",
+      title: "Nan to Luang Prabang via Pak Beng: 4-day journey",
       description:
         "Four days from Nan in northern Thailand to Luang Prabang via the Huai Kon border, Pak Beng and a day on the Mekong.",
     },

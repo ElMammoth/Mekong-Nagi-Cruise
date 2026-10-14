@@ -5,7 +5,10 @@
   "description": "Website for Nagi of Mekong — two-day slow-boat cruises on the Mekong between Houay Xai and Luang Prabang.",
   "type": "module",
   "scripts": {
+    "photos": "node scripts/build-photos.mjs",
+    "predev": "npm run photos",
     "dev": "next dev",
+    "prebuild": "npm run photos",
     "build": "next build",
     "start": "npx serve@14 out",
     "lint": "eslint .",
@@ -40,6 +43,7 @@
     "playwright-core": "^1.64.0",
     "prettier": "^3.9.10",
     "prettier-plugin-tailwindcss": "^0.8.1",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.9.3",
     "vitest": "^5.0.4"

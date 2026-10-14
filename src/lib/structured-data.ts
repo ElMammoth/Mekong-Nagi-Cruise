@@ -1,6 +1,14 @@
+import manifest from "@/content/photos.generated.json";
 import { site } from "@/content/site";
-import type { Trip } from "@/content/types";
+import type { Faq, PhotoSlot, Trip } from "@/content/types";
 import { availableOptions } from "./departures";
+
+/** Largest generated file for a photo, if the photo exists. */
+function photoUrl(photo?: PhotoSlot): string | undefined {
+  const entry = photo ? (manifest as Record<string, { widths: number[] }>)[photo.file] : undefined;
+  const width = entry?.widths.at(-1);
+  return photo && width ? `${site.url}/images/${photo.file}-${width}.webp` : undefined;
+}
 
 const org = {
   "@type": "TravelAgency",
@@ -21,7 +29,48 @@ const org = {
 };
 
 export function organizationJsonLd() {
-  return { "@context": "https://schema.org", ...org };
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      { ...org, logo: `${site.url}/brand/logo-original.jpg` },
+      {
+        "@type": "WebSite",
+        "@id": `${site.url}/#website`,
+        url: site.url,
+        name: site.name,
+        inLanguage: "en",
+        publisher: { "@id": `${site.url}/#organization` },
+      },
+    ],
+  };
+}
+
+/** BreadcrumbList for an inner page; `crumbs` is the trail after Home. */
+export function breadcrumbJsonLd(crumbs: readonly { href: string; label: string }[]) {
+  const trail = [{ href: "/", label: "Home" }, ...crumbs];
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: trail.map((crumb, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: crumb.label,
+      item: `${site.url}${crumb.href}`,
+    })),
+  };
+}
+
+/** FAQPage: only for questions shown in full on the same page. */
+export function faqJsonLd(faqs: readonly Faq[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: { "@type": "Answer", text: faq.answer },
+    })),
+  };
 }
 
 export function tripJsonLd(trip: Trip) {
@@ -33,7 +82,9 @@ export function tripJsonLd(trip: Trip) {
       price: o.perPerson.USD,
       priceCurrency: "USD",
       url: `${site.url}/cruises/${trip.slug}/`,
+      ...(o.validTo ? { priceValidUntil: o.validTo } : {}),
     }));
+  const image = photoUrl(trip.photo);
   return {
     "@context": "https://schema.org",
     "@type": "TouristTrip",
@@ -49,6 +100,7 @@ export function tripJsonLd(trip: Trip) {
       })),
     },
     provider: { "@id": `${site.url}/#organization` },
+    ...(image ? { image } : {}),
     ...(offers.length ? { offers } : {}),
   };
 }

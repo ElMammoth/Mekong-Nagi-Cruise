@@ -1,13 +1,13 @@
-import type { Metadata } from "next";
 import { PageHeader } from "@/components/sections/page-header";
 import { Container } from "@/components/ui/container";
 import { site } from "@/content/site";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Privacy",
-  description: "How this website handles your information.",
-  alternates: { canonical: "/privacy/" },
-};
+  description: "How the Nagi of Mekong website handles your information: no cookies, no tracking.",
+  path: "/privacy/",
+});
 
 export default function PrivacyPage() {
   return (

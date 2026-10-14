@@ -7,7 +7,7 @@ import { ChevronDown } from "lucide-react";
 import { Wordmark } from "@/components/brand/wordmark";
 import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { bookingHref, cruiseLinks, primaryLinks } from "@/content/navigation";
+import { bookingHref, bookingLabel, cruiseLinks, primaryLinks } from "@/content/navigation";
 import { cn } from "@/lib/cn";
 import { MobileNav } from "./mobile-nav";
 
@@ -78,7 +78,7 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <span className="hidden sm:block">
-            <ButtonLink href={bookingHref}>Request a booking</ButtonLink>
+            <ButtonLink href={bookingHref}>{bookingLabel}</ButtonLink>
           </span>
           <MobileNav />
         </div>

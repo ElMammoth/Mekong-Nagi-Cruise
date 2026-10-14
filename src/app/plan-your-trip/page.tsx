@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { CloudSun, FileCheck2, Luggage, Utensils } from "lucide-react";
 import { BoatFeatures } from "@/components/sections/boat-features";
@@ -7,14 +6,18 @@ import { FaqList } from "@/components/sections/faq-list";
 import { PageHeader } from "@/components/sections/page-header";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { JsonLd } from "@/components/layout/json-ld";
 import { faqs } from "@/content/faq";
+import { downstreamBookingHref } from "@/content/navigation";
+import { pageMetadata } from "@/lib/metadata";
+import { faqJsonLd } from "@/lib/structured-data";
 
-export const metadata: Metadata = {
-  title: "Plan your Mekong cruise: visas, pick-up, food and weather",
+export const metadata = pageMetadata({
+  title: "Mekong cruise FAQ: Lao visa, border, food and weather",
   description:
-    "Practical information for your Mekong cruise: hotel pick-up and border crossing, Lao visa, meals on board and what to pack.",
-  alternates: { canonical: "/plan-your-trip/" },
-};
+    "Answers before you sail: hotel pick-up and the Thai–Lao border, the Lao visa on arrival, lunch on board, cruise-only seats and the cold season in Pak Beng.",
+  path: "/plan-your-trip/",
+});
 
 const essentials = [
   {
@@ -44,9 +47,9 @@ export default function PlanPage() {
     <>
       <PageHeader
         eyebrow="Plan your trip"
-        title="Everything to know before you sail"
+        title="Mekong cruise questions, answered"
         intro="From the border crossing to what’s for lunch: the practical side of two days on the Mekong."
-        crumbs={[{ href: "/plan-your-trip/", label: "Plan your trip" }]}
+        crumbs={[{ href: "/plan-your-trip/", label: "FAQ" }]}
       />
 
       <section aria-labelledby="essentials-title" className="py-16 sm:py-24">
@@ -64,7 +67,14 @@ export default function PlanPage() {
             ))}
           </ul>
           <p className="mt-8 text-muted">
-            Coming from further away? Start in{" "}
+            Step-by-step route, border and packing advice:{" "}
+            <Link
+              href="/guides/houay-xai-to-luang-prabang/"
+              className="font-semibold text-lantern underline-offset-4 hover:underline"
+            >
+              the Houay Xai to Luang Prabang route guide
+            </Link>
+            . Coming from further away? Start in{" "}
             <Link
               href="/cruises/chiang-mai-land-and-cruise/"
               className="font-semibold text-lantern underline-offset-4 hover:underline"
@@ -100,9 +110,10 @@ export default function PlanPage() {
           <SectionHeading id="faq-title" eyebrow="FAQ" title="Frequently asked questions" />
           <FaqList faqs={faqs} />
         </Container>
+        <JsonLd data={faqJsonLd(faqs)} />
       </section>
 
-      <CtaBand />
+      <CtaBand href={downstreamBookingHref} />
     </>
   );
 }

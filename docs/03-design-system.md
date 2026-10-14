@@ -64,19 +64,25 @@ Eyebrows: 14 px, semibold, uppercase, `tracking-[0.14em]`, `lantern` (or `gold` 
 
 ## Components (all in `src/components`)
 
-| Component                                                                             | Built on                           | Notes                                                        |
-| ------------------------------------------------------------------------------------- | ---------------------------------- | ------------------------------------------------------------ |
-| `SiteHeader`                                                                          | Radix `NavigationMenu`             | Keyboard and screen-reader friendly mega-menu for cruises    |
-| `MobileNav`                                                                           | Radix `Dialog`                     | Full-height sheet, focus trapped, Esc to close, CTA pinned   |
-| `FaqList`                                                                             | Radix `Accordion`                  | Multiple open, animated height (reduced-motion aware)        |
-| `BookingForm`                                                                         | Radix `RadioGroup` + native inputs | Date cards, travellers stepper, live estimate, error summary |
-| `Button`, `ButtonLink`, `ButtonAnchor`                                                | —                                  | `primary`, `secondary`, `ghost`, `onDark`; min height 44 px  |
-| `TripCard`, `PriceList`, `Itinerary`, `Included`, `StayCard`, `CtaBand`, `PageHeader` | —                                  | Content-driven sections                                      |
+| Component                                                                             | Built on                           | Notes                                                         |
+| ------------------------------------------------------------------------------------- | ---------------------------------- | ------------------------------------------------------------- |
+| `SiteHeader`                                                                          | Radix `NavigationMenu`             | Keyboard and screen-reader friendly mega-menu for cruises     |
+| `MobileNav`                                                                           | Radix `Dialog`                     | Full-height sheet, focus trapped, Esc to close, CTA pinned    |
+| `FaqList`                                                                             | Radix `Accordion`                  | Multiple open, animated height (reduced-motion aware)         |
+| `BookingForm`                                                                         | Radix `RadioGroup` + native inputs | Date cards, travellers stepper, live estimate, error summary  |
+| `Button`, `ButtonLink`, `ButtonAnchor`                                                | —                                  | `primary`, `secondary`, `ghost`, `onDark`; min height 44 px   |
+| `TripCard`, `PriceList`, `Itinerary`, `Included`, `StayCard`, `CtaBand`, `PageHeader` | —                                  | Content-driven sections                                       |
+| `Packages`                                                                            | —                                  | Package cards; highlighted default, USD-first price block     |
+| `HandledForYou`                                                                       | —                                  | "On your own / with us" offer list                            |
+| `RatingSummary`, `ReviewCard`, `ReviewsSection`, `BookingReview`, `Stars`             | —                                  | Sourced, dated proof; placeholders while empty                |
+| `NextSteps`, `NextSailings`                                                           | —                                  | What happens after sending; next real departure dates         |
+| `Photo`                                                                               | `next/image` + custom loader       | Fixed-ratio frame, responsive WebP, blur preview, placeholder |
+| `Placeholder`                                                                         | —                                  | Dashed "content goes here" box (`showPlaceholders`)           |
 
 ## Motion
 
-Two motions only: the river draws itself once in the hero (2.4 s), and content rises
-12 px on entrance or when a menu opens. Both are disabled by `prefers-reduced-motion`.
+Two motions only: the river draws itself once (2.4 s), and menus rise 12 px when they
+open. The hero text no longer animates in, so it paints immediately (better LCP). Both are disabled by `prefers-reduced-motion`.
 
 ## Voice
 

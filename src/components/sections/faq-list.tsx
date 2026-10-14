@@ -20,7 +20,11 @@ export function FaqList({ faqs }: { faqs: readonly Faq[] }) {
               </Accordion.Trigger>
             </h3>
           </Accordion.Header>
-          <Accordion.Content className="overflow-hidden text-muted data-[state=closed]:animate-[collapse_0.25s_ease] data-[state=open]:animate-[expand_0.3s_ease]">
+          {/* forceMount keeps answers in the static HTML (indexable, find-in-page); closed ones are `hidden`. */}
+          <Accordion.Content
+            forceMount
+            className="overflow-hidden text-muted data-[state=closed]:hidden data-[state=closed]:animate-[collapse_0.25s_ease] data-[state=open]:animate-[expand_0.3s_ease]"
+          >
             <p className="max-w-prose pb-5">{faq.answer}</p>
           </Accordion.Content>
         </Accordion.Item>

@@ -1,18 +1,20 @@
-import type { Metadata } from "next";
 import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { BookingForm } from "@/components/booking/booking-form";
+import { BookingReview } from "@/components/reviews/reviews-section";
+import { NextSteps } from "@/components/sections/next-steps";
 import { PageHeader } from "@/components/sections/page-header";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { site } from "@/content/site";
 import { trips } from "@/content/trips";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Book a Mekong cruise or contact us",
   description:
-    "Request a booking for the Nagi of Mekong by WhatsApp or email. Call +66 95 507 3264 or write to adisak.star@gmail.com. We reply within 24 hours.",
-  alternates: { canonical: "/contact/" },
-};
+    "Check availability for the Nagi of Mekong by WhatsApp or email. Call +66 95 507 3264 or write to adisak.star@gmail.com. We reply within 24 hours.",
+  path: "/contact/",
+});
 
 export default function ContactPage() {
   const { contact } = site;
@@ -37,8 +39,8 @@ export default function ContactPage() {
     <>
       <PageHeader
         eyebrow="Book & contact"
-        title="Request a booking"
-        intro={`Booking is easy: send us your request and we get back to you. ${contact.replyPromise}`}
+        title="Check availability"
+        intro={`Send us your request: it’s free and doesn’t commit you. ${contact.replyPromise}`}
         crumbs={[{ href: "/contact/", label: "Contact" }]}
       >
         <dl className="mt-10 grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -69,8 +71,9 @@ export default function ContactPage() {
             title="Your booking request"
             intro="Four short steps. Your message opens in WhatsApp or your email app, ready to send."
           />
+          <NextSteps className="mt-10 rounded-card border border-silt bg-paper p-6" />
           <div className="mt-12">
-            <BookingForm trips={trips} />
+            <BookingForm trips={trips} asideFooter={<BookingReview />} />
           </div>
         </Container>
       </section>
