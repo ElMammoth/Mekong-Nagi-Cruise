@@ -9,7 +9,7 @@
     "brand": "node scripts/build-brand.mjs",
     "predev": "npm run photos",
     "dev": "next dev",
-    "prebuild": "npm run data",
+    "prebuild": "node scripts/clean-build-cache.mjs && npm run data",
     "build": "next build",
     "postbuild": "node scripts/flatten-segments.mjs",
     "start": "npx serve@14 out",
