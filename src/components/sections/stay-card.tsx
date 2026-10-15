@@ -1,7 +1,11 @@
 import { ExternalLink, Mail } from "lucide-react";
+import { DualPrice } from "@/components/currency/price";
 import type { Stay } from "@/content/types";
+import { getI18n } from "@/i18n/server";
 
-export function StayCard({ stay, price }: { stay: Stay; price?: string }) {
+/** A hotel or stay; `priceUsd` is the downstream package price that includes it. */
+export function StayCard({ stay, priceUsd }: { stay: Stay; priceUsd?: number }) {
+  const { m } = getI18n();
   return (
     <article className="flex h-full flex-col rounded-md border border-line bg-surface p-6 shadow-sm">
       <p className="font-display text-eyebrow text-primary uppercase">
@@ -18,11 +22,15 @@ export function StayCard({ stay, price }: { stay: Stay; price?: string }) {
         ))}
       </ul>
       <div className="mt-auto space-y-2 pt-5">
-        {price ? (
+        {priceUsd ? (
           <p className="border-t border-line pt-4 text-sm">
-            <span className="text-muted">Cruise package </span>
-            <span className="text-heading">{price}</span>
-            <span className="text-muted"> per person</span>
+            <span className="text-muted">{m.whereToStay.cruisePackage} </span>
+            <DualPrice
+              usd={priceUsd}
+              mainClassName="text-heading"
+              secondaryClassName="text-muted"
+            />
+            <span className="text-muted"> {m.common.perPerson}</span>
           </p>
         ) : null}
         {stay.url ? (
@@ -32,9 +40,9 @@ export function StayCard({ stay, price }: { stay: Stay; price?: string }) {
             rel="noopener noreferrer"
             target="_blank"
           >
-            Hotel website
+            {m.whereToStay.hotelWebsite}
             <ExternalLink aria-hidden="true" className="size-4" />
-            <span className="sr-only">(opens in a new tab)</span>
+            <span className="sr-only">{m.common.opensNewTab}</span>
           </a>
         ) : null}
         {stay.contact ? (

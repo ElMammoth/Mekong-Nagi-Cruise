@@ -8,46 +8,51 @@ import { BoatMark } from "@/components/brand/boat-mark";
 import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { RouteLabel } from "@/components/ui/route-label";
-import { bookingHref, bookingLabel, cruiseLinks, primaryLinks } from "@/content/navigation";
 import { site } from "@/content/site";
+import { useI18n } from "@/i18n/client";
+import { fmt } from "@/i18n/format";
 import { cn } from "@/lib/cn";
+import type { Navigation } from "@/lib/navigation";
+import { DesktopSwitchers } from "./locale-switchers";
 import { MobileNav } from "./mobile-nav";
 
 /* Shared look for top-level items: text link with a token underline when current. */
 const itemClass =
-  "inline-flex min-h-11 items-center gap-1 rounded-sm px-3 font-display text-sm text-heading transition-colors duration-fast hover:bg-surface-tint data-[active]:text-accent aria-[current=page]:text-accent";
+  "inline-flex min-h-11 items-center gap-1 rounded-sm px-2 font-display text-sm whitespace-nowrap text-heading transition-colors duration-fast hover:bg-surface-tint data-[active]:text-accent aria-[current=page]:text-accent";
 
 /**
  * Main navigation: Radix NavigationMenu (roving focus, arrow keys, Esc, hover + click),
  * with a shared Viewport so the Cruises panel animates its size, and an Indicator arrow.
- * Below `lg` the Dialog-based MobileNav takes over.
+ * The language and currency menus sit on the right in a second Radix NavigationMenu.
+ * Below `lg` the Dialog-based MobileNav takes over (it holds both switchers too).
  */
-export function SiteHeader() {
+export function SiteHeader({ nav }: { nav: Navigation }) {
+  const { m } = useI18n();
   const pathname = usePathname();
   const isActive = (href: string) => pathname === href || pathname === href.replace(/\/$/, "");
-  const inCruises = pathname.startsWith("/cruises");
+  const inCruises = nav.cruises.some((link) => isActive(link.href));
 
   return (
     <header
       className="sticky top-0 z-40 border-b border-line bg-canvas"
       style={{ viewTransitionName: "site-header" }}
     >
-      <Container className="flex h-header items-center justify-between gap-4">
+      <Container className="flex h-header items-center justify-between gap-3">
         <Link
-          href="/"
+          href={nav.homeHref}
           className="-m-1 rounded-sm p-1 text-primary"
-          aria-label={`${site.name}, home`}
+          aria-label={fmt(m.nav.homeLabel, { name: site.name })}
         >
-          <BoatMark title={site.name} className="h-7 w-auto sm:h-8" />
+          <BoatMark title={site.name} className="h-7 w-auto sm:h-8 xl:h-6" />
         </Link>
 
-        <NavigationMenu.Root aria-label="Main" className="relative hidden lg:block">
-          <NavigationMenu.List className="flex items-center gap-1">
+        <NavigationMenu.Root aria-label={m.nav.main} className="relative hidden xl:block">
+          <NavigationMenu.List className="flex items-center">
             <NavigationMenu.Item>
               <NavigationMenu.Trigger
                 className={cn(itemClass, "group", inCruises && "text-accent")}
               >
-                Cruises
+                {m.nav.cruises}
                 <ChevronDown
                   aria-hidden="true"
                   className="size-4 transition-transform duration-base group-data-[state=open]:rotate-180"
@@ -55,7 +60,7 @@ export function SiteHeader() {
               </NavigationMenu.Trigger>
               <NavigationMenu.Content className="absolute top-0 left-0 w-full p-2">
                 <ul className="grid grid-cols-2 gap-1">
-                  {cruiseLinks.map((link) => (
+                  {nav.cruises.map((link) => (
                     <li key={link.href}>
                       <NavigationMenu.Link asChild active={isActive(link.href)}>
                         <Link
@@ -66,9 +71,7 @@ export function SiteHeader() {
                           <span className="block font-display text-base text-heading">
                             <RouteLabel text={link.label} />
                           </span>
-                          <span className="mt-0.5 block text-sm text-muted">
-                            {link.kind} · {link.duration}
-                          </span>
+                          <span className="mt-0.5 block text-sm text-muted">{link.meta}</span>
                         </Link>
                       </NavigationMenu.Link>
                     </li>
@@ -77,7 +80,7 @@ export function SiteHeader() {
               </NavigationMenu.Content>
             </NavigationMenu.Item>
 
-            {primaryLinks.map((link) => (
+            {nav.primary.map((link) => (
               <NavigationMenu.Item key={link.href}>
                 <NavigationMenu.Link asChild active={isActive(link.href)}>
                   <Link
@@ -102,12 +105,13 @@ export function SiteHeader() {
         </NavigationMenu.Root>
 
         <div className="flex items-center gap-2">
+          <DesktopSwitchers />
           <span className="hidden sm:block">
-            <ButtonLink href={bookingHref} variant="cta">
-              {bookingLabel}
+            <ButtonLink href={nav.bookingHref} variant="cta" className="whitespace-nowrap">
+              {nav.bookingLabel}
             </ButtonLink>
           </span>
-          <MobileNav />
+          <MobileNav nav={nav} />
         </div>
       </Container>
     </header>

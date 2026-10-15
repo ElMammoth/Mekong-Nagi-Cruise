@@ -70,6 +70,10 @@ colours mixed with white; hover states mix the flag colours with each other.
   `display: swap`, preloaded, and with size-adjusted fallbacks (so no layout shift).
 - `font-synthesis: none` means no faux bold or italic. `strong`, `em` and `address` are
   styled by colour, not weight or slant.
+- **Chinese and Thai:** the two fonts have no CJK or Thai glyphs. On `/zh/` and `/th/`
+  pages the stacks become Poppins / Source Sans 3 (for Latin text) followed by the system's
+  Chinese or Thai fonts (PingFang SC, Microsoft YaHei, Noto Sans SC… / Noto Sans Thai,
+  Leelawadee UI, Thonburi…), and letter-spacing is reset to 0. No extra font is downloaded.
 - The latin subsets have no "→". Route labels draw it as an icon (`RouteLabel`) and read
   it as "to".
 
@@ -154,3 +158,13 @@ colours mixed with white; hover states mix the flag colours with each other.
   2 px focus ring everywhere (white on blue surfaces).
 - Inline links in body text are underlined (not colour alone).
 - Moving content can be paused; motion respects `prefers-reduced-motion`.
+
+## Timelines (itinerary and route strip)
+
+Stop markers sit exactly on their line, at every size, in every language and with any
+number of text lines. Four tokens drive both (`globals.css`): `--timeline-marker` (square
+marker size), `--timeline-line` (line width), `--timeline-indent` and `--timeline-gap`.
+The line and each marker share one coordinate and are centred on it with
+`translate(-50%, -50%)`; vertically, a marker sits at `0.5lh` of its title (the middle of
+the first line). Classes: `.timeline` (vertical, day by day) and `.route-line`
+(horizontal, the stops on one line with the names underneath). No pixel offsets.

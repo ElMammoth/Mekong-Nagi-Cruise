@@ -1,4 +1,6 @@
 import { CalendarCheck, MessageCircle, Sailboat } from "lucide-react";
+import { fmt } from "@/i18n/index";
+import { getI18n } from "@/i18n/server";
 import { cn } from "@/lib/cn";
 
 /**
@@ -6,7 +8,7 @@ import { cn } from "@/lib/cn";
  * (docs/04-offer-brief.md §2, time delay). Pattern: numbered steps (Mora, Samara on Mobbin).
  */
 export function NextSteps({
-  dayOne = "Hotel pick-up on departure morning",
+  dayOne,
   tone = "light",
   className,
 }: {
@@ -15,18 +17,12 @@ export function NextSteps({
   tone?: "light" | "dark";
   className?: string;
 }) {
+  const { m } = getI18n();
+  const copy = m.nextSteps;
   const steps = [
-    {
-      icon: MessageCircle,
-      title: "You send your request",
-      text: "A pre-filled WhatsApp or email message. It’s free and doesn’t commit you.",
-    },
-    {
-      icon: CalendarCheck,
-      title: "We confirm within 24 hours",
-      text: "Availability on your date and the final price.",
-    },
-    { icon: Sailboat, title: "You travel", text: dayOne },
+    { icon: MessageCircle, title: copy.send.title, text: copy.send.text },
+    { icon: CalendarCheck, title: copy.confirm.title, text: copy.confirm.text },
+    { icon: Sailboat, title: copy.travel.title, text: dayOne ?? copy.defaultDayOne },
   ];
   return (
     <ol className={cn("grid gap-6 sm:grid-cols-3", className)}>
@@ -48,7 +44,7 @@ export function NextSteps({
                 tone === "dark" ? "text-on-primary" : "text-heading",
               )}
             >
-              <span className="sr-only">Step {i + 1}: </span>
+              <span className="sr-only">{fmt(copy.stepSr, { n: i + 1 })} </span>
               {title}
             </p>
             <p className={cn("text-sm", tone === "dark" ? "text-on-primary-muted" : "text-muted")}>

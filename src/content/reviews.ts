@@ -12,6 +12,10 @@ import type { RatingSnapshot, Review, ReviewPlatform } from "./types";
  * 4. Rating figures must match the platform on the day you copy them; put that day in `asOf`.
  *    Update them when you add reviews.
  *
+ * 5. Never translate a review. Each one is shown in the language it was written in, on
+ *    every language version of the site, with a small language label. Set `lang` when the
+ *    review isn't in English.
+ *
  * Nothing is marked up as structured data: Google doesn't allow review rich results for
  * reviews collected on other sites.
  */
@@ -54,7 +58,8 @@ export const ratings: RatingSnapshot[] = [
     count: 102,
     asOf: "2026-10-14",
     distribution: { 5: 92, 4: 6, 3: 3, 2: 0, 1: 1 },
-    note: "Total reviews and rating from Viator & Tripadvisor",
+    // Viator says: "Total reviews and rating from Viator & Tripadvisor".
+    combined: true,
   },
 ];
 

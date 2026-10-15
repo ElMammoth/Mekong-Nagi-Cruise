@@ -14,26 +14,45 @@ export interface InquiryInput {
   extras?: string[];
   diet?: string;
   message?: string;
+  /** The visitor's language, so the reply can match it (e.g. "Français"). */
+  language?: string;
 }
 
 export type InquiryErrors = Partial<Record<"name" | "trip" | "travellers" | "email", string>>;
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function validateInquiry(input: InquiryInput): InquiryErrors {
+/** Error messages in the visitor's language (`booking.errors` in the translation files). */
+export type InquiryErrorMessages = Record<keyof InquiryErrors, string>;
+
+const ENGLISH_ERRORS: InquiryErrorMessages = {
+  name: "Please tell us your name.",
+  trip: "Choose a cruise or journey.",
+  travellers: "Travellers must be between 1 and 40.",
+  email: "This email address doesn’t look right.",
+};
+
+export function validateInquiry(
+  input: InquiryInput,
+  messages: InquiryErrorMessages = ENGLISH_ERRORS,
+): InquiryErrors {
   const errors: InquiryErrors = {};
-  if (!input.name.trim()) errors.name = "Please tell us your name.";
-  if (!input.trip.trim()) errors.trip = "Choose a cruise or journey.";
+  if (!input.name.trim()) errors.name = messages.name;
+  if (!input.trip.trim()) errors.trip = messages.trip;
   if (!Number.isInteger(input.travellers) || input.travellers < 1 || input.travellers > 40) {
-    errors.travellers = "Travellers must be between 1 and 40.";
+    errors.travellers = messages.travellers;
   }
   if (input.email && !EMAIL.test(input.email.trim())) {
-    errors.email = "This email address doesn’t look right.";
+    errors.email = messages.email;
   }
   return errors;
 }
 
-/** Plain-text message sent through WhatsApp or email. Order mirrors what the operator needs. */
+/**
+ * Plain-text message sent through WhatsApp or email. Order mirrors what the operator needs.
+ * Always in English with US dollar amounts (the operator's working language and the
+ * currency bookings are charged in), plus the visitor's language so the reply can match it.
+ */
 export function buildInquiryMessage(input: InquiryInput): string {
   const lines = [
     `Hello ${site.name}, I would like to book:`,
@@ -45,6 +64,7 @@ export function buildInquiryMessage(input: InquiryInput): string {
     input.estimate ? `Estimate shown on website: ${input.estimate}` : undefined,
     input.extras?.length ? `Please also tell me about: ${input.extras.join("; ")}` : undefined,
     input.diet ? `Dietary needs: ${input.diet}` : undefined,
+    input.language ? `Preferred language: ${input.language}` : undefined,
     "",
     `Name: ${input.name.trim()}`,
     input.email ? `Email: ${input.email.trim()}` : undefined,

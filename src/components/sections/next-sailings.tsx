@@ -1,15 +1,11 @@
 "use client";
 
 import type { Weekday } from "@/content/types";
+import { useI18n } from "@/i18n/client";
+import { fmt } from "@/i18n/format";
 import { cn } from "@/lib/cn";
 import { formatWeekdays, parseIsoDate, upcomingDepartures } from "@/lib/departures";
 import { useToday } from "@/lib/use-today";
-
-const short = new Intl.DateTimeFormat("en-GB", {
-  weekday: "short",
-  day: "numeric",
-  month: "short",
-});
 
 /**
  * The next real departure dates, computed in the visitor's browser (honest urgency:
@@ -18,22 +14,22 @@ const short = new Intl.DateTimeFormat("en-GB", {
 export function NextSailings({
   weekdays,
   count = 3,
-  label = "Next sailings",
   className,
 }: {
   weekdays: readonly Weekday[];
   count?: number;
-  label?: string;
   className?: string;
 }) {
+  const { intl, m } = useI18n();
   const today = useToday();
   const dates = today ? upcomingDepartures(weekdays, parseIsoDate(today), count) : [];
+  const short = new Intl.DateTimeFormat(intl, { weekday: "short", day: "numeric", month: "short" });
   return (
     <p className={cn("text-sm text-muted", className)}>
-      <span className="text-ink">{label}: </span>
+      <span className="text-ink">{m.nextSailings.label}: </span>
       {dates.length
         ? dates.map((d) => short.format(parseIsoDate(d))).join(" · ")
-        : `every ${formatWeekdays(weekdays)}`}
+        : fmt(m.nextSailings.every, { days: formatWeekdays(weekdays, intl) })}
     </p>
   );
 }

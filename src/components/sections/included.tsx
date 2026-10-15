@@ -1,5 +1,6 @@
 import { Check, Minus } from "lucide-react";
 import { RouteLabel } from "@/components/ui/route-label";
+import { getI18n } from "@/i18n/server";
 
 export function Included({
   included,
@@ -8,10 +9,11 @@ export function Included({
   included: readonly string[];
   notIncluded: readonly string[];
 }) {
+  const { m } = getI18n();
   return (
     <div className="grid gap-8 md:grid-cols-2">
       <div>
-        <h3 className="text-eyebrow text-heading uppercase">Included</h3>
+        <h3 className="text-eyebrow text-heading uppercase">{m.common.included}</h3>
         <ul className="mt-4 space-y-3">
           {included.map((item) => (
             <li key={item} className="flex gap-3">
@@ -23,7 +25,7 @@ export function Included({
       </div>
       {notIncluded.length ? (
         <div>
-          <h3 className="text-eyebrow text-muted uppercase">Not included</h3>
+          <h3 className="text-eyebrow text-muted uppercase">{m.common.notIncluded}</h3>
           <ul className="mt-4 space-y-3">
             {notIncluded.map((item) => (
               <li key={item} className="flex gap-3 text-muted">

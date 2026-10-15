@@ -92,6 +92,16 @@ lists what's included with Nagi and makes no claims about others.
   - No third-party scripts.
   - Images in fixed-ratio frames (no CLS), `loading="lazy"` below the fold and
     `priority` only on the hero.
-- **No hreflang**: the site is English only. Opportunity: several pages that rank for the
-  route are in French, Dutch or Spanish, and one review listing is on Tripadvisor France.
-  A French version would be a natural next step; add `hreflang` then.
+- **Languages (hreflang):** English at `/`, French, German, Spanish, Simplified Chinese
+  and Thai under `/fr/`, `/de/`, `/es/`, `/zh/`, `/th/`, each with its own title, description,
+  canonical, `og:locale` (+ alternates) and structured data with `inLanguage`. Every page
+  lists all its language versions plus `x-default` (the English page), and so does the
+  sitemap; `npm run test:i18n` checks they are reciprocal. French, German and Spanish use
+  localized slugs (`/fr/croisieres/houay-xai-luang-prabang/`); Chinese and Thai keep the
+  English slugs. Visitors are never redirected by language: a client-side banner offers the
+  browser's language, so crawlers always get the page they asked for.
+- **Prices in markup:** the HTML always shows US dollars (the charged currency) with the
+  baht equivalent; `Offer` structured data stays `priceCurrency: USD`. Other currencies are
+  a client-side, labelled approximation.
+- **TikTok videos** are social proof, not reviews: no `Review`/`AggregateRating` markup, no
+  third-party script until a click.

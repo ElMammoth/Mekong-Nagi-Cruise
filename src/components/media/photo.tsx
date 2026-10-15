@@ -5,6 +5,7 @@ import manifest from "@/content/photos.generated.json";
 import { showPlaceholders } from "@/content/settings";
 import type { PhotoSlot } from "@/content/types";
 import { cn } from "@/lib/cn";
+import { getI18n } from "@/i18n/server";
 
 type Manifest = Record<string, { width: number; height: number; blurDataURL: string }>;
 
@@ -66,6 +67,7 @@ export function Photo({
 }
 
 function PhotoPlaceholder({ photo }: { photo: PhotoSlot }) {
+  const { m } = getI18n();
   return (
     <div
       aria-hidden="true"
@@ -87,7 +89,7 @@ function PhotoPlaceholder({ photo }: { photo: PhotoSlot }) {
       </svg>
       <Camera className="relative size-6" />
       <p className="relative font-display text-eyebrow uppercase">
-        Photo · {photo.ratio.replace("/", ":")}
+        {m.common.photo} · {photo.ratio.replace("/", ":")}
       </p>
       <p className="relative max-w-note text-sm leading-snug">{photo.alt}</p>
       <p className="relative text-micro break-all">photos/{photo.file}.jpg</p>

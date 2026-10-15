@@ -3,8 +3,9 @@ import { BoatMark } from "@/components/brand/boat-mark";
 import { BookingReview } from "@/components/reviews/reviews-section";
 import { ButtonAnchor, ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { bookingHref, bookingLabel } from "@/content/navigation";
 import { site } from "@/content/site";
+import { getI18n } from "@/i18n/server";
+import { navigation } from "@/lib/navigation";
 import { NextSteps } from "./next-steps";
 
 /**
@@ -12,16 +13,19 @@ import { NextSteps } from "./next-steps";
  * and one genuine review right beside it (docs/04-offer-brief.md §6, §9).
  */
 export function CtaBand({
-  title = "Send your dates, we’ll handle the rest",
-  text = `Tell us when you’d like to sail and how many of you are travelling. ${site.contact.replyPromise}`,
-  href = bookingHref,
+  title,
+  text,
+  href,
   showReview = true,
 }: {
   title?: string;
+  /** Lead text; the reply promise is added after it. */
   text?: string;
   href?: string;
   showReview?: boolean;
 }) {
+  const { locale, m } = getI18n();
+  const nav = navigation(locale);
   return (
     <section aria-labelledby="cta-title" className="py-section">
       <Container>
@@ -33,33 +37,35 @@ export function CtaBand({
           <div className="relative grid gap-12 lg:grid-cols-cta lg:items-start">
             <div>
               <h2 id="cta-title" className="text-h2 text-on-primary">
-                {title}
+                {title ?? m.cta.title}
               </h2>
-              <p className="mt-4 text-lead">{text}</p>
+              <p className="mt-4 text-lead">
+                {text ?? m.cta.text} {m.contact.replyPromise}
+              </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <ButtonLink href={href} size="lg" variant="cta">
-                  {bookingLabel}
+                <ButtonLink href={href ?? nav.bookingHref} size="lg" variant="cta">
+                  {nav.bookingLabel}
                 </ButtonLink>
                 <ButtonAnchor href={site.contact.whatsappHref} variant="secondary" size="lg">
                   <MessageCircle aria-hidden="true" />
-                  Ask on WhatsApp
+                  {m.common.askOnWhatsApp}
                 </ButtonAnchor>
               </div>
               <p className="mt-6 inline-flex flex-wrap items-center gap-x-2">
                 <Phone aria-hidden="true" className="size-4 text-on-primary-muted" />
-                Or call{" "}
+                {m.cta.orCall}{" "}
                 <a
                   href={site.contact.phoneHref}
-                  className="text-on-primary underline-offset-4 hover:underline"
+                  className="text-on-primary underline underline-offset-4 hover:decoration-2"
                 >
                   {site.contact.phoneDisplay}
                 </a>
                 <span>({site.contact.hours})</span>
                 <span>
-                  · or email{" "}
+                  · {m.cta.orEmail}{" "}
                   <a
                     href={`mailto:${site.contact.email}`}
-                    className="text-on-primary underline-offset-4 hover:underline"
+                    className="text-on-primary underline underline-offset-4 hover:decoration-2"
                   >
                     {site.contact.email}
                   </a>

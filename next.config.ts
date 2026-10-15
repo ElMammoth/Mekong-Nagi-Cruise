@@ -13,6 +13,8 @@ const nextConfig: NextConfig = {
     imageSizes: [320],
   },
   reactStrictMode: true,
+  // Two root layouts (English at "/", other languages under their prefix) need a global 404.
+  experimental: { globalNotFound: true },
   poweredByHeader: false,
 };
 

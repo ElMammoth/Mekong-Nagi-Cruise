@@ -1,10 +1,33 @@
 "use client";
 
+import { Fragment } from "react";
 import { Accordion } from "radix-ui";
 import { Plus } from "lucide-react";
+import { DualPrice } from "@/components/currency/price";
 import type { Faq } from "@/content/types";
 
-export function FaqList({ faqs }: { faqs: readonly Faq[] }) {
+/** Renders an answer, replacing `{price:option-id}` with the live price of that option. */
+function Answer({ text, prices }: { text: string; prices: Record<string, number> }) {
+  const parts = text.split(/(\{price:[\w-]+\})/g);
+  return (
+    <>
+      {parts.map((part, i) => {
+        const id = /^\{price:([\w-]+)\}$/.exec(part)?.[1];
+        const usd = id ? prices[id] : undefined;
+        return <Fragment key={i}>{usd !== undefined ? <DualPrice usd={usd} /> : part}</Fragment>;
+      })}
+    </>
+  );
+}
+
+export function FaqList({
+  faqs,
+  prices = {},
+}: {
+  faqs: readonly Faq[];
+  /** US dollar prices referenced by `{price:…}` in the answers. */
+  prices?: Record<string, number>;
+}) {
   return (
     <Accordion.Root type="multiple" className="divide-y divide-line border-y border-line">
       {faqs.map((faq) => (
@@ -25,7 +48,9 @@ export function FaqList({ faqs }: { faqs: readonly Faq[] }) {
             forceMount
             className="overflow-hidden text-muted data-[state=closed]:hidden data-[state=open]:animate-expand"
           >
-            <p className="max-w-prose pb-5">{faq.answer}</p>
+            <p className="max-w-prose pb-5">
+              <Answer text={faq.answer} prices={prices} />
+            </p>
           </Accordion.Content>
         </Accordion.Item>
       ))}

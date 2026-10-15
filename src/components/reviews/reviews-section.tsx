@@ -2,6 +2,9 @@ import { ChevronDown, ExternalLink } from "lucide-react";
 import { reviewPlatforms, reviews, reviewsRetrievedAt } from "@/content/reviews";
 import { showPlaceholders } from "@/content/settings";
 import type { RatingSnapshot, ReviewPlatform } from "@/content/types";
+import { localeInfo } from "@/i18n/config";
+import { fmt } from "@/i18n/index";
+import { getI18n } from "@/i18n/server";
 import { cn } from "@/lib/cn";
 import {
   allPlatforms,
@@ -19,13 +22,6 @@ import { Stars } from "./stars";
 
 const SLOTS = 3;
 const LEVELS = [5, 4, 3, 2, 1] as const;
-const LEVEL_NAMES: Record<(typeof LEVELS)[number], string> = {
-  5: "Excellent",
-  4: "Very good",
-  3: "Average",
-  2: "Poor",
-  1: "Terrible",
-};
 
 /**
  * Reviews block (Tripadvisor pattern): a rating summary per platform on the left —
@@ -33,15 +29,13 @@ const LEVEL_NAMES: Record<(typeof LEVELS)[number], string> = {
  */
 export function ReviewsSection({
   id = "reviews-title",
-  eyebrow = "Reviews",
-  title = "What travellers say",
   className,
 }: {
   id?: string;
-  eyebrow?: string;
-  title?: string;
   className?: string;
 }) {
+  const { locale, m } = getI18n();
+  const intl = localeInfo[locale].intl;
   const shown = offerReviews(SLOTS);
   const more = moreReviews(shown);
   if (reviews.length === 0 && !showPlaceholders) return null;
@@ -51,9 +45,9 @@ export function ReviewsSection({
     <section aria-labelledby={id} className={cn("@container", className)}>
       <SectionHeading
         id={id}
-        eyebrow={eyebrow}
-        title={title}
-        intro="Unedited reviews from Tripadvisor and Viator, each linked to the original."
+        eyebrow={m.reviews.eyebrow}
+        title={m.reviews.title}
+        intro={m.reviews.intro}
       />
       <div className="mt-10 grid gap-10 @4xl:grid-cols-summary @4xl:gap-14">
         <div className="space-y-8">
@@ -62,7 +56,7 @@ export function ReviewsSection({
           ))}
           <p className="text-sm text-muted">
             {reviewsRetrievedAt
-              ? `Ratings and reviews copied from each platform on ${formatReviewDate(reviewsRetrievedAt)}.`
+              ? fmt(m.reviews.copiedOn, { date: formatReviewDate(reviewsRetrievedAt, intl) })
               : showPlaceholders
                 ? "Placeholder: set reviewsRetrievedAt in src/content/reviews.ts."
                 : null}
@@ -86,7 +80,7 @@ export function ReviewsSection({
             <details className="group border-b border-line">
               <summary className="cursor-pointer list-none rounded-sm py-4 font-display text-base text-primary [&::-webkit-details-marker]:hidden">
                 <span className="flex items-center justify-between gap-3">
-                  Show all {reviews.length} reviews
+                  {fmt(m.reviews.showAll, { count: reviews.length })}
                   <ChevronDown
                     aria-hidden="true"
                     className="size-5 shrink-0 transition-transform duration-base group-open:rotate-180"
@@ -115,6 +109,8 @@ function PlatformSummary({
   platform: ReviewPlatform;
   rating?: RatingSnapshot;
 }) {
+  const { locale, m } = getI18n();
+  const intl = localeInfo[locale].intl;
   const { name, listingUrl } = reviewPlatforms[platform];
   return (
     <div className="border-b border-line pb-8 last-of-type:border-b-0">
@@ -122,16 +118,18 @@ function PlatformSummary({
       {rating ? (
         <>
           <p className="mt-3 flex items-center gap-3">
-            <span className="font-display text-3xl text-heading">{rating.rating.toFixed(1)}</span>
+            <span className="font-display text-3xl text-heading">
+              {rating.rating.toLocaleString(intl, { minimumFractionDigits: 1 })}
+            </span>
             <span>
               <Stars rating={rating.rating} />
               <span className="block text-sm text-muted">
-                {rating.count.toLocaleString("en-GB")} reviews · as of{" "}
-                {formatReviewDate(rating.asOf)}
+                {fmt(m.reviews.reviewCount, { count: rating.count.toLocaleString(intl) })} ·{" "}
+                {fmt(m.reviews.asOf, { date: formatReviewDate(rating.asOf, intl) })}
               </span>
             </span>
           </p>
-          {rating.note ? <p className="mt-2 text-sm text-muted">{rating.note}</p> : null}
+          {rating.combined ? <p className="mt-2 text-sm text-muted">{m.reviews.note}</p> : null}
           {rating.distribution ? (
             <dl className="mt-4 space-y-1.5 text-sm">
               {LEVELS.map((level) => {
@@ -139,12 +137,12 @@ function PlatformSummary({
                 const share = rating.count ? Math.round((n / rating.count) * 100) : 0;
                 return (
                   <div key={level} className="grid grid-cols-label items-center gap-3">
-                    <dt className="text-ink">{LEVEL_NAMES[level]}</dt>
+                    <dt className="text-ink">{m.reviews.levels[level]}</dt>
                     <dd className="flex items-center gap-2">
                       <span className="h-2 flex-1 overflow-hidden rounded-xs bg-surface-tint">
                         <span className="block h-full bg-primary" style={{ width: `${share}%` }} />
                       </span>
-                      <span className="w-8 text-right text-muted">{n}</span>
+                      <span className="w-8 text-right text-muted">{n.toLocaleString(intl)}</span>
                     </dd>
                   </div>
                 );
@@ -166,9 +164,9 @@ function PlatformSummary({
         rel="noopener noreferrer"
         className="mt-3 inline-flex items-center gap-1.5 rounded-sm text-sm text-primary underline-offset-4 hover:underline"
       >
-        Read all reviews on {name}
+        {fmt(m.reviews.readAllOn, { name })}
         <ExternalLink aria-hidden="true" className="size-3.5" />
-        <span className="sr-only">(opens in a new tab)</span>
+        <span className="sr-only">{m.common.opensNewTab}</span>
       </a>
     </div>
   );

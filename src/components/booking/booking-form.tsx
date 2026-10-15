@@ -11,11 +11,18 @@ import {
 } from "react";
 import { Checkbox, RadioGroup } from "radix-ui";
 import { CalendarDays, Check, Mail, MessageCircle, Minus, Plus, Send } from "lucide-react";
+import { CurrencyNote, DualPrice, useDualPriceText } from "@/components/currency/price";
 import { Button } from "@/components/ui/button";
 import { RouteLabel, routeText } from "@/components/ui/route-label";
 import { site } from "@/content/site";
 import type { Trip } from "@/content/types";
+import { useI18n } from "@/i18n/client";
+import { localeInfo } from "@/i18n/config";
+import { fmt, plural } from "@/i18n/format";
+import type { Messages } from "@/i18n/messages/en";
+import { interpolate } from "@/i18n/rich";
 import { cn } from "@/lib/cn";
+import { estimateTotalUsd, formatCurrency } from "@/lib/currency";
 import {
   availableOptions,
   formatWeekdays,
@@ -29,7 +36,6 @@ import {
   whatsappUrl,
   type InquiryErrors,
 } from "@/lib/inquiry";
-import { estimateTotal, formatAmount, formatMoney } from "@/lib/money";
 import { useToday } from "@/lib/use-today";
 
 const FLEXIBLE = "flexible";
@@ -45,13 +51,14 @@ function useOptionFromUrl(): string | null {
   );
 }
 
-const dateLabel = (iso: string) =>
-  new Intl.DateTimeFormat("en-GB", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(parseIsoDate(iso));
+const LONG_DATE: Intl.DateTimeFormatOptions = {
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+};
+const dateLabel = (iso: string, intl: string) =>
+  new Intl.DateTimeFormat(intl, LONG_DATE).format(parseIsoDate(iso));
 
 interface BookingFormProps {
   trips: Trip[];
@@ -60,6 +67,9 @@ interface BookingFormProps {
   lockTrip?: boolean;
   /** Extra content under the summary card, e.g. a review. */
   asideFooter?: ReactNode;
+  /** Form copy in the page's language (`booking` in the translation files). */
+  copy: Messages["booking"];
+  replyPromise: string;
 }
 
 export function BookingForm({
@@ -67,7 +77,11 @@ export function BookingForm({
   defaultTrip,
   lockTrip = false,
   asideFooter,
+  copy: t,
+  replyPromise,
 }: BookingFormProps) {
+  const { locale, intl, m } = useI18n();
+  const dualText = useDualPriceText();
   const id = useId();
   const today = useToday();
   const urlOption = useOptionFromUrl();
@@ -93,10 +107,12 @@ export function BookingForm({
   );
 
   const option = options.find((o) => o.id === (optionId || urlOption)) ?? options[0];
-  const total = option ? estimateTotal(option, travellers) : undefined;
+  const total = option ? estimateTotalUsd(option, travellers) : undefined;
+  /** For the operator: always US dollars, in English. */
+  const usd = (amount: number) => formatCurrency(amount, "USD", "en-GB");
   const estimate =
     total !== undefined
-      ? `${formatAmount(total, "USD")} for ${travellers} ${travellers === 1 ? "traveller" : "travellers"}`
+      ? `${usd(total)} for ${travellers} ${travellers === 1 ? "traveller" : "travellers"}`
       : undefined;
 
   if (!trip) return null;
@@ -119,18 +135,23 @@ export function BookingForm({
       name: text("name"),
       email: text("email") || undefined,
       phone: text("phone") || undefined,
-      trip: trip!.name,
+      trip: trip!.operator.name,
       date: date && date !== FLEXIBLE ? date : undefined,
-      dateLabel: date && date !== FLEXIBLE ? dateLabel(date) : undefined,
+      dateLabel: date && date !== FLEXIBLE ? dateLabel(date, "en-GB") : undefined,
       travellers,
-      option: option ? `${option.label} (${formatMoney(option.perPerson)} per person)` : undefined,
+      option: option
+        ? `${trip!.operator.options[option.id] ?? option.label} (${usd(option.usd)} per person)`
+        : undefined,
       estimate,
-      extras: extras.length ? extras : undefined,
+      extras: extras.length
+        ? extras.map((e) => trip!.operator.extras[trip!.extras?.indexOf(e) ?? -1] ?? e)
+        : undefined,
       diet: text("diet") || undefined,
       message: text("message") || undefined,
+      language: locale === "en" ? undefined : localeInfo[locale].nativeName,
     };
 
-    const found = validateInquiry(input);
+    const found = validateInquiry(input, t.errors);
     setErrors(found);
     if (Object.keys(found).length > 0) {
       setSentVia(null);
@@ -142,7 +163,7 @@ export function BookingForm({
     if (channel === "whatsapp") {
       window.open(whatsappUrl(body), "_blank", "noopener,noreferrer");
     } else {
-      window.location.href = mailtoUrl(`Booking request: ${routeText(trip!.shortName)}`, body);
+      window.location.href = mailtoUrl(`Booking request: ${routeText(trip!.operator.name)}`, body);
     }
     setSentVia(channel);
   }
@@ -161,7 +182,7 @@ export function BookingForm({
             className="rounded-sm border-2 border-accent bg-surface p-5 focus:outline-none"
           >
             <h3 className="text-base text-accent">
-              Please check {errorList.length === 1 ? "one detail" : `${errorList.length} details`}
+              {plural(locale, t.checkCount, errorList.length)}
             </h3>
             <ul className="mt-2 list-disc space-y-1 pl-5">
               {errorList.map(([field, message]) => (
@@ -178,12 +199,12 @@ export function BookingForm({
         {/* 1. Trip */}
         <fieldset className="space-y-4">
           <legend className="font-display text-h3 text-heading">
-            <StepNumber n={1} /> Your trip
+            <StepNumber n={1} /> {t.stepTrip}
           </legend>
           {lockTrip ? (
             <p className="rounded-sm border border-line bg-surface p-4 text-heading">{trip.name}</p>
           ) : (
-            <Field label="Cruise or journey" htmlFor={fieldId("trip")} error={errors.trip}>
+            <Field label={t.tripField} htmlFor={fieldId("trip")} error={errors.trip}>
               {(d) => (
                 <>
                   <select
@@ -194,9 +215,9 @@ export function BookingForm({
                     onChange={(e) => changeTrip(e.target.value)}
                     className={inputClass(Boolean(errors.trip))}
                   >
-                    {trips.map((t) => (
-                      <option key={t.slug} value={t.slug}>
-                        {routeText(t.shortName)}
+                    {trips.map((option) => (
+                      <option key={option.slug} value={option.slug}>
+                        {routeText(option.shortName, m.common.routeTo)}
                       </option>
                     ))}
                   </select>
@@ -212,38 +233,37 @@ export function BookingForm({
             <StepNumber n={2} /> {trip.departures.label}
           </legend>
           <p className="-mt-2 text-muted">
-            {formatWeekdays(trip.departures.weekdays)}.{" "}
-            {trip.departures.note ?? "Pick a date or tell us you’re flexible."}
+            {formatWeekdays(trip.departures.weekdays, intl)}. {trip.departures.note ?? t.dateHint}
           </p>
           {today ? (
             <RadioGroup.Root
               value={date}
               onValueChange={setDate}
-              aria-label={`${trip.departures.label}: choose a date`}
+              aria-label={fmt(t.chooseDate, { label: trip.departures.label })}
               className="grid grid-cols-2 gap-3 sm:grid-cols-3"
             >
               {departures.map((iso) => {
                 const d = parseIsoDate(iso);
                 return (
-                  <ChoiceCard key={iso} value={iso} ariaLabel={dateLabel(iso)}>
+                  <ChoiceCard key={iso} value={iso} ariaLabel={dateLabel(iso, intl)}>
                     <span className="block text-sm text-muted">
-                      {d.toLocaleDateString("en-GB", { weekday: "long" })}
+                      {d.toLocaleDateString(intl, { weekday: "long" })}
                     </span>
                     <span className="block font-display text-xl text-heading">
-                      {d.toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
+                      {d.toLocaleDateString(intl, { day: "numeric", month: "short" })}
                     </span>
                   </ChoiceCard>
                 );
               })}
-              <ChoiceCard value={FLEXIBLE} ariaLabel="Another date or I’m flexible">
-                <span className="block text-sm text-muted">Another date</span>
-                <span className="block font-display text-xl text-heading">I’m flexible</span>
+              <ChoiceCard value={FLEXIBLE} ariaLabel={t.flexibleLabel}>
+                <span className="block text-sm text-muted">{t.anotherDate}</span>
+                <span className="block font-display text-xl text-heading">{t.flexible}</span>
               </ChoiceCard>
             </RadioGroup.Root>
           ) : (
             <p className="flex items-center gap-2 rounded-sm border border-line bg-surface p-4 text-muted">
               <CalendarDays aria-hidden="true" className="size-5" />
-              Loading the next departures…
+              {t.loadingDates}
             </p>
           )}
         </fieldset>
@@ -251,10 +271,10 @@ export function BookingForm({
         {/* 3. Travellers & option */}
         <fieldset className="space-y-5">
           <legend className="font-display text-h3 text-heading">
-            <StepNumber n={3} /> Travellers & stay
+            <StepNumber n={3} /> {t.stepTravellers}
           </legend>
           <Field
-            label="Number of travellers"
+            label={t.travellers}
             htmlFor={fieldId("travellers")}
             error={errors.travellers}
             hint={trip.minimum}
@@ -266,7 +286,7 @@ export function BookingForm({
                     type="button"
                     onClick={() => setTravellers((n) => Math.max(1, n - 1))}
                     disabled={travellers <= 1}
-                    aria-label="One traveller fewer"
+                    aria-label={t.fewer}
                     className="grid size-11 place-items-center rounded-sm text-heading hover:bg-surface-tint disabled:opacity-40"
                   >
                     <Minus aria-hidden="true" className="size-4" />
@@ -292,7 +312,7 @@ export function BookingForm({
                     type="button"
                     onClick={() => setTravellers((n) => Math.min(MAX_TRAVELLERS, n + 1))}
                     disabled={travellers >= MAX_TRAVELLERS}
-                    aria-label="One more traveller"
+                    aria-label={t.more}
                     className="grid size-11 place-items-center rounded-sm text-heading hover:bg-surface-tint disabled:opacity-40"
                   >
                     <Plus aria-hidden="true" className="size-4" />
@@ -305,7 +325,7 @@ export function BookingForm({
           {options.length > 1 ? (
             <div>
               <p id={fieldId("option-label")} className="mb-2 font-display text-sm text-heading">
-                Night in Pak Beng
+                {t.nightIn}
               </p>
               <RadioGroup.Root
                 value={option?.id}
@@ -317,11 +337,11 @@ export function BookingForm({
                   <ChoiceCard
                     key={o.id}
                     value={o.id}
-                    ariaLabel={`${o.label}, ${formatMoney(o.perPerson)} per person`}
+                    ariaLabel={`${o.label}, ${dualText(o.usd)} ${m.common.perPerson}`}
                   >
                     <span className="block font-display text-sm text-heading">{o.label}</span>
                     <span className="block text-sm text-muted">
-                      {formatMoney(o.perPerson)} per person
+                      <DualPrice usd={o.usd} /> {m.common.perPerson}
                     </span>
                   </ChoiceCard>
                 ))}
@@ -332,9 +352,9 @@ export function BookingForm({
           {trip.extras?.length ? (
             <div role="group" aria-labelledby={fieldId("extras-label")}>
               <p id={fieldId("extras-label")} className="font-display text-sm text-heading">
-                Also ask us about <span className="font-sans text-base text-muted">(optional)</span>
+                {t.alsoAsk} <span className="font-sans text-base text-muted">{t.optional}</span>
               </p>
-              <p className="text-sm text-muted">We’ll include it in our reply. No commitment.</p>
+              <p className="text-sm text-muted">{t.alsoAskHint}</p>
               <ul className="mt-3 space-y-2">
                 {trip.extras.map((extra, i) => {
                   const extraId = fieldId(`extra-${i}`);
@@ -369,10 +389,10 @@ export function BookingForm({
         {/* 4. Contact */}
         <fieldset className="space-y-5">
           <legend className="font-display text-h3 text-heading">
-            <StepNumber n={4} /> Your details
+            <StepNumber n={4} /> {t.stepDetails}
           </legend>
           <div className="grid gap-5 sm:grid-cols-2">
-            <Field label="Full name" htmlFor={fieldId("name")} error={errors.name} required>
+            <Field label={t.name} htmlFor={fieldId("name")} error={errors.name} required>
               {(d) => (
                 <>
                   <input
@@ -387,7 +407,12 @@ export function BookingForm({
                 </>
               )}
             </Field>
-            <Field label="Email" htmlFor={fieldId("email")} error={errors.email} optional>
+            <Field
+              label={t.email}
+              htmlFor={fieldId("email")}
+              error={errors.email}
+              optional={t.optional}
+            >
               {(d) => (
                 <>
                   <input
@@ -402,7 +427,7 @@ export function BookingForm({
                 </>
               )}
             </Field>
-            <Field label="Phone or WhatsApp" htmlFor={fieldId("phone")} optional>
+            <Field label={t.phone} htmlFor={fieldId("phone")} optional={t.optional}>
               {(d) => (
                 <>
                   <input
@@ -416,11 +441,7 @@ export function BookingForm({
                 </>
               )}
             </Field>
-            <Field
-              label="Dietary needs"
-              htmlFor={fieldId("diet")}
-              hint="Vegan, vegetarian and halal available"
-            >
+            <Field label={t.diet} htmlFor={fieldId("diet")} hint={t.dietHint}>
               {(d) => (
                 <>
                   <input
@@ -433,7 +454,7 @@ export function BookingForm({
               )}
             </Field>
           </div>
-          <Field label="Anything else?" htmlFor={fieldId("message")} optional>
+          <Field label={t.message} htmlFor={fieldId("message")} optional={t.optional}>
             {(d) => (
               <>
                 <textarea
@@ -450,32 +471,44 @@ export function BookingForm({
       </div>
 
       {/* Summary */}
-      <aside aria-label="Booking summary" className="lg:sticky lg:top-24 lg:self-start">
+      <aside aria-label={t.summary} className="lg:sticky lg:top-24 lg:self-start">
         <div className="rounded-md border border-line bg-surface p-6 shadow-sm">
-          <h3 className="text-h3">Your request</h3>
+          <h3 className="text-h3">{t.yourRequest}</h3>
           <dl className="mt-4 space-y-3 text-sm">
-            <SummaryRow term="Trip" value={<RouteLabel text={trip.shortName} />} />
+            <SummaryRow term={t.trip} value={<RouteLabel text={trip.shortName} />} />
             <SummaryRow
-              term="Date"
-              value={date === FLEXIBLE ? "Flexible" : date ? dateLabel(date) : "Not chosen yet"}
+              term={t.date}
+              value={
+                date === FLEXIBLE ? t.flexibleShort : date ? dateLabel(date, intl) : t.notChosen
+              }
             />
-            <SummaryRow term="Travellers" value={String(travellers)} />
-            {option ? <SummaryRow term="Option" value={option.label} /> : null}
-            {extras.length ? <SummaryRow term="Also asking" value={extras.join("; ")} /> : null}
+            <SummaryRow term={t.travellersShort} value={travellers.toLocaleString(intl)} />
+            {option ? <SummaryRow term={t.option} value={option.label} /> : null}
+            {extras.length ? <SummaryRow term={t.alsoAsking} value={extras.join("; ")} /> : null}
           </dl>
           <div className="mt-5 border-t border-line pt-5" aria-live="polite">
-            {estimate ? (
+            {total !== undefined ? (
               <>
-                <p className="text-sm text-muted">Estimated total</p>
-                <p className="font-display text-3xl text-heading">{formatAmount(total!, "USD")}</p>
-                <p className="mt-1 text-sm text-muted">
-                  Based on published prices
-                  {travellers === 1 && option?.singleSupplement ? ", incl. single supplement" : ""}.
-                  We confirm the final price.
+                <p className="text-sm text-muted">
+                  {t.estimate} {plural(locale, t.estimateFor, travellers)}
                 </p>
+                <p>
+                  <DualPrice
+                    usd={total}
+                    className="flex flex-wrap items-baseline gap-x-2"
+                    mainClassName="font-display text-3xl text-heading"
+                    secondaryClassName="text-sm text-muted"
+                  />
+                </p>
+                <p className="mt-1 text-sm text-muted">
+                  {t.basedOn}
+                  {travellers === 1 && option?.singleSupplementUsd ? t.inclSupplement : ""}.{" "}
+                  {t.weConfirm}
+                </p>
+                <CurrencyNote className="mt-2" />
               </>
             ) : (
-              <p className="text-muted">{trip.priceOnRequest ?? "We’ll send you a quote."}</p>
+              <p className="text-muted">{trip.priceOnRequest ?? t.quote}</p>
             )}
           </div>
 
@@ -489,7 +522,7 @@ export function BookingForm({
               className="w-full"
             >
               <MessageCircle aria-hidden="true" />
-              Send on WhatsApp
+              {t.sendWhatsApp}
             </Button>
             <Button
               type="submit"
@@ -500,12 +533,11 @@ export function BookingForm({
               className="w-full"
             >
               <Mail aria-hidden="true" />
-              Send by email
+              {t.sendEmail}
             </Button>
           </div>
           <p className="mt-4 text-sm text-muted">
-            Nothing is charged online. Your message opens in WhatsApp or your email app, ready to
-            send. {site.contact.replyPromise}
+            {t.nothingCharged} {replyPromise}
           </p>
 
           <div role="status" aria-live="polite">
@@ -513,12 +545,17 @@ export function BookingForm({
               <p className="mt-4 flex gap-2 rounded-sm bg-primary p-4 text-sm text-on-primary">
                 <Send aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-on-primary-muted" />
                 <span>
-                  Your request is ready in {sentVia === "whatsapp" ? "WhatsApp" : "your email app"}.
-                  Press send there. Nothing opened? Write to{" "}
-                  <a href={`mailto:${site.contact.email}`} className="underline">
-                    {site.contact.email}
-                  </a>{" "}
-                  or call {site.contact.phoneDisplay}.
+                  {fmt(t.readyIn, {
+                    channel: sentVia === "whatsapp" ? t.channelWhatsApp : t.channelEmail,
+                  })}{" "}
+                  {interpolate(t.nothingOpened, {
+                    email: (
+                      <a href={`mailto:${site.contact.email}`} className="underline">
+                        {site.contact.email}
+                      </a>
+                    ),
+                    phone: site.contact.phoneDisplay,
+                  })}
                 </span>
               </p>
             ) : null}
@@ -575,7 +612,8 @@ function Field({
   error?: string;
   hint?: string;
   required?: boolean;
-  optional?: boolean;
+  /** The word for "(optional)" when the field is optional. */
+  optional?: string;
   children: (describedBy: string | undefined) => React.ReactNode;
 }) {
   const describedBy =
@@ -592,7 +630,7 @@ function Field({
             *
           </span>
         ) : null}
-        {optional ? <span className="font-sans text-base text-muted"> (optional)</span> : null}
+        {optional ? <span className="font-sans text-base text-muted"> {optional}</span> : null}
       </label>
       {children(describedBy)}
       {hint ? (

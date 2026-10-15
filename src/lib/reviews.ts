@@ -1,14 +1,34 @@
 import { ratings, reviewPlatforms, reviews } from "@/content/reviews";
 import type { RatingSnapshot, Review, ReviewPlatform } from "@/content/types";
 
-const MONTHS = new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric" });
-const DAYS = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric" });
-
-/** "2025-11" → "November 2025"; "2025-11-03" → "3 November 2025". */
-export function formatReviewDate(value: string): string {
+/** "2025-11" → "November 2025"; "2025-11-03" → "3 November 2025" (in the page's locale). */
+export function formatReviewDate(value: string, intlLocale = "en-GB"): string {
   const [y, m, d] = value.split("-").map(Number);
   if (!y || !m) return value;
-  return d ? DAYS.format(new Date(y, m - 1, d)) : MONTHS.format(new Date(y, m - 1, 1));
+  return d
+    ? new Intl.DateTimeFormat(intlLocale, {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }).format(new Date(y, m - 1, d))
+    : new Intl.DateTimeFormat(intlLocale, { month: "long", year: "numeric" }).format(
+        new Date(y, m - 1, 1),
+      );
+}
+
+/** Language a review is written in ("en" when not set). */
+export function reviewLang(review: Review): string {
+  return review.lang ?? "en";
+}
+
+/** Name of a language in the page's language: ("nl", "fr-FR") → "néerlandais". */
+export function languageName(tag: string, intlLocale: string): string {
+  try {
+    const name = new Intl.DisplayNames([intlLocale], { type: "language" }).of(tag) ?? tag;
+    return name.charAt(0).toLocaleUpperCase(intlLocale) + name.slice(1);
+  } catch {
+    return tag;
+  }
 }
 
 export function platformName(platform: ReviewPlatform) {

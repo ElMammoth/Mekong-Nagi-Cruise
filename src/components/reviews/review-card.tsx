@@ -1,13 +1,17 @@
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Languages } from "lucide-react";
 import type { Review } from "@/content/types";
+import { localeInfo } from "@/i18n/config";
+import { fmt } from "@/i18n/index";
+import { getI18n } from "@/i18n/server";
 import { cn } from "@/lib/cn";
-import { formatReviewDate, platformName } from "@/lib/reviews";
+import { formatReviewDate, languageName, platformName, reviewLang } from "@/lib/reviews";
 import { PlatformLogo } from "./platform-logo";
 import { Stars } from "./stars";
 
 /**
- * A genuine review, quoted verbatim and credited (Tripadvisor review-row pattern):
- * initial + name, written date, stars, title, full text, source logo and link back.
+ * A genuine review, quoted verbatim in the language it was written in and credited
+ * (Tripadvisor review-row pattern): initial + name, written date, stars, language, title,
+ * full text, source logo and link back. Never translated.
  */
 export function ReviewCard({
   review,
@@ -19,7 +23,10 @@ export function ReviewCard({
   variant?: "row" | "card";
   className?: string;
 }) {
+  const { locale, m } = getI18n();
+  const intl = localeInfo[locale].intl;
   const source = platformName(review.platform);
+  const lang = reviewLang(review);
   return (
     <figure
       className={cn(
@@ -37,11 +44,20 @@ export function ReviewCard({
         </span>
         <span className="min-w-0">
           <span className="block font-display text-sm text-heading">{review.reviewer}</span>
-          <span className="block text-sm text-muted">Written {formatReviewDate(review.date)}</span>
+          <span className="block text-sm text-muted">
+            {fmt(m.reviews.written, { date: formatReviewDate(review.date, intl) })}
+          </span>
         </span>
       </figcaption>
-      <Stars rating={review.rating} />
-      <blockquote lang={review.lang} cite={review.url}>
+      <p className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <Stars rating={review.rating} />
+        <span className="inline-flex items-center gap-1 rounded-xs bg-surface-tint px-2 py-0.5 text-sm text-primary">
+          <Languages aria-hidden="true" className="size-3.5" />
+          <span className="sr-only">{m.reviews.language} </span>
+          {languageName(lang, intl)}
+        </span>
+      </p>
+      <blockquote lang={lang} cite={review.url}>
         {review.title ? (
           <p className="font-display text-base text-heading">{review.title}</p>
         ) : null}
@@ -52,7 +68,7 @@ export function ReviewCard({
         ))}
       </blockquote>
       <p className="flex flex-wrap items-center gap-2 text-sm text-muted">
-        <span>Review from</span>
+        <span>{m.reviews.reviewFrom}</span>
         <PlatformLogo platform={review.platform} />
         <a
           href={review.url}
@@ -60,9 +76,9 @@ export function ReviewCard({
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 rounded-sm text-primary underline-offset-4 hover:underline"
         >
-          Read on {source}
+          {fmt(m.reviews.readOn, { name: source })}
           <ExternalLink aria-hidden="true" className="size-3.5" />
-          <span className="sr-only">(opens in a new tab)</span>
+          <span className="sr-only">{m.common.opensNewTab}</span>
         </a>
       </p>
     </figure>

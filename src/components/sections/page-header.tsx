@@ -9,6 +9,8 @@ import type { PhotoSlot } from "@/content/types";
 import { cn } from "@/lib/cn";
 import { breadcrumbJsonLd } from "@/lib/structured-data";
 import { RouteLabel } from "@/components/ui/route-label";
+import { pathFor } from "@/i18n/routes";
+import { getI18n } from "@/i18n/server";
 
 interface Crumb {
   href: string;
@@ -31,17 +33,18 @@ export function PageHeader({
   photo?: PhotoSlot;
   children?: ReactNode;
 }) {
+  const { locale, m } = getI18n();
   const withPhoto = photo && isPhotoShown(photo);
   return (
     <div className="border-b border-line bg-surface-subtle">
-      {crumbs.length ? <JsonLd data={breadcrumbJsonLd(crumbs)} /> : null}
+      {crumbs.length ? <JsonLd data={breadcrumbJsonLd(locale, crumbs)} /> : null}
       <Container className="pt-8 pb-12 sm:pt-10 sm:pb-16">
         {crumbs.length ? (
-          <nav aria-label="Breadcrumb" className="mb-8">
+          <nav aria-label={m.common.breadcrumb} className="mb-8">
             <ol className="flex flex-wrap items-center gap-1 text-sm text-muted">
               <li>
-                <Link href="/" className="hover:text-primary hover:underline">
-                  Home
+                <Link href={pathFor(locale, "home")} className="hover:text-primary hover:underline">
+                  {m.common.home}
                 </Link>
               </li>
               {crumbs.map((c, i) => (

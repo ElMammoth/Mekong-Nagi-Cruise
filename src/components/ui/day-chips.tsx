@@ -1,4 +1,6 @@
 import type { Weekday } from "@/content/types";
+import { localeInfo } from "@/i18n/config";
+import { getLocale } from "@/i18n/server";
 import { formatWeekdays, sortWeekdays, weekdayName } from "@/lib/departures";
 import { cn } from "@/lib/cn";
 
@@ -12,9 +14,10 @@ export function DayChips({
   tone?: "light" | "dark";
   className?: string;
 }) {
+  const intl = localeInfo[getLocale()].intl;
   return (
     <span className={cn("inline-flex flex-wrap gap-1.5", className)}>
-      <span className="sr-only">{formatWeekdays(days)}</span>
+      <span className="sr-only">{formatWeekdays(days, intl)}</span>
       {sortWeekdays(days).map((d) => (
         <span
           key={d}
@@ -24,7 +27,7 @@ export function DayChips({
             tone === "dark" ? "bg-primary-hover text-on-primary" : "bg-surface-tint text-primary",
           )}
         >
-          {weekdayName(d, "short")}
+          {weekdayName(d, intl, "short")}
         </span>
       ))}
     </span>

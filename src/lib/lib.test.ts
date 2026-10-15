@@ -6,7 +6,8 @@ import {
   parseIsoDate,
   upcomingDepartures,
 } from "@/lib/departures";
-import { estimateTotal, formatMoney, fromPriceUSD } from "@/lib/money";
+import { estimateTotalUsd, fromPriceUsd } from "@/lib/currency";
+import { getTrips } from "@/content/localized";
 import { buildInquiryMessage, validateInquiry, whatsappUrl } from "@/lib/inquiry";
 
 const downstream = trips.find((t) => t.slug === "downstream")!;
@@ -19,9 +20,11 @@ describe("departures", () => {
     for (const d of dates) expect([0, 3, 5]).toContain(parseIsoDate(d).getDay());
   });
 
-  it("formats weekdays Monday-first", () => {
+  it("formats weekdays Monday-first, in each language", () => {
     expect(formatWeekdays([0, 3, 5])).toBe("Wednesday, Friday and Sunday");
-    expect(formatWeekdays([1, 4], "short")).toBe("Mon and Thu");
+    expect(formatWeekdays([1, 4], "en-GB", "short")).toBe("Mon and Thu");
+    expect(formatWeekdays([0, 3, 5], "fr-FR")).toBe("mercredi, vendredi et dimanche");
+    expect(formatWeekdays([1, 4], "de-DE")).toBe("Montag und Donnerstag");
   });
 
   it("hides seasonal offers outside their window", () => {
@@ -32,27 +35,22 @@ describe("departures", () => {
   });
 });
 
-describe("money", () => {
-  it("formats published prices", () => {
-    expect(formatMoney({ USD: 160, EUR: 150 })).toBe("US$160 · €150");
-    expect(formatMoney({ THB: 4900 })).toBe("THB 4,900");
-  });
-
+describe("prices", () => {
   it("finds the lowest price", () => {
-    expect(fromPriceUSD(downstream.options)).toBe(140);
+    expect(fromPriceUsd(downstream.options)).toBe(140);
   });
 
   it("adds the single supplement for one traveller only", () => {
     const standard = downstream.options.find((o) => o.id === "standard")!;
-    expect(estimateTotal(standard, 1)).toBe(180);
-    expect(estimateTotal(standard, 2)).toBe(320);
-    expect(estimateTotal(standard, 0)).toBeUndefined();
+    expect(estimateTotalUsd(standard, 1)).toBe(180);
+    expect(estimateTotalUsd(standard, 2)).toBe(320);
+    expect(estimateTotalUsd(standard, 0)).toBeUndefined();
   });
 });
 
 describe("content integrity", () => {
   it("every trip has a route, departures and an itinerary", () => {
-    for (const trip of trips) {
+    for (const trip of getTrips("en")) {
       expect(trip.route.length).toBeGreaterThan(1);
       expect(trip.departures.weekdays.length).toBeGreaterThan(0);
       expect(trip.itinerary.length).toBeGreaterThan(0);

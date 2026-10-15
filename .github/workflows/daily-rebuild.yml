@@ -1,0 +1,31 @@
+# Daily rebuild, so exchange rates (scripts/fetch-rates.mjs) and TikTok captions
+# (scripts/fetch-tiktok.mjs) refresh once a day. The site is a static export: each build
+# fetches fresh data and keeps the committed copies as the fallback.
+#
+# Setup: create a build hook in your host (Netlify: Site settings → Build hooks; Vercel:
+# Project → Settings → Git → Deploy Hooks; Cloudflare Pages: Settings → Builds → Deploy
+# hooks) and save its URL as the repository secret DEPLOY_HOOK_URL. Without the secret
+# the workflow does nothing.
+name: Daily rebuild (exchange rates)
+
+on:
+  schedule:
+    - cron: "17 1 * * *" # 01:17 UTC, after the ECB publishes the previous day's rates
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call the host's deploy hook
+        env:
+          DEPLOY_HOOK_URL: ${{ secrets.DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$DEPLOY_HOOK_URL" ]; then
+            echo "DEPLOY_HOOK_URL is not set: nothing to do."
+            exit 0
+          fi
+          curl --fail --silent --show-error --retry 3 -X POST "$DEPLOY_HOOK_URL"
+          echo "Rebuild requested."

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { photos } from "@/content/photos";
+import { photoSlots } from "@/content/photos";
+import { getPhotos } from "@/content/localized";
 import { ratings, reviews, reviewsRetrievedAt } from "@/content/reviews";
 import { trips } from "@/content/trips";
 import { buildInquiryMessage } from "@/lib/inquiry";
@@ -59,9 +60,11 @@ describe("reviews", () => {
     ).toContain("asOf is in the future");
   });
 
-  it("formats review dates", () => {
+  it("formats review dates in the page's language", () => {
     expect(formatReviewDate("2025-11")).toBe("November 2025");
     expect(formatReviewDate("2025-11-03")).toBe("3 November 2025");
+    expect(formatReviewDate("2025-11-03", "fr-FR")).toBe("3 novembre 2025");
+    expect(formatReviewDate("2025-11-03", "de-DE")).toBe("3. November 2025");
   });
 });
 
@@ -95,25 +98,27 @@ describe("packages and extras", () => {
 });
 
 describe("photo slots", () => {
-  const slots = Object.values(photos);
+  const slots = Object.values(photoSlots);
   it("use descriptive, unique, URL-safe file names", () => {
-    for (const slot of slots) {
-      expect(slot.file).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+){2,}$/);
-      expect(slot.alt.length).toBeGreaterThan(20);
-    }
+    for (const slot of slots) expect(slot.file).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+){2,}$/);
     expect(new Set(slots.map((s) => s.file)).size).toBe(slots.length);
+  });
+
+  it("have real alt text in English", () => {
+    for (const slot of Object.values(getPhotos("en"))) expect(slot.alt.length).toBeGreaterThan(20);
   });
 });
 
 describe("structured data", () => {
   it("builds a breadcrumb trail from Home", () => {
-    const data = breadcrumbJsonLd([{ href: "/where-to-stay/", label: "Where to stay" }]);
+    const data = breadcrumbJsonLd("en", [{ href: "/where-to-stay/", label: "Where to stay" }]);
     expect(data.itemListElement.map((i) => i.name)).toEqual(["Home", "Where to stay"]);
     expect(data.itemListElement[1]?.item).toBe("https://nagiofmekong.com/where-to-stay/");
   });
 
   it("marks up FAQs one to one", () => {
-    const data = faqJsonLd([{ question: "Q?", answer: "A." }]);
+    const data = faqJsonLd("fr", [{ question: "Q?", answer: "A." }]);
     expect(data.mainEntity[0]?.acceptedAnswer.text).toBe("A.");
+    expect(data.inLanguage).toBe("fr");
   });
 });
