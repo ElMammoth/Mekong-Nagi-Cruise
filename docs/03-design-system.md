@@ -144,10 +144,22 @@ colours mixed with white; hover states mix the flag colours with each other.
 
 ## Brand
 
-- **Logo:** the slow boat from the original logo, redrawn as clean SVG line art
-  (`BoatMark`) in flag blue, with no box. Where it stands alone it has
-  `role="img"` and the title "Nagi of Mekong", and the header link is named
-  "Nagi of Mekong, home".
+- **Logo:** the slow-boat mark in `src/brand/logo.svg`, the single source of truth (one
+  path in `currentColor`, no ids, classes or hard-coded colours). `npm run brand`
+  (part of `npm run build`) turns it into the inline `<Logo>` component's data and every
+  icon: `src/app/icon.svg`, `favicon.ico` (16/32/48), `apple-icon.png` (180),
+  `public/brand/icon-192.png` and `icon-512.png` (manifest), and `public/brand/logo.png`
+  (Organization structured data). The social card (`/opengraph-image`, 1200×630) is the
+  mark centred on white.
+  - `<Logo color="primary">` (flag blue) on white surfaces: header, mobile menu, 404 page.
+    `<Logo color="inverse">` (white) on blue: footer. Both are 14.6:1 (WCAG AAA). The
+    header is always white (it never turns transparent over the hero), so there is no
+    scroll state to check. No red variant: the mark is one shape and stays one colour.
+  - Height from tokens (`h-logo-sm` 1.75 rem, `h-logo` 2.25 rem, `h-logo-lg` 3 rem),
+    width from the aspect ratio (339.53 × 90.73), never stretched, no box around it.
+  - It has `role="img"` and the name "Nagi of Mekong"; the header link is named
+    "Nagi of Mekong, home". Decorative copies (CTA band watermark, boat on the route map)
+    are hidden from assistive tech.
 - **Route map:** the river in blue on a blue-tint bank, red stop rings, and a white disc
   for the sun (a nod to the flag's disc).
 
@@ -166,7 +178,6 @@ colours mixed with white; hover states mix the flag colours with each other.
 | `WhyNagi`                                                                                 | —                                                         | Three claims from the offer brief, each with a proof line                                                      |
 | `TikTokVideos`                                                                            | TikTok official player (`player/v1`)                      | After consent only; mounts near the viewport, one video plays at a time (the most visible, muted), 9:16 frames |
 | `ConsentBanner`                                                                           | Radix `Switch`                                            | Accept / Reject (equal weight) / Customize; non-modal, first in tab order                                      |
-| `CurvedInput`, `NewsletterForm`                                                           | React Bits Curved Input (adapted)                         | Footer sign-up: real input and submit button under the arc, token colours                                      |
 | `BookingForm`                                                                             | Radix `RadioGroup`, `Checkbox`                            | Error summary, estimate, extras; details on a subgrid (see Forms)                                              |
 | `RouteLabel`                                                                              | —                                                         | "→" as an icon, read as "to"                                                                                   |
 

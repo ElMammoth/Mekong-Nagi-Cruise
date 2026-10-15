@@ -7,7 +7,7 @@ const zh: Messages = {
     siteDescription:
       "从会晒（清孔对岸）经北本到琅勃拉邦，湄公河上两天，酒店到酒店全程安排：接送、过境协助、午餐和酒店均已包含。{from} 起。",
     tagline: "舒适、安心地畅游壮丽的湄公河",
-    ogAlt: "Nagi of Mekong：从会晒到琅勃拉邦的湄公河慢船游轮",
+    ogAlt: "Nagi of Mekong 标志：一艘湄公河慢船",
     notFoundTitle: "页面不存在",
   },
 
@@ -221,20 +221,6 @@ const zh: Messages = {
         proof: "每人 {price} 起。",
       },
     ],
-  },
-
-  newsletter: {
-    title: "湄公河旅行资讯",
-    intro: "不定期发送邮件：新的出发日期、季节优惠和河上的最新消息。可随时退订。",
-    label: "您的电子邮箱",
-    placeholder: "name@example.com",
-    submit: "订阅",
-    consent: "订阅即表示您同意接收这些邮件。请阅读我们的<privacy>隐私政策</privacy>。",
-    sending: "正在为您订阅…",
-    success: "谢谢。请查看收件箱并确认您的邮箱地址。",
-    errorInvalid: "请输入有效的电子邮箱地址，例如 name@example.com。",
-    errorFailed: "抱歉，订阅未成功。请重试，或写信至 {email}。",
-    honeypot: "请勿填写此栏",
   },
 
   tiktok: {
@@ -514,7 +500,6 @@ const zh: Messages = {
     heading: "查询空位",
     intro: "把您的需求发给我们：免费，也不构成任何承诺。",
     phoneWhatsApp: "电话 / WhatsApp",
-    call: "拨打电话",
     email: "电子邮件",
     hours: "服务时间",
     basedIn: "所在地",
@@ -544,10 +529,6 @@ const zh: Messages = {
       {
         title: "预订表单",
         text: "预订表单不会把您的信息发送到任何服务器。当您点击“通过 WhatsApp 发送”或“通过邮件发送”时，消息会在您的浏览器中生成，并在 WhatsApp 或您的邮件应用中打开。在您点击发送之前，不会发出任何内容。",
-      },
-      {
-        title: "电子邮件旅行资讯",
-        text: "如果您在页脚订阅旅行资讯，您的电子邮箱地址和页面语言会发送给我们使用的邮件服务 Brevo（Sendinblue SAS，法国），用于向您发送这些邮件。Brevo 会先给您发送一封确认邮件，请点击其中的链接确认地址。这些信息不会用于其他用途。每封邮件都附有退订链接，您也可以随时要求我们删除您的地址。",
       },
       {
         title: "当您联系我们时",

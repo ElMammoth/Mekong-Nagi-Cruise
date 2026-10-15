@@ -1,5 +1,5 @@
 import { getI18n } from "@/i18n/server";
-import { BoatMark } from "./boat-mark";
+import { Logo } from "./logo";
 
 /**
  * Illustrated route from the original logo: Houay Xai → Pak Beng → Luang Prabang.
@@ -67,7 +67,7 @@ export function RouteMap({ className }: { className?: string }) {
 
         {/* Boat on day two */}
         <g transform="translate(362 290) rotate(-6)" className="text-heading" aria-hidden="true">
-          <BoatMark width="100" height="16" strokeWidth="5" />
+          <Logo decorative color="inherit" size="none" width="100" height="27" />
         </g>
 
         {/* Stops */}

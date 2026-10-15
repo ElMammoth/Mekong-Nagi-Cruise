@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "photos": "node scripts/build-photos.mjs",
+    "brand": "node scripts/build-brand.mjs",
     "predev": "npm run photos",
     "dev": "next dev",
     "prebuild": "npm run data",
@@ -23,7 +24,7 @@
     "test:contrast": "node scripts/check-contrast.mjs",
     "rates": "node scripts/fetch-rates.mjs",
     "tiktok": "node scripts/fetch-tiktok.mjs",
-    "data": "npm run photos && npm run rates && npm run tiktok",
+    "data": "npm run brand && npm run photos && npm run rates && npm run tiktok",
     "test:i18n": "node scripts/check-hreflang.mjs",
     "test:rates": "node scripts/check-rates.mjs",
     "test:embeds": "node scripts/check-embeds.mjs",

@@ -7,7 +7,7 @@ const fr: Messages = {
     siteDescription:
       "Deux jours sur le Mékong, de Houay Xai (Chiang Khong) à Luang Prabang via Pak Beng, de votre hôtel à votre hôtel : transferts, aide à la frontière, déjeuners et nuit d’hôtel compris. À partir de {from}.",
     tagline: "Naviguez sur le majestueux Mékong en tout confort et en toute sécurité",
-    ogAlt: "Nagi of Mekong : croisières en slow boat de Houay Xai à Luang Prabang",
+    ogAlt: "Logo de Nagi of Mekong : un slow boat du Mékong",
     notFoundTitle: "Page introuvable",
   },
 
@@ -251,22 +251,6 @@ const fr: Messages = {
         proof: "À partir de {price} par personne.",
       },
     ],
-  },
-
-  newsletter: {
-    title: "Nouvelles du Mékong",
-    intro:
-      "Des e-mails de temps en temps : nouvelles dates de départ, offres de saison et nouvelles du fleuve. Désinscription à tout moment.",
-    label: "Votre adresse e-mail",
-    placeholder: "nom@exemple.com",
-    submit: "S’inscrire",
-    consent:
-      "En vous inscrivant, vous acceptez de recevoir ces e-mails. Consultez notre <privacy>politique de confidentialité</privacy>.",
-    sending: "Inscription en cours…",
-    success: "Merci. Vérifiez votre boîte de réception pour confirmer votre adresse.",
-    errorInvalid: "Saisissez une adresse e-mail valide, par exemple nom@exemple.com.",
-    errorFailed: "Désolés, cela n’a pas fonctionné. Réessayez ou écrivez-nous à {email}.",
-    honeypot: "Laissez ce champ vide",
   },
 
   tiktok: {
@@ -569,7 +553,6 @@ const fr: Messages = {
     heading: "Vérifier les dates",
     intro: "Envoyez-nous votre demande : c’est gratuit et sans engagement.",
     phoneWhatsApp: "Téléphone / WhatsApp",
-    call: "Appeler",
     email: "E-mail",
     hours: "Horaires",
     basedIn: "Basés à",
@@ -599,10 +582,6 @@ const fr: Messages = {
       {
         title: "Le formulaire de réservation",
         text: "Le formulaire n’envoie vos informations à aucun serveur. Quand vous appuyez sur « Envoyer sur WhatsApp » ou « Envoyer par e-mail », votre message est préparé dans votre navigateur puis ouvert dans WhatsApp ou votre messagerie. Rien n’est envoyé tant que vous n’appuyez pas sur envoyer.",
-      },
-      {
-        title: "Les nouvelles par e-mail",
-        text: "Si vous vous inscrivez aux nouvelles en bas de page, votre adresse e-mail et la langue de la page sont transmises à Brevo (Sendinblue SAS, France), le service d’e-mails que nous utilisons, pour qu’il vous envoie ces messages. Brevo vous envoie d’abord un lien pour confirmer votre adresse. Elles ne servent à rien d’autre. Chaque e-mail contient un lien de désinscription, et vous pouvez nous demander à tout moment de supprimer votre adresse.",
       },
       {
         title: "Quand vous nous contactez",

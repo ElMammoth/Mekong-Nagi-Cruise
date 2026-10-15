@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NavigationMenu } from "radix-ui";
 import { ChevronDown } from "lucide-react";
-import { BoatMark } from "@/components/brand/boat-mark";
+import { Logo } from "@/components/brand/logo";
 import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { RouteLabel } from "@/components/ui/route-label";
@@ -43,7 +43,7 @@ export function SiteHeader({ nav }: { nav: Navigation }) {
           className="-m-1 rounded-sm p-1 text-primary"
           aria-label={fmt(m.nav.homeLabel, { name: site.name })}
         >
-          <BoatMark title={site.name} className="h-7 w-auto sm:h-8 xl:h-6" />
+          <Logo size="header" />
         </Link>
 
         <NavigationMenu.Root aria-label={m.nav.main} className="relative hidden xl:block">

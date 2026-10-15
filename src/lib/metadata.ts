@@ -9,7 +9,7 @@ import { availableOptions } from "@/lib/departures";
 import { token } from "@/lib/tokens";
 
 export const rootViewport: Viewport = {
-  themeColor: token("color-canvas"),
+  themeColor: token("color-primary"),
   width: "device-width",
   initialScale: 1,
 };

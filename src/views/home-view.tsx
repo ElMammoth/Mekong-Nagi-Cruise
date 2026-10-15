@@ -11,7 +11,7 @@ import { CtaBand } from "@/components/sections/cta-band";
 import { FaqSection } from "@/components/sections/faq-section";
 import { HandledForYou } from "@/components/sections/handled-for-you";
 import { Packages } from "@/components/sections/packages";
-import { TripCard } from "@/components/sections/trip-card";
+import { TripCard, tripCardItemClass, tripCardListClass } from "@/components/sections/trip-card";
 import { WhyNagi } from "@/components/sections/why-nagi";
 import { TikTokSection } from "@/components/tiktok/tiktok-section";
 import { ButtonAnchor, ButtonLink } from "@/components/ui/button";
@@ -289,11 +289,11 @@ export function HomeView() {
               <ArrowRight aria-hidden="true" className="size-4" />
             </Link>
           </div>
-          <ul data-reveal="group" className="mt-12 grid gap-6 lg:grid-cols-3">
+          <ul data-reveal="group" className={`mt-12 ${tripCardListClass}`}>
             {getTrips(locale)
               .filter((trip) => trip.slug !== "downstream")
               .map((trip) => (
-                <li key={trip.slug}>
+                <li key={trip.slug} className={tripCardItemClass}>
                   <TripCard trip={trip} />
                 </li>
               ))}

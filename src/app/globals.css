@@ -129,6 +129,9 @@
   --container-note: 18rem;
   --container-fact: 12rem;
   --container-mark: 28rem;
+  --spacing-logo-sm: 1.75rem; /* logo height: phone navbar, mobile menu */
+  --spacing-logo: 2.25rem; /* logo height: navbar */
+  --spacing-logo-lg: 3rem; /* logo height: footer */
   --spacing-tiktok: 15rem; /* TikTok video width in the mobile scroll row (9:16 frame) */
   --spacing-field: 3rem; /* every single-line form control: inputs, selects, steppers */
   --container-form: 48rem; /* the booking/contact details block */

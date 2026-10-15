@@ -18,7 +18,7 @@ const en = {
     siteDescription:
       "Two days on the Mekong from Houay Xai (Chiang Khong) to Luang Prabang via Pak Beng, door to door: pick-up, border help, lunch and hotel included. From {from}.",
     tagline: "Cruise the majestic Mekong river in comfort and safety",
-    ogAlt: "Nagi of Mekong: slow-boat cruises from Houay Xai to Luang Prabang",
+    ogAlt: "Nagi of Mekong logo: a Mekong slow boat",
     notFoundTitle: "Page not found",
   },
 
@@ -261,22 +261,6 @@ const en = {
         proof: "From {price} per person.",
       },
     ],
-  },
-
-  newsletter: {
-    title: "Travel updates from the Mekong",
-    intro:
-      "Occasional emails with new departure dates, seasonal offers and news from the river. Unsubscribe at any time.",
-    label: "Your email address",
-    placeholder: "name@example.com",
-    submit: "Sign up",
-    consent:
-      "By signing up, you agree to receive these emails. Read our <privacy>privacy policy</privacy>.",
-    sending: "Signing you up…",
-    success: "Thank you. Please check your inbox and confirm your address.",
-    errorInvalid: "Please enter a valid email address, like name@example.com.",
-    errorFailed: "Sorry, that didn’t work. Please try again, or write to us at {email}.",
-    honeypot: "Leave this field empty",
   },
 
   tiktok: {
@@ -572,7 +556,6 @@ const en = {
     heading: "Check availability",
     intro: "Send us your request: it’s free and doesn’t commit you.",
     phoneWhatsApp: "Phone / WhatsApp",
-    call: "Call",
     email: "Email",
     hours: "Hours",
     basedIn: "Based in",
@@ -602,10 +585,6 @@ const en = {
       {
         title: "The booking form",
         text: "The booking form does not send your details to a server. When you press “Send on WhatsApp” or “Send by email”, your message is prepared in your browser and opened in WhatsApp or your own email app. Nothing is sent until you press send there.",
-      },
-      {
-        title: "Travel updates by email",
-        text: "If you sign up for travel updates in the footer, your email address and the language of the page are sent to Brevo (Sendinblue SAS, France), the email service we use, so it can send you those emails. Brevo first emails you a link to confirm your address. They are used for nothing else. Every email has an unsubscribe link, and you can ask us to delete your address at any time.",
       },
       {
         title: "When you contact us",

@@ -25,20 +25,15 @@ outcome first. None was machine-translated at runtime.
 
 ## New in October 2026: please review in every language
 
-These strings were added with the TikTok, form, FAQ, "Why" and newsletter changes, and were
+These strings were added with the TikTok, form, FAQ and "Why" changes, and were
 translated without a native speaker. They are flagged until someone confirms them:
 
 - `why.*`: the "Why Nagi of Mekong" section. Keep the claims factual; the proof lines
   must stay true for every package.
-- `newsletter.*`: the footer sign-up. `submit` must stay short (it sits on the curved
-  button). `consent` is a legal sentence: check it reads as clear consent.
 - `tiktok.consentText`, `consentButton`, `autoNote`, `withdraw`, `failed`, `rowLabel`,
   `previous`, `next`.
-- `privacy.description`, the TikTok section of `privacy.sections` (rewritten for the
-  consent flow) and the new "Travel updates by email" section, which names Brevo
-  (Sendinblue SAS, France) and its confirmation email. **Legal review recommended.**
-- `newsletter.success` says "check your inbox and confirm": correct only while the Brevo
-  form has double opt-in on.
+- `privacy.description` and the TikTok section of `privacy.sections` (rewritten for the
+  consent flow). **Legal review recommended.**
 - `booking.phoneHint` (each language uses its own country code as the example),
   `booking.required` (screen readers only), `faqPage.listLabel` (screen readers only).
 

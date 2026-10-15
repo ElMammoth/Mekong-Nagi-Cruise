@@ -116,5 +116,6 @@ unreachable and are **not** used.
 
 ## Assets
 
-- `public/brand/logo-original.jpg` — the original logo (only image retrievable; boat photos are lazy-loaded
-  and gated). Photo slots in the new site are documented in the README so the owner can drop photos in.
+- The original logo image was replaced in October 2026 by the owner's vector mark,
+  `src/brand/logo.svg` (see docs/03, Brand). Boat photos on the old site were lazy-loaded
+  and gated. Photo slots in the new site are documented in the README so the owner can drop photos in.

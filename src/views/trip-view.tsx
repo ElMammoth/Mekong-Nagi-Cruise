@@ -14,7 +14,7 @@ import { NextSteps } from "@/components/sections/next-steps";
 import { Packages } from "@/components/sections/packages";
 import { PageHeader } from "@/components/sections/page-header";
 import { PriceList } from "@/components/sections/price-list";
-import { TripCard } from "@/components/sections/trip-card";
+import { TripCard, tripCardItemClass, tripCardListClass } from "@/components/sections/trip-card";
 import { TikTokSection } from "@/components/tiktok/tiktok-section";
 import { ButtonAnchor, buttonClasses } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -232,9 +232,9 @@ export function TripView({ slug }: { slug: TripSlug }) {
       <section aria-labelledby="more-title" className="pt-section">
         <Container>
           <SectionHeading id="more-title" eyebrow={t.moreEyebrow} title={t.moreTitle} />
-          <ul data-reveal="group" className="mt-10 grid gap-6 lg:grid-cols-3">
+          <ul data-reveal="group" className={`mt-10 ${tripCardListClass}`}>
             {others.map((other) => (
-              <li key={other.slug}>
+              <li key={other.slug} className={tripCardItemClass}>
                 <TripCard trip={other} />
               </li>
             ))}

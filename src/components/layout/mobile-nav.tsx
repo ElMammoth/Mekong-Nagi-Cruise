@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Dialog, VisuallyHidden } from "radix-ui";
 import { Menu, MessageCircle, Phone, X } from "lucide-react";
-import { BoatMark } from "@/components/brand/boat-mark";
+import { Logo } from "@/components/brand/logo";
 import { ButtonAnchor, ButtonLink } from "@/components/ui/button";
 import { RouteLabel } from "@/components/ui/route-label";
 import { site } from "@/content/site";
@@ -37,7 +37,7 @@ export function MobileNav({ nav }: { nav: Navigation }) {
             <Dialog.Description>{m.nav.menuDescription}</Dialog.Description>
           </VisuallyHidden.Root>
           <div className="flex h-header items-center justify-between border-b border-line px-gutter">
-            <BoatMark title={site.name} className="h-7 w-auto text-primary" />
+            <Logo size="sm" />
             <Dialog.Close className={iconButton} aria-label={m.nav.closeMenu}>
               <X aria-hidden="true" className="size-5" />
             </Dialog.Close>

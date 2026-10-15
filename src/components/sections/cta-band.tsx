@@ -1,5 +1,5 @@
 import { MessageCircle, Phone } from "lucide-react";
-import { BoatMark } from "@/components/brand/boat-mark";
+import { Logo } from "@/components/brand/logo";
 import { BookingReview } from "@/components/reviews/reviews-section";
 import { ButtonAnchor, ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -30,8 +30,10 @@ export function CtaBand({
     <section data-reveal aria-labelledby="cta-title" className="py-section">
       <Container>
         <div className="relative overflow-hidden rounded-md bg-primary px-6 py-12 text-on-primary-muted inverse sm:px-12 sm:py-16">
-          <BoatMark
-            aria-hidden="true"
+          <Logo
+            decorative
+            color="inherit"
+            size="none"
             className="pointer-events-none absolute -right-8 bottom-6 w-mark text-primary-hover"
           />
           <div className="relative grid gap-12 lg:grid-cols-cta lg:items-start">

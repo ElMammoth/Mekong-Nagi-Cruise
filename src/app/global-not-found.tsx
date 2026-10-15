@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BoatMark } from "@/components/brand/boat-mark";
+import { Logo } from "@/components/brand/logo";
 import { buttonClasses } from "@/components/ui/button";
 import { site } from "@/content/site";
 import { localeInfo, locales } from "@/i18n/config";
@@ -27,7 +27,7 @@ export default function GlobalNotFound() {
     <html lang="en" className={`${poppins.variable} ${sourceSans.variable}`}>
       <body className="flex min-h-dvh flex-col">
         <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col items-start px-gutter py-24 sm:px-6 sm:py-32 lg:px-8">
-          <BoatMark className="w-24 text-accent" />
+          <Logo />
           <h1 className="mt-6 text-h1">{m.notFound.title}</h1>
           <p className="mt-4 max-w-xl text-lead text-muted">{m.notFound.text}</p>
           <div className="mt-8 flex flex-wrap gap-3">

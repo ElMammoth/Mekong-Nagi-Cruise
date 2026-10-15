@@ -7,7 +7,7 @@ const es: Messages = {
     siteDescription:
       "Dos días por el Mekong de Houay Xai (Chiang Khong) a Luang Prabang pasando por Pak Beng, de hotel a hotel: recogida, ayuda en la frontera, comidas y hotel incluidos. Desde {from}.",
     tagline: "Navega por el majestuoso Mekong con comodidad y seguridad",
-    ogAlt: "Nagi of Mekong: cruceros en slow boat de Houay Xai a Luang Prabang",
+    ogAlt: "Logotipo de Nagi of Mekong: un slow boat del Mekong",
     notFoundTitle: "Página no encontrada",
   },
 
@@ -250,22 +250,6 @@ const es: Messages = {
         proof: "Desde {price} por persona.",
       },
     ],
-  },
-
-  newsletter: {
-    title: "Novedades del Mekong",
-    intro:
-      "Correos ocasionales con nuevas fechas de salida, ofertas de temporada y noticias del río. Puedes darte de baja cuando quieras.",
-    label: "Tu correo electrónico",
-    placeholder: "nombre@ejemplo.com",
-    submit: "Suscribirme",
-    consent:
-      "Al suscribirte, aceptas recibir estos correos. Consulta nuestra <privacy>política de privacidad</privacy>.",
-    sending: "Suscribiéndote…",
-    success: "Gracias. Revisa tu bandeja de entrada y confirma tu dirección.",
-    errorInvalid: "Introduce un correo electrónico válido, como nombre@ejemplo.com.",
-    errorFailed: "Lo sentimos, no ha funcionado. Inténtalo de nuevo o escríbenos a {email}.",
-    honeypot: "Deja este campo vacío",
   },
 
   tiktok: {
@@ -569,7 +553,6 @@ const es: Messages = {
     heading: "Ver disponibilidad",
     intro: "Envíanos tu solicitud: es gratis y no te compromete a nada.",
     phoneWhatsApp: "Teléfono / WhatsApp",
-    call: "Llamar",
     email: "Correo",
     hours: "Horario",
     basedIn: "Estamos en",
@@ -599,10 +582,6 @@ const es: Messages = {
       {
         title: "El formulario de reserva",
         text: "El formulario no envía tus datos a ningún servidor. Cuando pulsas «Enviar por WhatsApp» o «Enviar por correo», tu mensaje se prepara en tu navegador y se abre en WhatsApp o en tu aplicación de correo. No se envía nada hasta que pulsas enviar allí.",
-      },
-      {
-        title: "Novedades por correo",
-        text: "Si te suscribes a las novedades en el pie de página, tu correo electrónico y el idioma de la página se envían a Brevo (Sendinblue SAS, Francia), el servicio de correo que usamos, para que te mande esos mensajes. Brevo te envía primero un enlace para confirmar tu dirección. No se usan para nada más. Cada correo incluye un enlace para darte de baja, y puedes pedirnos que borremos tu dirección en cualquier momento.",
       },
       {
         title: "Cuando nos escribes",

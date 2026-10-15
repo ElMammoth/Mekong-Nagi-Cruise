@@ -157,38 +157,6 @@ order, and not in the static HTML (no CLS or LCP impact). The only optional cate
 TikTok: the site has no analytics or trackers. `npm run test:embeds` checks that nothing
 from TikTok, and no cookie, is loaded before consent.
 
-## Newsletter (travel updates)
-
-The footer has a sign-up form, using React Bits' Curved Input (bend −20, token colours). It
-has a visible label, email validation, a consent line linking to the privacy policy, a
-honeypot, and results announced to screen readers. Emails are never stored in this
-repository or the build: they go straight from the visitor's browser to **Brevo**.
-
-A static site can't hold an API key, so the form posts to a **Brevo-hosted sign-up form**,
-the same way Brevo's own embed script does (`src/lib/newsletter/brevo.ts`). Set up once:
-
-1. In Brevo: **Contacts → Lists**, create a list (e.g. "Travel updates").
-2. **Contacts → Forms → Create a subscription form**, linked to that list:
-   - keep a single **EMAIL** field (the site's form sends only the address and the language);
-   - turn **reCAPTCHA off** (the site has its own honeypot);
-   - turn **double opt-in on** and pick a confirmation template. The site's success message
-     says "check your inbox and confirm", and the privacy page says Brevo sends a
-     confirmation link, so keep these in step if you change it.
-3. **Share** the form and copy its action URL (`https://….sibforms.com/serve/…`, in the HTML
-   embed code: `<form … action="…">`).
-4. Set the build variables on your host (or in `.env.local` for local builds; see
-   `.env.example`):
-
-```bash
-NEXT_PUBLIC_NEWSLETTER_PROVIDER=brevo
-NEXT_PUBLIC_BREVO_FORM_URL=https://xxxx.sibforms.com/serve/MUIF…
-```
-
-The build fails if the provider is "brevo" and the URL isn't a Brevo form URL. Without the
-variables the form uses a **stub** that says "thank you" and sends nothing (fine for
-previews). The privacy page names Brevo (Sendinblue SAS, France); have it checked before
-launch.
-
 ## Reviews
 
 Only genuine reviews, copied exactly, with the reviewer's name, the date and a link back.

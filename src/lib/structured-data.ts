@@ -35,7 +35,7 @@ export function organizationJsonLd(locale: Locale) {
         "@id": orgId,
         name: site.name,
         url: site.url,
-        logo: `${site.url}/brand/logo-original.jpg`,
+        logo: `${site.url}/brand/logo.png`,
         email: site.contact.email,
         telephone: site.contact.phoneHref.replace("tel:", ""),
         description: m.meta.tagline,
