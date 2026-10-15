@@ -1,8 +1,13 @@
 import { Info, Utensils } from "lucide-react";
 import type { ItineraryDay } from "@/content/types";
+import { getI18n } from "@/i18n/server";
 
-/** Day-by-day timeline. The spine echoes the river line of the brand. */
+/**
+ * Day-by-day timeline. The spine echoes the river line of the brand; markers sit exactly
+ * on it (`.timeline` in globals.css: one marker size, one line width, centred by transform).
+ */
 export function Itinerary({ days }: { days: readonly ItineraryDay[] }) {
+  const { m } = getI18n();
   return (
     <ol className="space-y-10">
       {days.map((day) => (
@@ -17,18 +22,17 @@ export function Itinerary({ days }: { days: readonly ItineraryDay[] }) {
             {day.meals ? (
               <p className="mt-1 inline-flex items-center gap-1.5 text-sm text-muted">
                 <Utensils aria-hidden="true" className="size-4" />
-                <span className="sr-only">Meals: </span>
+                <span className="sr-only">{m.common.meals} </span>
                 {day.meals}
               </p>
             ) : null}
-            <ol className="relative mt-5 space-y-5 border-l-2 border-line-strong pl-6">
+            <ol className="timeline mt-5">
               {day.stops.map((stop) => (
-                <li key={stop.title} className="relative">
-                  <span
-                    aria-hidden="true"
-                    className="absolute top-2 -left-7 size-2.5 rounded-xs bg-accent"
-                  />
-                  <p className="font-display text-base text-heading">{stop.title}</p>
+                <li key={stop.title}>
+                  <p className="timeline-title font-display text-base text-heading">
+                    <span aria-hidden="true" className="timeline-marker rounded-xs bg-accent" />
+                    {stop.title}
+                  </p>
                   {stop.text ? <p className="mt-0.5 text-muted">{stop.text}</p> : null}
                 </li>
               ))}

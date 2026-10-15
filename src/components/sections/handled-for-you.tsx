@@ -1,14 +1,14 @@
 import type { ReactNode } from "react";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { site } from "@/content/site";
+import { getI18n } from "@/i18n/server";
 
 /** Green check mark for an included item; labelled, so it never relies on colour alone. */
-function IncludedMark() {
+function IncludedMark({ label }: { label: string }) {
   return (
     <svg
       viewBox="0 0 24 24"
       role="img"
-      aria-label="Included"
+      aria-label={label}
       focusable="false"
       className="size-6 shrink-0"
     >
@@ -35,19 +35,17 @@ function IncludedMark() {
  */
 export function HandledForYou({
   id = "handled-title",
-  title = "Everything between your hotel and Luang Prabang, handled",
-  intro = "Travelling the river on your own means sorting out each of these yourself. On the Nagi of Mekong they’re part of the trip.",
   action,
 }: {
   id?: string;
-  title?: string;
-  intro?: string;
   action?: ReactNode;
 }) {
+  const { m } = getI18n();
+  const copy = m.handled;
   return (
     <section aria-labelledby={id} className="grid gap-10 lg:grid-cols-intro lg:gap-16">
       <div>
-        <SectionHeading id={id} eyebrow="Door to door" title={title} intro={intro} />
+        <SectionHeading id={id} eyebrow={copy.eyebrow} title={copy.title} intro={copy.intro} />
         {action ? <div className="mt-8">{action}</div> : null}
       </div>
       <div className="overflow-hidden rounded-md border border-line bg-surface shadow-sm">
@@ -55,23 +53,23 @@ export function HandledForYou({
           aria-hidden="true"
           className="hidden grid-cols-compare border-b border-line font-display text-eyebrow uppercase sm:grid"
         >
-          <span className="px-6 py-3 text-muted">On your own, you’d sort out…</span>
-          <span className="border-l border-line px-6 py-3 text-heading">With us</span>
+          <span className="px-6 py-3 text-muted">{copy.onYourOwn}</span>
+          <span className="border-l border-line px-6 py-3 text-heading">{copy.withUs}</span>
         </div>
         <ul className="divide-y divide-line sm:grid sm:auto-rows-fr">
-          {site.handledForYou.map((item) => (
+          {copy.rows.map((item) => (
             <li
               key={item.task}
               className="grid gap-2 px-5 py-4 sm:grid-cols-compare sm:gap-0 sm:p-0"
             >
               <p className="flex items-center text-sm text-muted sm:px-6 sm:py-4 sm:text-base">
                 <span>
-                  <span className="sr-only">On your own: </span>
+                  <span className="sr-only">{copy.onYourOwnSr} </span>
                   {item.task}
                 </span>
               </p>
               <p className="flex items-center gap-3 text-heading sm:border-l sm:border-line sm:px-6 sm:py-4">
-                <IncludedMark />
+                <IncludedMark label={m.common.included} />
                 <span>{item.handled}</span>
               </p>
             </li>

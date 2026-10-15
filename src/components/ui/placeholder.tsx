@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
+import { getI18n } from "@/i18n/server";
 
 /**
  * Clearly marked "content goes here" box, shown only while `showPlaceholders` is on.
@@ -16,6 +17,7 @@ export function Placeholder({
   tone?: "light" | "dark";
   className?: string;
 }) {
+  const { m } = getI18n();
   return (
     <div
       data-placeholder=""
@@ -33,7 +35,7 @@ export function Placeholder({
           tone === "dark" ? "bg-surface text-heading" : "bg-surface-tint text-heading",
         )}
       >
-        Placeholder · {label}
+        {m.common.placeholder} · {label}
       </p>
       {children ? <div className="mt-2 space-y-1">{children}</div> : null}
     </div>

@@ -1,3 +1,4 @@
+import { getI18n } from "@/i18n/server";
 import { BoatMark } from "./boat-mark";
 
 /**
@@ -5,6 +6,7 @@ import { BoatMark } from "./boat-mark";
  * The river draws itself once on load (skipped when the visitor prefers reduced motion).
  */
 export function RouteMap({ className }: { className?: string }) {
+  const { m } = getI18n();
   return (
     <figure className={className}>
       <svg
@@ -13,9 +15,7 @@ export function RouteMap({ className }: { className?: string }) {
         aria-labelledby="route-map-title"
         className="h-auto w-full overflow-visible"
       >
-        <title id="route-map-title">
-          Route map: the Mekong from Houay Xai, overnight in Pak Beng, to Luang Prabang
-        </title>
+        <title id="route-map-title">{m.map.title}</title>
 
         {/* Hills */}
         <g aria-hidden="true">
@@ -72,9 +72,9 @@ export function RouteMap({ className }: { className?: string }) {
 
         {/* Stops */}
         <g className="font-display" aria-hidden="true">
-          <Stop x={70} y={60} label="Houay Xai" sub="Day 1 · board" dx={22} dy={8} />
-          <Stop x={300} y={330} label="Pak Beng" sub="Overnight" dx={-48} dy={54} />
-          <Stop x={570} y={240} label="Luang Prabang" sub="Day 2 · arrive" dx={-196} dy={-44} />
+          <Stop x={70} y={60} label="Houay Xai" sub={m.map.board} dx={22} dy={8} />
+          <Stop x={300} y={330} label="Pak Beng" sub={m.map.overnight} dx={-48} dy={54} />
+          <Stop x={570} y={240} label="Luang Prabang" sub={m.map.arrive} dx={-196} dy={-44} />
         </g>
       </svg>
     </figure>

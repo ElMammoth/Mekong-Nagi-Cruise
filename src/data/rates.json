@@ -1,0 +1,16 @@
+{
+  "base": "USD",
+  "date": "2026-10-14",
+  "source": "European Central Bank reference rates via Frankfurter",
+  "sourceUrl": "https://frankfurter.dev",
+  "rates": {
+    "EUR": 0.89326,
+    "GBP": 0.75377,
+    "AUD": 1.4266,
+    "NZD": 1.7812,
+    "CAD": 1.4219,
+    "CHF": 0.83341,
+    "THB": 33.575,
+    "CNY": 6.6927
+  }
+}

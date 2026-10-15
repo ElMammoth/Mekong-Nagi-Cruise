@@ -119,10 +119,18 @@
   --spacing-section: clamp(4rem, 2.8rem + 5vw, 6.5rem);
   --spacing-header: 4.5rem; /* header height, used for anchor offsets */
 
+  /* Timelines (itinerary, route strip): every marker is centred on its line from these. */
+  --timeline-marker: 0.625rem; /* square stop marker */
+  --timeline-line: 2px; /* line through the markers */
+  --timeline-indent: 1.5rem; /* text start, measured from the line's outer edge */
+  --timeline-gap: 1.25rem; /* between stops */
+
   --container-menu: 42rem;
   --container-note: 18rem;
   --container-fact: 12rem;
   --container-mark: 28rem;
+  --container-embed: 26rem; /* TikTok dialog: fits the official embed (325–605 px wide) */
+  --spacing-embed: 45rem; /* height reserved for the TikTok embed while it loads */
 
   --grid-template-columns-hero: 1.05fr 1fr;
   --grid-template-columns-intro: 0.8fr 1.2fr; /* heading left, content right */
@@ -203,6 +211,34 @@
 /* Marks a dark (blue) surface: focus rings switch to white inside it. */
 @utility inverse {
   --focus-ring: var(--color-focus-inverse);
+}
+
+/*
+ * Scripts the two brand fonts don't cover. Poppins and Source Sans 3 ship Latin glyphs only,
+ * so Chinese and Thai pages keep them for Latin text (names, prices) and fall back to the
+ * visitor's system fonts for everything else, per glyph. No extra font is downloaded.
+ * Tracking is reset: letter-spacing breaks up CJK and Thai text (and Thai vowel marks).
+ */
+html:lang(zh) {
+  --font-cjk:
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Noto Sans SC",
+    "Source Han Sans SC";
+  --font-display: var(--font-poppins), var(--font-cjk), system-ui, sans-serif;
+  --font-sans: var(--font-source-sans), var(--font-cjk), system-ui, sans-serif;
+}
+html:lang(th) {
+  --font-thai: "Noto Sans Thai", "Leelawadee UI", "Thonburi", "Sukhumvit Set", "Tahoma";
+  --font-display: var(--font-poppins), var(--font-thai), system-ui, sans-serif;
+  --font-sans: var(--font-source-sans), var(--font-thai), system-ui, sans-serif;
+}
+html:lang(zh),
+html:lang(th) {
+  --text-eyebrow--letter-spacing: 0;
+  --text-display--letter-spacing: 0;
+  --text-h1--letter-spacing: 0;
+  --text-h2--letter-spacing: 0;
+  --tracking-label: 0;
+  --tracking-eyebrow: 0;
 }
 
 @layer base {
@@ -302,6 +338,82 @@
   }
   .prose-river a {
     @apply text-primary underline decoration-1 underline-offset-4 hover:decoration-2;
+  }
+}
+
+/* ── Timelines ────────────────────────────────────────────────────────────────
+ * One marker size and one line width (tokens above). The line and every marker are placed
+ * at the same coordinate and centred on it with translate(-50%, -50%), so they line up
+ * exactly at any size, font, language or number of text lines. No pixel offsets.
+ */
+@layer components {
+  /* Vertical: <ol class="timeline"><li><p class="timeline-title"><span class="timeline-marker" />… */
+  .timeline {
+    --timeline-x: calc(var(--timeline-marker) / 2);
+    position: relative;
+    display: grid;
+    row-gap: var(--timeline-gap);
+    padding-inline-start: calc(var(--timeline-x) + var(--timeline-indent));
+  }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    left: var(--timeline-x);
+    width: var(--timeline-line);
+    transform: translateX(-50%);
+    background: var(--color-line-strong);
+  }
+  .timeline > li {
+    position: relative;
+  }
+  /* The title holds the marker, so the marker follows the title's own line height. */
+  .timeline-title {
+    position: static;
+  }
+  .timeline .timeline-marker {
+    position: absolute;
+    /* x: the line; y: middle of the title's first line (lh = its line height). */
+    left: calc(-1 * (var(--timeline-x) + var(--timeline-indent)) + var(--timeline-x));
+    top: 0.825em; /* fallback for browsers without the lh unit */
+    top: 0.5lh;
+    width: var(--timeline-marker);
+    height: var(--timeline-marker);
+    transform: translate(-50%, -50%);
+  }
+
+  /* Horizontal: <ol class="route-line" style="--stops: 3"><li><span class="timeline-marker" />Name */
+  .route-line {
+    position: relative;
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+  }
+  /* From the centre of the first column to the centre of the last one. */
+  .route-line::before {
+    content: "";
+    position: absolute;
+    top: calc(var(--timeline-marker) / 2);
+    left: calc(100% / var(--stops) / 2);
+    right: calc(100% / var(--stops) / 2);
+    height: var(--timeline-line);
+    transform: translateY(-50%);
+    background: var(--color-line-strong);
+  }
+  .route-line > li {
+    position: relative;
+    padding-top: calc(var(--timeline-marker) + 0.5rem);
+    padding-inline: 0.25rem; /* room between names (a column gap would offset the centres) */
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+  .route-line .timeline-marker {
+    position: absolute;
+    top: calc(var(--timeline-marker) / 2);
+    left: 50%;
+    width: var(--timeline-marker);
+    height: var(--timeline-marker);
+    transform: translate(-50%, -50%);
   }
 }
 

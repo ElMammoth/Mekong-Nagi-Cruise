@@ -1,12 +1,13 @@
 import { Armchair, LifeBuoy, Soup, UserRound } from "lucide-react";
-import { site } from "@/content/site";
+import { getI18n } from "@/i18n/server";
 
 const icons = [Armchair, LifeBuoy, Soup, UserRound];
 
 export function BoatFeatures({ tone = "dark" }: { tone?: "light" | "dark" }) {
+  const { m } = getI18n();
   return (
     <ul className="grid gap-x-10 gap-y-10 sm:grid-cols-2">
-      {site.boat.map((item, i) => {
+      {m.boat.map((item, i) => {
         const Icon = icons[i % icons.length]!;
         return (
           <li key={item.title} className="flex gap-4">

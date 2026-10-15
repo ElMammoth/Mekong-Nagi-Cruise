@@ -15,6 +15,7 @@
 
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Pause, Play } from "lucide-react";
+import { useI18n } from "@/i18n/client";
 import { cn } from "@/lib/cn";
 
 export type TextLoopShape = "wave" | "circle" | "infinity" | "arch" | "line";
@@ -129,6 +130,7 @@ export function TextLoop({
   fit = "meet",
   className,
 }: TextLoopProps) {
+  const { m } = useI18n();
   const rootRef = useRef<HTMLDivElement | null>(null);
   const pathRef = useRef<SVGPathElement | null>(null);
   const measureRef = useRef<SVGTextElement | null>(null);
@@ -148,7 +150,7 @@ export function TextLoop({
   );
 
   const unit = useMemo(() => {
-    const base = uppercase ? String(text).toUpperCase() : String(text);
+    const base = uppercase ? String(text).toLocaleUpperCase() : String(text);
     const gap = separator ? ` ${separator} ` : "   ";
     return `${base}${gap}`;
   }, [text, separator, uppercase]);
@@ -317,7 +319,7 @@ export function TextLoop({
           ) : (
             <Pause aria-hidden="true" className="size-4" />
           )}
-          <span className="sr-only">Pause the moving text</span>
+          <span className="sr-only">{m.common.pauseMotion}</span>
         </button>
       )}
     </div>

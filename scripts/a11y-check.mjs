@@ -2,31 +2,35 @@
 /**
  * Accessibility + responsive check for the static export.
  *
- *   npm run build && npm run test:a11y            # axe-core (WCAG 2.x A/AA) on every page
+ *   npm run build && npm run test:a11y            # axe-core (WCAG 2.x A/AA) on every page, every language
+ *   ONLY=/fr/ npm run test:a11y                   # only paths starting with /fr/
  *   SCREENSHOTS=1 npm run test:a11y               # also save full-page screenshots to ./screenshots
  *
  * Uses playwright-core. Point CHROMIUM_PATH at a Chromium/Chrome binary if it is not found.
  */
 import { createServer } from "node:http";
-import { existsSync, mkdirSync, readFileSync, statSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { extname, join, normalize } from "node:path";
 import { chromium } from "playwright-core";
 import { AxeBuilder } from "@axe-core/playwright";
 
 const ROOT = join(process.cwd(), "out");
-const ROUTES = [
-  "/",
-  "/cruises/downstream/",
-  "/cruises/upstream/",
-  "/cruises/chiang-mai-land-and-cruise/",
-  "/cruises/nan-to-luang-prabang/",
-  "/where-to-stay/",
-  "/private-charters/",
-  "/guides/houay-xai-to-luang-prabang/",
-  "/plan-your-trip/",
-  "/contact/",
-  "/privacy/",
-];
+if (!existsSync(ROOT)) {
+  console.error("No ./out folder. Run `npm run build` first.");
+  process.exit(1);
+}
+/** Every exported page (index.html), in every language. */
+function routes(dir = ROOT) {
+  return readdirSync(dir).flatMap((entry) => {
+    const path = join(dir, entry);
+    if (entry === "_next" || entry === "_not-found") return [];
+    if (statSync(path).isDirectory()) return routes(path);
+    return entry === "index.html" ? [dir.slice(ROOT.length).replace(/\\/g, "/") + "/"] : [];
+  });
+}
+const ROUTES = routes()
+  .filter((r) => r.startsWith(process.env.ONLY ?? "/"))
+  .sort();
 const VIEWPORTS = [
   { name: "mobile", width: 390, height: 844 },
   { name: "desktop", width: 1440, height: 900 },
@@ -43,11 +47,6 @@ const TYPES = {
   ".txt": "text/plain",
   ".xml": "application/xml",
 };
-
-if (!existsSync(ROOT)) {
-  console.error("No ./out folder. Run `npm run build` first.");
-  process.exit(1);
-}
 
 const server = createServer((req, res) => {
   const url = decodeURIComponent(new URL(req.url ?? "/", "http://x").pathname);

@@ -8,7 +8,7 @@
     "photos": "node scripts/build-photos.mjs",
     "predev": "npm run photos",
     "dev": "next dev",
-    "prebuild": "npm run photos",
+    "prebuild": "npm run data",
     "build": "next build",
     "start": "npx serve@14 out",
     "lint": "eslint .",
@@ -19,7 +19,12 @@
     "test:a11y": "node scripts/a11y-check.mjs",
     "check": "npm run typecheck && npm run lint && npm run format:check && npm run test:tokens && npm run test:contrast && npm run test && npm run build",
     "test:tokens": "node scripts/check-tokens.mjs",
-    "test:contrast": "node scripts/check-contrast.mjs"
+    "test:contrast": "node scripts/check-contrast.mjs",
+    "rates": "node scripts/fetch-rates.mjs",
+    "tiktok": "node scripts/fetch-tiktok.mjs",
+    "data": "npm run photos && npm run rates && npm run tiktok",
+    "test:i18n": "node scripts/check-hreflang.mjs",
+    "test:rates": "node scripts/check-rates.mjs"
   },
   "engines": {
     "node": ">=20.9"
