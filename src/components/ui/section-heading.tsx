@@ -42,7 +42,11 @@ export function SectionHeading({
   className,
 }: SectionHeadingProps) {
   return (
-    <div className={cn("max-w-2xl", align === "center" && "mx-auto text-center", className)}>
+    <div
+      // Section headings fade in on scroll; a page's h1 never does (it's the LCP area).
+      data-reveal={Heading === "h1" ? undefined : ""}
+      className={cn("max-w-2xl", align === "center" && "mx-auto text-center", className)}
+    >
       {eyebrow ? <Eyebrow tone={tone}>{eyebrow}</Eyebrow> : null}
       <Heading
         id={id}

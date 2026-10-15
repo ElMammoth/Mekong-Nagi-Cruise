@@ -56,7 +56,7 @@ export function HandledForYou({
           <span className="px-6 py-3 text-muted">{copy.onYourOwn}</span>
           <span className="border-l border-line px-6 py-3 text-heading">{copy.withUs}</span>
         </div>
-        <ul className="divide-y divide-line sm:grid sm:auto-rows-fr">
+        <ul data-reveal="group" className="divide-y divide-line sm:grid sm:auto-rows-fr">
           {copy.rows.map((item) => (
             <li
               key={item.task}

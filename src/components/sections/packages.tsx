@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Check } from "lucide-react";
-import { CurrencyNote, DualPrice, Price } from "@/components/currency/price";
+import { DualPrice, Price } from "@/components/currency/price";
 import { buttonClasses } from "@/components/ui/button";
 import type { PriceOption, Trip } from "@/content/types";
 import { localeInfo } from "@/i18n/config";
@@ -37,7 +37,7 @@ export function Packages({
 
   return (
     <div className="@container">
-      <ul className="grid gap-6 @3xl:grid-cols-3">
+      <ul data-reveal="group" className="grid gap-6 @3xl:grid-cols-3">
         {packages.map((pkg) => {
           const featured = Boolean(pkg.highlight);
           const first = pkg.options[0]!;
@@ -125,7 +125,6 @@ export function Packages({
           );
         })}
       </ul>
-      <CurrencyNote className="mt-6" />
     </div>
   );
 }

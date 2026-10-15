@@ -3,7 +3,6 @@
 import { useI18n } from "@/i18n/client";
 import { fmt } from "@/i18n/format";
 import { cn } from "@/lib/cn";
-import { formatIsoDate } from "@/lib/departures";
 import { BASE_CURRENCY, priceParts, rates } from "@/lib/currency";
 import { useCurrency } from "./currency-provider";
 
@@ -18,20 +17,14 @@ function useParts(usd: number) {
   const [currency] = useCurrency();
   const parts = priceParts(usd, currency, intl);
   const approx = (text: string) => fmt(m.currency.approx, { amount: text });
-  return { parts, approx, intl, m };
+  return { parts, approx };
 }
 
-const ratesTitle = (intl: string, template: string) =>
-  rates.date ? fmt(template, { date: formatIsoDate(rates.date, intl) }) : undefined;
-
-/** One amount: "US$140", or "about €125" when another currency is selected. */
+/** One amount: "US$140", or "≈ €125" when another currency is selected. */
 export function Price({ usd, className }: { usd: number; className?: string }) {
-  const { parts, approx, intl, m } = useParts(usd);
+  const { parts, approx } = useParts(usd);
   return (
-    <span
-      className={cn("whitespace-nowrap", className)}
-      title={parts.approximate ? ratesTitle(intl, m.currency.ratesTitle) : undefined}
-    >
+    <span className={cn("whitespace-nowrap", className)}>
       {parts.approximate ? approx(parts.main) : parts.main}
     </span>
   );
@@ -39,7 +32,7 @@ export function Price({ usd, className }: { usd: number; className?: string }) {
 
 /**
  * Two amounts, never the same currency twice:
- * "US$160 (about ฿5,370)" · "about ฿5,370 (US$160)" · "about €143 (US$160)".
+ * "US$160 (≈ ฿5,370)" · "≈ ฿5,370 (US$160)" · "≈ €143 (US$160)".
  */
 export function DualPrice({
   usd,
@@ -52,23 +45,16 @@ export function DualPrice({
   mainClassName?: string;
   secondaryClassName?: string;
 }) {
-  const { parts, approx, intl, m } = useParts(usd);
-  const title = ratesTitle(intl, m.currency.ratesTitle);
+  const { parts, approx } = useParts(usd);
   return (
     <span className={className}>
-      <span
-        className={cn("whitespace-nowrap", mainClassName)}
-        title={parts.approximate ? title : undefined}
-      >
+      <span className={cn("whitespace-nowrap", mainClassName)}>
         {parts.approximate ? approx(parts.main) : parts.main}
       </span>
       {parts.secondary ? (
         <>
           {" "}
-          <span
-            className={cn("whitespace-nowrap", secondaryClassName)}
-            title={parts.secondaryApproximate ? title : undefined}
-          >
+          <span className={cn("whitespace-nowrap", secondaryClassName)}>
             ({parts.secondaryApproximate ? approx(parts.secondary) : parts.secondary})
           </span>
         </>
@@ -93,18 +79,14 @@ export function useDualPriceText() {
 }
 
 /**
- * The honesty line under a block of prices. Always one short paragraph (US dollars or not),
- * so switching currency doesn't move the layout.
+ * In the booking summary only: "Amounts in EUR are given as an indication." when a currency
+ * other than US dollars is shown. Nothing in US dollars.
  */
-export function CurrencyNote({ className }: { className?: string }) {
-  const { intl, m } = useI18n();
+export function ApproximateNote({ className }: { className?: string }) {
+  const { m } = useI18n();
   const [currency] = useCurrency();
-  const converted = currency !== BASE_CURRENCY && rates.rates?.[currency];
-  const date = rates.date ? formatIsoDate(rates.date, intl) : null;
+  if (currency === BASE_CURRENCY || !rates.rates?.[currency]) return null;
   return (
-    <p className={cn("text-sm text-muted", className)}>
-      {converted ? fmt(m.currency.note, { currency }) : m.currency.noteUsd}{" "}
-      {date ? fmt(m.currency.rates, { date }) : m.currency.noRates}
-    </p>
+    <p className={cn("text-sm text-muted", className)}>{fmt(m.currency.note, { currency })}</p>
   );
 }

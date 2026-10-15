@@ -33,7 +33,7 @@ published facts only.
 | -------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Dream outcome** ↑        | Arrive in Luang Prabang relaxed, having seen the river | Headline promise: two days on the Mekong, from your hotel to your hotel in Luang Prabang. Itinerary highlights: village stops, Pak Ou cave, elephants may be seen (as published).                                 |
 | **Perceived likelihood** ↑ | "Will it actually go smoothly?"                        | Reviews with name, source and link (§6); English-speaking host for both days; travel insurance included; life vests for every passenger; 40-seat boat that usually sails with empty seats.                        |
-| **Time delay** ↓           | Know quickly that it's sorted                          | "We reply within 24 hours." Next real departure dates shown on the page. A "what happens after you send" strip with three steps.                                                                                  |
+| **Time delay** ↓           | Know quickly that it's sorted                          | "We reply within 24 hours." Fixed departure days shown on the page. A "what happens after you send" strip with three steps.                                                                                       |
 | **Effort & sacrifice** ↓   | Not organise anything                                  | A "handled for you" checklist: pick-up, luggage, border and visa help, lunch, Pak Beng hotel, pier-to-hotel transfer. Booking is one pre-filled WhatsApp or email message, with no account and no payment online. |
 
 **Decision:** the hero, the offer section and the booking page each restate _all four_
@@ -84,14 +84,14 @@ time and the format.
 Urgency only works if it's true. Fake countdowns or "2 seats left" would break the trust
 we're building with real reviews.
 
-| Lever                                               | Use?   | How (fact)                                                                                                  |
-| --------------------------------------------------- | ------ | ----------------------------------------------------------------------------------------------------------- |
-| Limited capacity                                    | Yes    | "40 seats per sailing" near the booking CTA. No live seat counts.                                           |
-| Fixed departure days                                | Yes    | Sun · Wed · Fri chips plus the next 3 real dates, e.g. "Next sailings: Fri 16 Oct, Sun 18 Oct, Wed 21 Oct". |
-| Seasonal offers                                     | Yes    | Only when an option has `validTo`: "Offer ends 30 September 2026", hidden automatically after that.         |
-| Upstream minimum                                    | Yes    | "Needs a minimum number of passengers: ask early". This is a true reason to book ahead.                     |
-| Weather window                                      | Info   | "Pak Beng is cold November–January: pack a jacket". This is helpful, not pressure.                          |
-| Countdown timers, "X people viewing", "only N left" | **No** | No data behind them.                                                                                        |
+| Lever                                               | Use?   | How (fact)                                                                                             |
+| --------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------ |
+| Limited capacity                                    | Yes    | "40 seats per sailing" near the booking CTA. No live seat counts.                                      |
+| Fixed departure days                                | Yes    | Sun · Wed · Fri chips. (The list of the next dates was removed in October 2026 to simplify the pages.) |
+| Seasonal offers                                     | Yes    | Only when an option has `validTo`: "Offer ends 30 September 2026", hidden automatically after that.    |
+| Upstream minimum                                    | Yes    | "Needs a minimum number of passengers: ask early". This is a true reason to book ahead.                |
+| Weather window                                      | Info   | "Pak Beng is cold November–January: pack a jacket". This is helpful, not pressure.                     |
+| Countdown timers, "X people viewing", "only N left" | **No** | No data behind them.                                                                                   |
 
 ## 6. Social proof (reviews)
 

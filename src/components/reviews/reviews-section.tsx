@@ -43,12 +43,7 @@ export function ReviewsSection({
 
   return (
     <section aria-labelledby={id} className={cn("@container", className)}>
-      <SectionHeading
-        id={id}
-        eyebrow={m.reviews.eyebrow}
-        title={m.reviews.title}
-        intro={m.reviews.intro}
-      />
+      <SectionHeading id={id} eyebrow={m.reviews.eyebrow} title={m.reviews.title} />
       <div className="mt-10 grid gap-10 @4xl:grid-cols-summary @4xl:gap-14">
         <div className="space-y-8">
           {allPlatforms.map((platform) => (
@@ -64,7 +59,7 @@ export function ReviewsSection({
         </div>
 
         <div>
-          <ul className="divide-y divide-line border-y border-line">
+          <ul data-reveal="group" className="divide-y divide-line border-y border-line">
             {shown.map((review) => (
               <li key={review.url + review.reviewer} className="py-6">
                 <ReviewCard review={review} />

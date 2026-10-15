@@ -63,7 +63,6 @@ const zh: Messages = {
     currency: "货币",
     languageButton: "语言：{name}",
     currencyButton: "货币：{name}",
-    currencyHint: "预订以美元结算，其他货币仅供参考。",
   },
 
   banner: {
@@ -74,13 +73,24 @@ const zh: Messages = {
     dismissLabel: "关闭并继续使用当前语言",
   },
 
+  consent: {
+    title: "Cookie 与 TikTok 视频",
+    text: "本网站只使用必要的存储来保存您的语言和货币设置。如果您同意，TikTok 视频会直接在页面上播放，TikTok 会设置自己的 Cookie。",
+    privacy: "隐私政策",
+    acceptAll: "全部接受",
+    rejectAll: "全部拒绝",
+    customize: "自定义",
+    save: "保存我的选择",
+    essential: "必要",
+    essentialHint: "语言和货币偏好，始终开启。",
+    tiktok: "TikTok 视频",
+    tiktokHint: "在此播放旅客发布在 TikTok 上的视频。TikTok 会设置 Cookie。",
+    settings: "Cookie 设置",
+  },
+
   currency: {
-    approx: "约 {amount}",
-    note: "{currency} 金额仅供参考，预订以美元结算。",
-    noteUsd: "价格以美元标示，即实际结算货币。",
-    rates: "汇率：欧洲中央银行（经 Frankfurter），{date}。",
-    ratesTitle: "{date} 汇率",
-    noRates: "暂无汇率：价格以美元显示。",
+    approx: "≈ {amount}",
+    note: "{currency} 金额仅供参考。",
   },
 
   facts: [
@@ -92,7 +102,6 @@ const zh: Messages = {
   contact: {
     replyPromise: "所有预订咨询我们都会在 24 小时内回复。",
     country: "泰国",
-    locationNote: "与老挝会晒隔河相望",
   },
 
   home: {
@@ -169,8 +178,6 @@ const zh: Messages = {
   reviews: {
     eyebrow: "评价",
     title: "旅客怎么说",
-    intro:
-      "来自 Tripadvisor 和 Viator 的原文评价，未经修改，每条都附原文链接，并保留撰写时的语言。",
     ratingsLabel: "旅客评分",
     reviewCount: "{count} 条评价",
     asOf: "截至 {date}",
@@ -193,23 +200,49 @@ const zh: Messages = {
     },
   },
 
+  why: {
+    eyebrow: "为什么选择 Nagi of Mekong",
+    title: "在河上度过两天，什么都不用操心",
+    intro: "河上旅程本身很轻松。其余的一切由我们负责，我们也会清楚公布其中包含什么、价格多少。",
+    points: [
+      {
+        title: "酒店到酒店，而不只是码头到码头",
+        text: "我们到清孔或会晒的酒店接您，协助您过境，并把您送到琅勃拉邦的酒店。",
+        proof: "所有顺流套餐都包含接送、行李搬运和转乘。",
+      },
+      {
+        title: "两天都有人陪着您",
+        text: "一位讲英语的向导从第一个码头陪您到最后一个码头，每位乘客都配有救生衣。",
+        proof: "价格已包含旅行保险。",
+      },
+      {
+        title: "询价之前就能看到价格",
+        text: "每个套餐的价格都公布在本网站上。发送咨询免费，且没有任何约束，我们会在 24 小时内回复。",
+        proof: "每人 {price} 起。",
+      },
+    ],
+  },
+
+  newsletter: {
+    title: "湄公河旅行资讯",
+    intro: "不定期发送邮件：新的出发日期、季节优惠和河上的最新消息。可随时退订。",
+    label: "您的电子邮箱",
+    placeholder: "name@example.com",
+    submit: "订阅",
+    consent: "订阅即表示您同意接收这些邮件。请阅读我们的<privacy>隐私政策</privacy>。",
+    sending: "正在为您订阅…",
+    success: "谢谢。请查看收件箱并确认您的邮箱地址。",
+    errorInvalid: "请输入有效的电子邮箱地址，例如 name@example.com。",
+    errorFailed: "抱歉，订阅未成功。请重试，或写信至 {email}。",
+    honeypot: "请勿填写此栏",
+  },
+
   tiktok: {
     eyebrow: "TikTok 上",
     title: "旅客在 TikTok 上怎么说",
-    intro: "这些旅客乘过我们的船并拍了视频。视频和配文都是他们的原话，未经修改。这些不是评分。",
-    play: "播放 @{handle} 的 TikTok 视频",
-    privacy: "点击后才会从 TikTok 加载，TikTok 可能会设置 Cookie。",
+    rowLabel: "TikTok 视频，可左右滑动",
     watchOn: "在 TikTok 观看",
-    opensTikTok: "将打开 TikTok",
-    captionLabel: "@{handle} 的配文：",
-    showMore: "展开完整配文",
-    showLess: "收起",
-    dialogTitle: "@{handle} 的 TikTok 视频",
-    dialogDescription: "视频从 TikTok 加载。按 Esc 或“关闭”返回。",
-    close: "关闭",
-    loading: "正在从 TikTok 加载视频……",
-    retrieved: "配文与 TikTok 上发布的原文一致，复制于 {date}。",
-    placeholder: "暂无配文：请在 src/content/tiktok.ts 中补充。",
+    videoTitle: "@{handle} 的 TikTok 视频",
   },
 
   trip: {
@@ -240,11 +273,6 @@ const zh: Messages = {
     validUntil: "有效期至 {date}",
     validFrom: "{date} 起",
     kind: { cruise: "河上游轮", landCruise: "陆路 + 游轮" },
-  },
-
-  nextSailings: {
-    label: "近期班次",
-    every: "每{days}",
   },
 
   nextSteps: {
@@ -288,11 +316,13 @@ const zh: Messages = {
     nightIn: "北本住宿",
     alsoAsk: "顺便咨询",
     optional: "（选填）",
+    required: "必填",
     alsoAskHint: "我们会在回复中一并说明，不构成承诺。",
     stepDetails: "您的信息",
     name: "姓名",
     email: "电子邮件",
     phone: "电话或 WhatsApp",
+    phoneHint: "请包含国家区号，例如 +86",
     diet: "饮食需求",
     dietHint: "可提供纯素、素食和清真餐",
     message: "其他需求？",
@@ -313,8 +343,6 @@ const zh: Messages = {
     quote: "我们会给您发送报价。",
     sendWhatsApp: "通过 WhatsApp 发送",
     sendEmail: "通过邮件发送",
-    nothingCharged:
-      "网上不会收取任何费用。您的消息会在 WhatsApp 或邮件应用中打开，确认后即可发送。",
     readyIn: "您的咨询已在{channel}中准备好，请在那里点击发送。",
     channelWhatsApp: " WhatsApp ",
     channelEmail: "邮件应用",
@@ -360,6 +388,7 @@ const zh: Messages = {
     boatTitle: "船上的舒适与安全",
     faqEyebrow: "常见问题",
     faqTitle: "常见问题",
+    listLabel: "问题",
   },
 
   faq: [
@@ -484,18 +513,19 @@ const zh: Messages = {
     eyebrow: "预订与联系",
     heading: "查询空位",
     intro: "把您的需求发给我们：免费，也不构成任何承诺。",
-    phone: "电话",
+    phoneWhatsApp: "电话 / WhatsApp",
+    call: "拨打电话",
     email: "电子邮件",
     hours: "服务时间",
     basedIn: "所在地",
     bookingTitle: "您的预订咨询",
-    bookingIntro: "简单四步。您的消息会在 WhatsApp 或邮件应用中打开，确认后即可发送。",
+    bookingIntro: "简单四步。",
   },
 
   privacy: {
     title: "隐私",
     description:
-      "Nagi of Mekong 网站如何处理您的信息：不做追踪，只在您的浏览器中保存两项偏好设置。",
+      "Nagi of Mekong 网站如何处理您的信息：不做追踪，只在您的浏览器中保存几项偏好设置。",
     heading: "隐私",
     intro: "本网站的设计原则是尽可能少地收集信息。",
     sections: [
@@ -509,11 +539,15 @@ const zh: Messages = {
       },
       {
         title: "TikTok 视频",
-        text: "TikTok 视频只有在您点击后才会加载。只有那时，您的浏览器才会连接 TikTok，TikTok 可能会根据其隐私政策设置自己的 Cookie。“在 TikTok 观看”链接会打开 TikTok 网站。",
+        text: "只有在您通过 Cookie 提示允许后（“全部接受”，或在“自定义”中开启“TikTok 视频”），TikTok 视频才会加载。您的选择保存在浏览器的本地存储中。如果您允许，视频会在您滚动页面时从 TikTok 加载并在此播放，TikTok 会依据其自身的隐私政策设置 Cookie。如果您不允许，则不会从 TikTok 加载任何内容，每个视频只是一个指向 TikTok 的链接。您可以随时通过每个页面底部的“Cookie 设置”更改选择。",
       },
       {
         title: "预订表单",
         text: "预订表单不会把您的信息发送到任何服务器。当您点击“通过 WhatsApp 发送”或“通过邮件发送”时，消息会在您的浏览器中生成，并在 WhatsApp 或您的邮件应用中打开。在您点击发送之前，不会发出任何内容。",
+      },
+      {
+        title: "电子邮件旅行资讯",
+        text: "如果您在页脚订阅旅行资讯，您的电子邮箱地址和页面语言会发送给我们使用的邮件服务 Brevo（Sendinblue SAS，法国），用于向您发送这些邮件。Brevo 会先给您发送一封确认邮件，请点击其中的链接确认地址。这些信息不会用于其他用途。每封邮件都附有退订链接，您也可以随时要求我们删除您的地址。",
       },
       {
         title: "当您联系我们时",

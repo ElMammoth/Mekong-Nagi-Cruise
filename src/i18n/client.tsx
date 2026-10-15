@@ -7,7 +7,7 @@ import type { Messages } from "./messages/en";
 /** The slice of copy client components need on every page (kept small: it ships to the browser). */
 export type ClientMessages = Pick<
   Messages,
-  "common" | "nav" | "switcher" | "currency" | "nextSailings" | "banner"
+  "common" | "nav" | "switcher" | "currency" | "banner" | "consent"
 >;
 
 interface I18nValue {

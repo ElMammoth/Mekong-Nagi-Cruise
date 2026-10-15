@@ -1,4 +1,3 @@
-import { CurrencyNote } from "@/components/currency/price";
 import { CtaBand } from "@/components/sections/cta-band";
 import { PageHeader } from "@/components/sections/page-header";
 import { StayCard } from "@/components/sections/stay-card";
@@ -45,7 +44,7 @@ export function WhereToStayView() {
               title={copy.groups[group.key].title}
               intro={copy.groups[group.key].intro}
             />
-            <ul className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <ul data-reveal="group" className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {stays
                 .filter((s) => s.place === group.place)
                 .map((stay) => (
@@ -54,7 +53,6 @@ export function WhereToStayView() {
                   </li>
                 ))}
             </ul>
-            {group.key === "pakBeng" ? <CurrencyNote className="mt-6" /> : null}
           </Container>
         </section>
       ))}

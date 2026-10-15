@@ -2,6 +2,7 @@ import type { Locale } from "@/i18n/config";
 import { getMessages } from "@/i18n/index";
 import en from "@/i18n/messages/en";
 import type { TripSlug } from "@/i18n/routes";
+import { faqIds } from "./faq";
 import { photoSlots } from "./photos";
 import { stays } from "./stays";
 import { trips } from "./trips";
@@ -112,6 +113,11 @@ export function getStays(locale: Locale): Stay[] {
   return stays.map((s) => ({ ...s, ...copy[s.id] }));
 }
 
+/** The FAQ in one language: one typed source for both the page and its FAQPage JSON-LD. */
 export function getFaqs(locale: Locale): Faq[] {
-  return getMessages(locale).faq;
+  return getMessages(locale).faq.map((faq, i) => {
+    const id = faqIds[i];
+    if (!id) throw new Error(`FAQ ${i + 1} (${locale}) has no id in src/content/faq.ts`);
+    return { id, question: faq.question, answer: faq.answer };
+  });
 }

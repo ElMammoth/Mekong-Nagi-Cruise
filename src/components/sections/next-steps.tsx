@@ -25,7 +25,7 @@ export function NextSteps({
     { icon: Sailboat, title: copy.travel.title, text: dayOne ?? copy.defaultDayOne },
   ];
   return (
-    <ol className={cn("grid gap-6 sm:grid-cols-3", className)}>
+    <ol data-reveal="group" className={cn("grid gap-6 sm:grid-cols-3", className)}>
       {steps.map(({ icon: Icon, title, text }, i) => (
         <li key={title} className="flex gap-3">
           <span

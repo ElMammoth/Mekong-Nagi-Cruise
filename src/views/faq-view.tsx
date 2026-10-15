@@ -1,10 +1,9 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { CloudSun, FileCheck2, Luggage, Utensils } from "lucide-react";
-import { JsonLd } from "@/components/layout/json-ld";
 import { BoatFeatures } from "@/components/sections/boat-features";
 import { CtaBand } from "@/components/sections/cta-band";
-import { FaqList } from "@/components/sections/faq-list";
+import { FaqSection } from "@/components/sections/faq-section";
 import { PageHeader } from "@/components/sections/page-header";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -12,9 +11,7 @@ import { getFaqs } from "@/content/localized";
 import { rich } from "@/i18n/rich";
 import { pathFor } from "@/i18n/routes";
 import { getI18n } from "@/i18n/server";
-import { faqPrices, plainFaqs } from "@/lib/faq";
 import { navigation } from "@/lib/navigation";
-import { faqJsonLd } from "@/lib/structured-data";
 
 const icons = [Luggage, FileCheck2, Utensils, CloudSun];
 const linkClass = "text-primary underline underline-offset-4 hover:decoration-2";
@@ -48,7 +45,7 @@ export function FaqView() {
             eyebrow={copy.essentialsEyebrow}
             title={copy.essentialsTitle}
           />
-          <ul className="mt-10 grid gap-6 sm:grid-cols-2">
+          <ul data-reveal="group" className="mt-10 grid gap-6 sm:grid-cols-2">
             {copy.essentials.map(({ title, text }, i) => {
               const Icon = icons[i % icons.length]!;
               return (
@@ -85,11 +82,9 @@ export function FaqView() {
       </section>
 
       <section aria-labelledby="faq-title" className="py-section">
-        <Container className="grid gap-10 lg:grid-cols-intro">
-          <SectionHeading id="faq-title" eyebrow={copy.faqEyebrow} title={copy.faqTitle} />
-          <FaqList faqs={faqs} prices={faqPrices()} />
+        <Container>
+          <FaqSection id="faq-title" eyebrow={copy.faqEyebrow} title={copy.faqTitle} faqs={faqs} />
         </Container>
-        <JsonLd data={faqJsonLd(locale, plainFaqs(locale, faqs))} />
       </section>
 
       <CtaBand href={navigation(locale).downstreamBookingHref} />

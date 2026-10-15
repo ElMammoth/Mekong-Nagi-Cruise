@@ -74,7 +74,6 @@ const en = {
     currency: "Currency",
     languageButton: "Language: {name}",
     currencyButton: "Currency: {name}",
-    currencyHint: "Prices are charged in US dollars. Other currencies are shown for guidance.",
   },
 
   /** Shown to visitors whose browser prefers this language, written in this language. */
@@ -86,15 +85,24 @@ const en = {
     dismissLabel: "Close and stay in this language",
   },
 
+  consent: {
+    title: "Cookies and TikTok videos",
+    text: "This site only uses essential storage for your language and currency. If you allow it, TikTok videos play directly on the page, and TikTok sets its own cookies.",
+    privacy: "Privacy policy",
+    acceptAll: "Accept all",
+    rejectAll: "Reject all",
+    customize: "Customize",
+    save: "Save my choices",
+    essential: "Essential",
+    essentialHint: "Language and currency preferences. Always on.",
+    tiktok: "TikTok videos",
+    tiktokHint: "Plays travellers’ videos from TikTok here. TikTok sets cookies.",
+    settings: "Cookie settings",
+  },
+
   currency: {
-    approx: "about {amount}",
-    /** Under prices when a currency other than US dollars is selected. */
-    note: "Amounts in {currency} are approximate. Bookings are charged in US dollars.",
-    /** Under prices in US dollars (same height, so switching causes no layout shift). */
-    noteUsd: "Prices in US dollars, the currency bookings are charged in.",
-    rates: "Exchange rate: European Central Bank via Frankfurter, {date}.",
-    ratesTitle: "Rates of {date}",
-    noRates: "Exchange rates are unavailable: prices are shown in US dollars.",
+    approx: "≈ {amount}",
+    note: "Amounts in {currency} are approximate.",
   },
 
   facts: [
@@ -106,7 +114,6 @@ const en = {
   contact: {
     replyPromise: "We reply to every booking request within 24 hours.",
     country: "Thailand",
-    locationNote: "Across the river from Houay Xai, Laos",
   },
 
   home: {
@@ -210,8 +217,6 @@ const en = {
   reviews: {
     eyebrow: "Reviews",
     title: "What travellers say",
-    intro:
-      "Unedited reviews from Tripadvisor and Viator, each linked to the original, in the language they were written in.",
     ratingsLabel: "Traveller ratings",
     reviewCount: "{count} reviews",
     asOf: "as of {date}",
@@ -234,24 +239,52 @@ const en = {
     },
   },
 
+  why: {
+    eyebrow: "Why Nagi of Mekong",
+    title: "Two days on the river, with nothing left to organise",
+    intro:
+      "The river is the easy part. We take care of everything around it, and we publish exactly what that includes and what it costs.",
+    points: [
+      {
+        title: "Door to door, not pier to pier",
+        text: "We collect you from your hotel in Chiang Khong or Houay Xai, help you across the border and take you to your hotel in Luang Prabang.",
+        proof: "Pick-up, luggage and transfers are in every downstream package.",
+      },
+      {
+        title: "Someone with you both days",
+        text: "An English-speaking host travels with you from the first pier to the last, and every passenger has a life vest.",
+        proof: "Travel insurance is included in the price.",
+      },
+      {
+        title: "Prices you can see before you ask",
+        text: "Every package is priced on this site. Sending a request is free, commits you to nothing, and we reply within 24 hours.",
+        proof: "From {price} per person.",
+      },
+    ],
+  },
+
+  newsletter: {
+    title: "Travel updates from the Mekong",
+    intro:
+      "Occasional emails with new departure dates, seasonal offers and news from the river. Unsubscribe at any time.",
+    label: "Your email address",
+    placeholder: "name@example.com",
+    submit: "Sign up",
+    consent:
+      "By signing up, you agree to receive these emails. Read our <privacy>privacy policy</privacy>.",
+    sending: "Signing you up…",
+    success: "Thank you. Please check your inbox and confirm your address.",
+    errorInvalid: "Please enter a valid email address, like name@example.com.",
+    errorFailed: "Sorry, that didn’t work. Please try again, or write to us at {email}.",
+    honeypot: "Leave this field empty",
+  },
+
   tiktok: {
     eyebrow: "On TikTok",
     title: "What travellers say on TikTok",
-    intro:
-      "Travellers who sailed with us and filmed it. Their videos and their captions, unedited and in their own words. These are not ratings.",
-    play: "Play TikTok by @{handle}",
-    privacy: "Plays from TikTok after you click. TikTok may then set cookies.",
+    rowLabel: "TikTok videos, scroll sideways",
     watchOn: "Watch on TikTok",
-    opensTikTok: "Opens TikTok",
-    captionLabel: "Caption by @{handle}:",
-    showMore: "Show full caption",
-    showLess: "Show less",
-    dialogTitle: "TikTok by @{handle}",
-    dialogDescription: "The video is loaded from TikTok. Press Escape or Close to return.",
-    close: "Close",
-    loading: "Loading the video from TikTok…",
-    retrieved: "Captions as published on TikTok, copied on {date}.",
-    placeholder: "Caption not available yet: add it in src/content/tiktok.ts.",
+    videoTitle: "TikTok video by @{handle}",
   },
 
   trip: {
@@ -284,11 +317,6 @@ const en = {
     validUntil: "Valid until {date}",
     validFrom: "From {date}",
     kind: { cruise: "River cruise", landCruise: "Land & cruise" },
-  },
-
-  nextSailings: {
-    label: "Next sailings",
-    every: "every {days}",
   },
 
   nextSteps: {
@@ -329,11 +357,13 @@ const en = {
     nightIn: "Night in Pak Beng",
     alsoAsk: "Also ask us about",
     optional: "(optional)",
+    required: "required",
     alsoAskHint: "We’ll include it in our reply. No commitment.",
     stepDetails: "Your details",
     name: "Full name",
     email: "Email",
     phone: "Phone or WhatsApp",
+    phoneHint: "Include your country code, e.g. +44",
     diet: "Dietary needs",
     dietHint: "Vegan, vegetarian and halal available",
     message: "Anything else?",
@@ -354,8 +384,6 @@ const en = {
     quote: "We’ll send you a quote.",
     sendWhatsApp: "Send on WhatsApp",
     sendEmail: "Send by email",
-    nothingCharged:
-      "Nothing is charged online. Your message opens in WhatsApp or your email app, ready to send.",
     readyIn: "Your request is ready in {channel}. Press send there.",
     channelWhatsApp: "WhatsApp",
     channelEmail: "your email app",
@@ -402,6 +430,7 @@ const en = {
     boatTitle: "Comfort and safety on board",
     faqEyebrow: "FAQ",
     faqTitle: "Frequently asked questions",
+    listLabel: "Questions",
   },
 
   faq: [
@@ -542,19 +571,19 @@ const en = {
     eyebrow: "Book & contact",
     heading: "Check availability",
     intro: "Send us your request: it’s free and doesn’t commit you.",
-    phone: "Phone",
+    phoneWhatsApp: "Phone / WhatsApp",
+    call: "Call",
     email: "Email",
     hours: "Hours",
     basedIn: "Based in",
     bookingTitle: "Your booking request",
-    bookingIntro:
-      "Four short steps. Your message opens in WhatsApp or your email app, ready to send.",
+    bookingIntro: "Four short steps.",
   },
 
   privacy: {
     title: "Privacy",
     description:
-      "How the Nagi of Mekong website handles your information: no tracking, two small preferences stored in your browser.",
+      "How the Nagi of Mekong website handles your information: no tracking, a few small preferences stored in your browser.",
     heading: "Privacy",
     intro: "This website is designed to collect as little as possible.",
     sections: [
@@ -568,11 +597,15 @@ const en = {
       },
       {
         title: "TikTok videos",
-        text: "The TikTok videos are not loaded until you click one. Only then does your browser contact TikTok, which may set its own cookies under its own privacy policy. The “Watch on TikTok” links open TikTok’s website.",
+        text: "TikTok videos load only if you allow them in the cookie banner (“Accept all”, or “TikTok videos” under “Customize”). Your choice is saved in your browser’s local storage. If you allow them, the videos play here from TikTok as you scroll, and TikTok sets its own cookies under its own privacy policy. If you don’t, nothing is loaded from TikTok and each video is a simple link to TikTok. You can change your choice at any time with “Cookie settings” at the bottom of every page.",
       },
       {
         title: "The booking form",
         text: "The booking form does not send your details to a server. When you press “Send on WhatsApp” or “Send by email”, your message is prepared in your browser and opened in WhatsApp or your own email app. Nothing is sent until you press send there.",
+      },
+      {
+        title: "Travel updates by email",
+        text: "If you sign up for travel updates in the footer, your email address and the language of the page are sent to Brevo (Sendinblue SAS, France), the email service we use, so it can send you those emails. Brevo first emails you a link to confirm your address. They are used for nothing else. Every email has an unsubscribe link, and you can ask us to delete your address at any time.",
       },
       {
         title: "When you contact us",

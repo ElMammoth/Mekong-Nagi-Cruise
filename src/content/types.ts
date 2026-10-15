@@ -116,6 +116,8 @@ export interface Stay extends StayData {
 }
 
 export interface Faq {
+  /** Stable id for deep links (`#faq-<id>`), from src/content/faq.ts. */
+  id: string;
   question: string;
   answer: string;
 }

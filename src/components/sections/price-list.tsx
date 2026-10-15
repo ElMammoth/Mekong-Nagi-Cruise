@@ -1,4 +1,4 @@
-import { CurrencyNote, DualPrice, Price } from "@/components/currency/price";
+import { DualPrice, Price } from "@/components/currency/price";
 import type { PriceOption } from "@/content/types";
 import { localeInfo } from "@/i18n/config";
 import { fmt } from "@/i18n/index";
@@ -11,7 +11,10 @@ export function PriceList({ options }: { options: readonly PriceOption[] }) {
   const intl = localeInfo[locale].intl;
   return (
     <div>
-      <ul className="divide-y divide-line overflow-hidden rounded-md border border-line bg-surface">
+      <ul
+        data-reveal
+        className="divide-y divide-line overflow-hidden rounded-md border border-line bg-surface"
+      >
         {options.map((option) => (
           <li
             key={option.id}
@@ -61,7 +64,6 @@ export function PriceList({ options }: { options: readonly PriceOption[] }) {
           </li>
         ))}
       </ul>
-      <CurrencyNote className="mt-4" />
     </div>
   );
 }

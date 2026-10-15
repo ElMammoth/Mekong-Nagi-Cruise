@@ -63,8 +63,6 @@ const es: Messages = {
     currency: "Moneda",
     languageButton: "Idioma: {name}",
     currencyButton: "Moneda: {name}",
-    currencyHint:
-      "Las reservas se cobran en dólares estadounidenses. Las demás monedas son orientativas.",
   },
 
   banner: {
@@ -75,13 +73,24 @@ const es: Messages = {
     dismissLabel: "Cerrar y seguir en este idioma",
   },
 
+  consent: {
+    title: "Cookies y vídeos de TikTok",
+    text: "Esta web solo usa almacenamiento esencial para tu idioma y tu moneda. Si lo aceptas, los vídeos de TikTok se reproducen directamente en la página, y TikTok instala sus propias cookies.",
+    privacy: "Política de privacidad",
+    acceptAll: "Aceptar todo",
+    rejectAll: "Rechazar todo",
+    customize: "Personalizar",
+    save: "Guardar mi elección",
+    essential: "Esenciales",
+    essentialHint: "Preferencias de idioma y moneda. Siempre activas.",
+    tiktok: "Vídeos de TikTok",
+    tiktokHint: "Reproduce aquí vídeos de viajeros publicados en TikTok. TikTok instala cookies.",
+    settings: "Configuración de cookies",
+  },
+
   currency: {
-    approx: "aprox. {amount}",
-    note: "Los importes en {currency} son orientativos. Las reservas se cobran en dólares estadounidenses.",
-    noteUsd: "Precios en dólares estadounidenses, la moneda en la que se cobra.",
-    rates: "Tipo de cambio: Banco Central Europeo vía Frankfurter, {date}.",
-    ratesTitle: "Tipos del {date}",
-    noRates: "Tipos de cambio no disponibles: precios en dólares estadounidenses.",
+    approx: "≈ {amount}",
+    note: "Los importes en {currency} son orientativos.",
   },
 
   facts: [
@@ -93,7 +102,6 @@ const es: Messages = {
   contact: {
     replyPromise: "Respondemos a todas las solicitudes de reserva en menos de 24 horas.",
     country: "Tailandia",
-    locationNote: "Frente a Houay Xai (Laos), al otro lado del río",
   },
 
   home: {
@@ -197,8 +205,6 @@ const es: Messages = {
   reviews: {
     eyebrow: "Opiniones",
     title: "Lo que dicen los viajeros",
-    intro:
-      "Opiniones sin editar de Tripadvisor y Viator, cada una enlazada al original y en el idioma en que se escribió.",
     ratingsLabel: "Valoraciones de viajeros",
     reviewCount: "{count} opiniones",
     asOf: "a {date}",
@@ -221,24 +227,53 @@ const es: Messages = {
     },
   },
 
+  why: {
+    eyebrow: "Por qué Nagi of Mekong",
+    title: "Dos días en el río, sin nada que organizar",
+    intro:
+      "El río es la parte fácil. Nos ocupamos de todo lo demás y publicamos exactamente qué incluye y cuánto cuesta.",
+    points: [
+      {
+        title: "De hotel a hotel, no de muelle a muelle",
+        text: "Te recogemos en tu hotel de Chiang Khong o Houay Xai, te ayudamos a cruzar la frontera y te llevamos a tu hotel de Luang Prabang.",
+        proof:
+          "La recogida, el equipaje y los traslados están incluidos en todos los paquetes río abajo.",
+      },
+      {
+        title: "Alguien contigo los dos días",
+        text: "Un anfitrión de habla inglesa viaja contigo del primer muelle al último, y cada pasajero tiene chaleco salvavidas.",
+        proof: "El seguro de viaje está incluido en el precio.",
+      },
+      {
+        title: "Precios a la vista antes de preguntar",
+        text: "Cada paquete tiene su precio en esta web. Enviar una solicitud es gratis y no te compromete a nada, y respondemos en 24 horas.",
+        proof: "Desde {price} por persona.",
+      },
+    ],
+  },
+
+  newsletter: {
+    title: "Novedades del Mekong",
+    intro:
+      "Correos ocasionales con nuevas fechas de salida, ofertas de temporada y noticias del río. Puedes darte de baja cuando quieras.",
+    label: "Tu correo electrónico",
+    placeholder: "nombre@ejemplo.com",
+    submit: "Suscribirme",
+    consent:
+      "Al suscribirte, aceptas recibir estos correos. Consulta nuestra <privacy>política de privacidad</privacy>.",
+    sending: "Suscribiéndote…",
+    success: "Gracias. Revisa tu bandeja de entrada y confirma tu dirección.",
+    errorInvalid: "Introduce un correo electrónico válido, como nombre@ejemplo.com.",
+    errorFailed: "Lo sentimos, no ha funcionado. Inténtalo de nuevo o escríbenos a {email}.",
+    honeypot: "Deja este campo vacío",
+  },
+
   tiktok: {
     eyebrow: "En TikTok",
     title: "Lo que cuentan los viajeros en TikTok",
-    intro:
-      "Viajeros que navegaron con nosotros y lo grabaron. Sus vídeos y sus textos, sin editar y con sus propias palabras. No son valoraciones.",
-    play: "Reproducir el TikTok de @{handle}",
-    privacy: "Se carga desde TikTok solo cuando haces clic. TikTok puede guardar cookies.",
+    rowLabel: "Vídeos de TikTok, desplázate hacia los lados",
     watchOn: "Ver en TikTok",
-    opensTikTok: "Abre TikTok",
-    captionLabel: "Texto de @{handle}:",
-    showMore: "Ver el texto completo",
-    showLess: "Ver menos",
-    dialogTitle: "TikTok de @{handle}",
-    dialogDescription: "El vídeo se carga desde TikTok. Pulsa Esc o Cerrar para volver.",
-    close: "Cerrar",
-    loading: "Cargando el vídeo desde TikTok…",
-    retrieved: "Textos tal como se publicaron en TikTok, copiados el {date}.",
-    placeholder: "Texto aún no disponible: añádelo en src/content/tiktok.ts.",
+    videoTitle: "Vídeo de TikTok de @{handle}",
   },
 
   trip: {
@@ -270,11 +305,6 @@ const es: Messages = {
     validUntil: "Válido hasta el {date}",
     validFrom: "Desde el {date}",
     kind: { cruise: "Crucero fluvial", landCruise: "Tierra y crucero" },
-  },
-
-  nextSailings: {
-    label: "Próximas salidas",
-    every: "cada {days}",
   },
 
   nextSteps: {
@@ -318,11 +348,13 @@ const es: Messages = {
     nightIn: "Noche en Pak Beng",
     alsoAsk: "Pregúntanos también por",
     optional: "(opcional)",
+    required: "obligatorio",
     alsoAskHint: "Lo incluiremos en nuestra respuesta. Sin compromiso.",
     stepDetails: "Tus datos",
     name: "Nombre completo",
     email: "Correo electrónico",
     phone: "Teléfono o WhatsApp",
+    phoneHint: "Con el prefijo del país, p. ej. +34",
     diet: "Necesidades alimentarias",
     dietHint: "Opciones veganas, vegetarianas y halal",
     message: "¿Algo más?",
@@ -343,8 +375,6 @@ const es: Messages = {
     quote: "Te enviaremos un presupuesto.",
     sendWhatsApp: "Enviar por WhatsApp",
     sendEmail: "Enviar por correo",
-    nothingCharged:
-      "No se cobra nada en línea. Tu mensaje se abre en WhatsApp o en tu correo, listo para enviar.",
     readyIn: "Tu solicitud está lista en {channel}. Solo tienes que enviarla.",
     channelWhatsApp: "WhatsApp",
     channelEmail: "tu aplicación de correo",
@@ -391,6 +421,7 @@ const es: Messages = {
     boatTitle: "Comodidad y seguridad a bordo",
     faqEyebrow: "Preguntas",
     faqTitle: "Preguntas frecuentes",
+    listLabel: "Preguntas",
   },
 
   faq: [
@@ -537,19 +568,19 @@ const es: Messages = {
     eyebrow: "Reserva y contacto",
     heading: "Ver disponibilidad",
     intro: "Envíanos tu solicitud: es gratis y no te compromete a nada.",
-    phone: "Teléfono",
+    phoneWhatsApp: "Teléfono / WhatsApp",
+    call: "Llamar",
     email: "Correo",
     hours: "Horario",
     basedIn: "Estamos en",
     bookingTitle: "Tu solicitud de reserva",
-    bookingIntro:
-      "Cuatro pasos cortos. Tu mensaje se abre en WhatsApp o en tu correo, listo para enviar.",
+    bookingIntro: "Cuatro pasos cortos.",
   },
 
   privacy: {
     title: "Privacidad",
     description:
-      "Cómo trata tus datos la web de Nagi of Mekong: sin seguimiento, solo dos preferencias guardadas en tu navegador.",
+      "Cómo trata tus datos la web de Nagi of Mekong: sin seguimiento, solo unas pocas preferencias guardadas en tu navegador.",
     heading: "Privacidad",
     intro: "Esta web está pensada para recoger lo mínimo posible.",
     sections: [
@@ -563,11 +594,15 @@ const es: Messages = {
       },
       {
         title: "Vídeos de TikTok",
-        text: "Los vídeos de TikTok no se cargan hasta que haces clic en uno. Solo entonces tu navegador se conecta con TikTok, que puede guardar sus propias cookies según su política de privacidad. Los enlaces «Ver en TikTok» abren la web de TikTok.",
+        text: "Los vídeos de TikTok solo se cargan si los permites en el aviso de cookies («Aceptar todo», o «Vídeos de TikTok» en «Personalizar»). Tu elección se guarda en el almacenamiento local de tu navegador. Si los permites, los vídeos se reproducen aquí desde TikTok mientras te desplazas, y TikTok instala sus propias cookies según su propia política de privacidad. Si no, no se carga nada de TikTok y cada vídeo es un simple enlace a TikTok. Puedes cambiar tu elección en cualquier momento con «Configuración de cookies», al pie de cada página.",
       },
       {
         title: "El formulario de reserva",
         text: "El formulario no envía tus datos a ningún servidor. Cuando pulsas «Enviar por WhatsApp» o «Enviar por correo», tu mensaje se prepara en tu navegador y se abre en WhatsApp o en tu aplicación de correo. No se envía nada hasta que pulsas enviar allí.",
+      },
+      {
+        title: "Novedades por correo",
+        text: "Si te suscribes a las novedades en el pie de página, tu correo electrónico y el idioma de la página se envían a Brevo (Sendinblue SAS, Francia), el servicio de correo que usamos, para que te mande esos mensajes. Brevo te envía primero un enlace para confirmar tu dirección. No se usan para nada más. Cada correo incluye un enlace para darte de baja, y puedes pedirnos que borremos tu dirección en cualquier momento.",
       },
       {
         title: "Cuando nos escribes",

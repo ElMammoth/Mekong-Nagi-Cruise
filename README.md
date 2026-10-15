@@ -27,8 +27,9 @@ All design values (colour, type, spacing, radius, shadow, motion) are tokens in
 `src/app/globals.css`; see [`docs/03-design-system.md`](docs/03-design-system.md). The palette
 comes only from the flag of Laos.
 
-No server, database or third-party scripts (TikTok's embed loads only after a visitor clicks
-a video). `npm run build` produces plain HTML/CSS/JS in `out/` that can be hosted anywhere.
+No server, database or third-party scripts on page load: TikTok's embed loads only near the
+videos and only after the visitor agrees (see "TikTok videos"). `npm run build` produces plain
+HTML/CSS/JS in `out/` that can be hosted anywhere.
 
 ## Getting started
 
@@ -42,10 +43,12 @@ npm run test:a11y    # after a build: axe-core on every page in every language, 
 SCREENSHOTS=1 npm run test:a11y   # also writes ./screenshots/*.png
 npm run test:i18n    # after a build: hreflang reciprocity, canonicals and sitemap alternates
 npm run test:rates   # after a build: cached rates = ECB source, every "(about ฿…)" correct
+npm run test:embeds  # after a build: no TikTok request before consent and before the videos are near
+npm run test:form    # after a build: booking form alignment (en/es/de, mobile/desktop, errors) + screenshots
 ```
 
-`test:a11y` uses `playwright-core`. If Chromium isn't found, set `CHROMIUM_PATH` to a
-Chrome or Chromium binary.
+`test:a11y`, `test:embeds` and `test:form` use `playwright-core`. If Chromium isn't found,
+set `CHROMIUM_PATH` to a Chrome or Chromium binary.
 
 ## Editing content (no design knowledge needed)
 
@@ -95,10 +98,12 @@ language versions (hreflang + x-default), and the sitemap lists them all.
 ## Currency
 
 Prices are written once, in US dollars, in `src/content/trips.ts`; bookings are charged in
-US dollars. The pages show "US$160 (about ฿5,370)". Visitors can pick another currency
-(USD, EUR, GBP, AUD, NZD, CAD, CHF, THB, CNY) in the header: amounts are then labelled
-"about…", the US dollar price stays next to them, and a note gives the rates date. The
-choice is kept in the browser (localStorage) across pages and languages.
+US dollars. The pages show "US$160 (≈ ฿5,370)". Visitors can pick another currency
+(USD, EUR, GBP, AUD, NZD, CAD, CHF, THB, CNY) in the header: amounts are then marked with
+"≈" and the US dollar price stays next to them. There are no currency or exchange-rate
+footnotes on the pages; only the booking summary says "Amounts in EUR are approximate"
+when another currency is shown. The choice is kept in the browser (localStorage) across
+pages and languages.
 
 Rates are the European Central Bank's daily reference rates, fetched from
 [Frankfurter](https://frankfurter.dev) **at build time** (`npm run rates`, part of
@@ -110,14 +115,79 @@ build hook on your host and save its URL as the repository secret `DEPLOY_HOOK_U
 
 ## TikTok videos
 
-`src/content/tiktok.ts` lists the videos (clean URL, id, handle, date). Before each build,
-`npm run tiktok` asks TikTok's official oEmbed endpoint for each creator's name and caption
-and saves them in `src/content/tiktok.generated.json` (kept if TikTok is unreachable).
-Captions are shown verbatim. Each video is a light placeholder card; TikTok's official
-embed and script load only after a visitor clicks it. Videos and thumbnails are never
-downloaded. They are not reviews: they don't count in the ratings and aren't marked up as
-reviews. To show a "View more on TikTok" link, set `tiktokMoreUrl` to a real hashtag or
-profile URL.
+`src/content/tiktok.ts` lists the videos (clean URL, id, handle, retrieval date). Before each
+build, `npm run tiktok` asks TikTok's official oEmbed endpoint for each creator's name and
+caption and saves them in `src/content/tiktok.generated.json` (kept if TikTok is
+unreachable). Captions are shown verbatim under each video; their retrieval date stays in
+those data files. Videos and thumbnails are never downloaded or re-hosted.
+
+Each video plays in TikTok's **official embed player**
+(`https://www.tiktok.com/player/v1/<id>`, see developers.tiktok.com/doc/embed-player):
+
+- **Consent first.** Nothing from TikTok loads until the visitor allows "TikTok videos" in
+  the cookie banner. Until then, and if they refuse, each video is a small card with the
+  creator's handle and a link to TikTok.
+- **After consent:** each player mounts when it comes within 600 px of the viewport. Only
+  **one video plays at a time**: the most visible one (at least 60 % on screen; ties go to
+  the first), muted (`autoplay=1`; TikTok starts autoplay muted) and looping (`loop=1`).
+  When another becomes the most visible, the previous one pauses (`pause` / `play`
+  messages). If a visitor starts a video themselves, it becomes the one playing and the
+  others pause. The volume
+  control stays visible (`volume_control=1`), so visitors can turn sound on. `muted=1` is
+  not used: it would lock the volume. With `prefers-reduced-motion`, nothing autoplays.
+- **Layout:** a snap-scroll row on small screens and a four-column grid from `lg`, on the
+  section background, each video in a reserved 9:16 frame (no layout shift).
+- **Unavailable videos:** if TikTok reports the video doesn't exist or can't be served
+  (error 1001/2001), or the player never starts (blocked), the card falls back to the link.
+- **Note:** for visitors in the EU, TikTok shows its own "Allow cookies from TikTok"
+  prompt inside the player the first time. That prompt belongs to TikTok and can't be
+  removed from the site.
+- They are not reviews: they don't count in the ratings and aren't marked up as reviews.
+  To show a "Watch on TikTok" link under the videos, set `tiktokMoreUrl` to a real hashtag
+  or profile URL.
+
+## Cookie consent
+
+The banner (`src/components/layout/consent-banner.tsx`) appears on a visitor's first
+arrival: "Accept all" and "Reject all" side by side with the same style, and "Customize"
+with two switches (essential, always on; TikTok videos). The choice is saved in
+localStorage (`nagi_consent`, versioned) and can be changed with "Cookie settings" in the
+footer. The banner is fixed to the bottom, not modal (no scroll lock), first in the tab
+order, and not in the static HTML (no CLS or LCP impact). The only optional category is
+TikTok: the site has no analytics or trackers. `npm run test:embeds` checks that nothing
+from TikTok, and no cookie, is loaded before consent.
+
+## Newsletter (travel updates)
+
+The footer has a sign-up form, using React Bits' Curved Input (bend −20, token colours). It
+has a visible label, email validation, a consent line linking to the privacy policy, a
+honeypot, and results announced to screen readers. Emails are never stored in this
+repository or the build: they go straight from the visitor's browser to **Brevo**.
+
+A static site can't hold an API key, so the form posts to a **Brevo-hosted sign-up form**,
+the same way Brevo's own embed script does (`src/lib/newsletter/brevo.ts`). Set up once:
+
+1. In Brevo: **Contacts → Lists**, create a list (e.g. "Travel updates").
+2. **Contacts → Forms → Create a subscription form**, linked to that list:
+   - keep a single **EMAIL** field (the site's form sends only the address and the language);
+   - turn **reCAPTCHA off** (the site has its own honeypot);
+   - turn **double opt-in on** and pick a confirmation template. The site's success message
+     says "check your inbox and confirm", and the privacy page says Brevo sends a
+     confirmation link, so keep these in step if you change it.
+3. **Share** the form and copy its action URL (`https://….sibforms.com/serve/…`, in the HTML
+   embed code: `<form … action="…">`).
+4. Set the build variables on your host (or in `.env.local` for local builds; see
+   `.env.example`):
+
+```bash
+NEXT_PUBLIC_NEWSLETTER_PROVIDER=brevo
+NEXT_PUBLIC_BREVO_FORM_URL=https://xxxx.sibforms.com/serve/MUIF…
+```
+
+The build fails if the provider is "brevo" and the URL isn't a Brevo form URL. Without the
+variables the form uses a **stub** that says "thank you" and sends nothing (fine for
+previews). The privacy page names Brevo (Sendinblue SAS, France); have it checked before
+launch.
 
 ## Reviews
 
@@ -183,6 +253,12 @@ serve that file with `Content-Type: image/png`.
 - **Vercel**: import the repo; it detects Next.js.
 - **Other hosts**: copy the rules in `public/_redirects` into the host's redirect settings
   so links to the old pages (e.g. `/upstream-cruises`) keep working.
+
+No rewrite rule is needed for the router's prefetch files (`__next.*.txt` next to each
+page): they are plain files in `out/`. Next 16 writes the nested ones as folders when it
+builds on Windows, so `npm run build` runs `scripts/flatten-segments.mjs` afterwards to give
+them the flat names the router requests (it does nothing on Linux/macOS builds). If you
+build with `next build` directly on Windows, run that script too before uploading.
 
 Set the real domain in `src/content/site.ts` (`url`): it's used for canonical URLs, the
 sitemap and social cards.

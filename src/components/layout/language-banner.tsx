@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { useI18n } from "@/i18n/client";
 import { LOCALE_COOKIE, isLocale, localeInfo, matchLocale, type Locale } from "@/i18n/config";
 import type { Messages } from "@/i18n/messages/en";
+import { useConsent } from "@/lib/consent";
 import { buttonClasses } from "@/components/ui/button";
 import { rememberLocale, useAlternates } from "./locale-switchers";
 
@@ -45,7 +46,9 @@ export function LanguageBanner({ copy }: { copy: Record<Locale, BannerCopy> }) {
   const suggested = useSuggestedLocale(locale);
   const alternates = useAlternates();
   const [closed, setClosed] = useState(false);
-  if (!suggested || closed) return null;
+  const consent = useConsent();
+  // Never stacked on the cookie banner: the language offer waits for the consent choice.
+  if (!suggested || closed || !consent.decided) return null;
 
   const text = copy[suggested];
   const tag = localeInfo[suggested].tag;

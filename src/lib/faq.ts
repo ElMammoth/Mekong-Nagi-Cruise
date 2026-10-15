@@ -22,6 +22,7 @@ export function plainFaqs(locale: Locale, faqs: readonly Faq[] = getFaqs(locale)
   const { intl } = localeInfo[locale];
   const approx = getMessages(locale).currency.approx;
   return faqs.map((faq) => ({
+    id: faq.id,
     question: faq.question,
     answer: faq.answer.replace(FAQ_PRICE, (match, id: string) => {
       const usd = prices[id];

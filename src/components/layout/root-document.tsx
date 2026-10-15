@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { ConsentBanner } from "@/components/layout/consent-banner";
 import { JsonLd } from "@/components/layout/json-ld";
 import { LanguageBanner } from "@/components/layout/language-banner";
 import { PlatformLogoSymbols } from "@/components/reviews/platform-logo";
@@ -20,8 +21,8 @@ function clientMessages(m: Messages): ClientMessages {
     nav: m.nav,
     switcher: m.switcher,
     currency: m.currency,
-    nextSailings: m.nextSailings,
     banner: m.banner,
+    consent: m.consent,
   };
 }
 
@@ -54,6 +55,8 @@ export function RootDocument({ locale, children }: { locale: Locale; children: R
           >
             {m.common.skipToContent}
           </a>
+          {/* First in the tab order after the skip link, so keyboard users meet it at once. */}
+          <ConsentBanner privacyHref={nav.privacyHref} />
           <SiteHeader nav={nav} />
           <main id="main" tabIndex={-1} className="flex-1 focus:outline-none">
             {children}

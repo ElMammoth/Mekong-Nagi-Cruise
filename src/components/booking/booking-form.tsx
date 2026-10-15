@@ -10,8 +10,17 @@ import {
   type ReactNode,
 } from "react";
 import { Checkbox, RadioGroup } from "radix-ui";
-import { CalendarDays, Check, Mail, MessageCircle, Minus, Plus, Send } from "lucide-react";
-import { CurrencyNote, DualPrice, useDualPriceText } from "@/components/currency/price";
+import {
+  CalendarDays,
+  Check,
+  ChevronDown,
+  Mail,
+  MessageCircle,
+  Minus,
+  Plus,
+  Send,
+} from "lucide-react";
+import { ApproximateNote, DualPrice, useDualPriceText } from "@/components/currency/price";
 import { Button } from "@/components/ui/button";
 import { RouteLabel, routeText } from "@/components/ui/route-label";
 import { site } from "@/content/site";
@@ -173,7 +182,9 @@ export function BookingForm({
 
   return (
     <form onSubmit={handleSubmit} noValidate className="grid gap-10 lg:grid-cols-sidebar">
-      <div className="space-y-10">
+      {/* One column of steps, centred in its column and capped (max-w-form) so every field
+          shares one left edge at every width. */}
+      <div className="mx-auto w-full max-w-form min-w-0 space-y-10">
         {errorList.length > 0 ? (
           <div
             ref={errorSummaryRef}
@@ -206,14 +217,14 @@ export function BookingForm({
           ) : (
             <Field label={t.tripField} htmlFor={fieldId("trip")} error={errors.trip}>
               {(d) => (
-                <>
+                <div className="relative">
                   <select
                     aria-describedby={d}
                     id={fieldId("trip")}
                     name="trip"
                     value={tripSlug}
                     onChange={(e) => changeTrip(e.target.value)}
-                    className={inputClass(Boolean(errors.trip))}
+                    className={cn(inputClass(Boolean(errors.trip)), "appearance-none pr-11")}
                   >
                     {trips.map((option) => (
                       <option key={option.slug} value={option.slug}>
@@ -221,7 +232,11 @@ export function BookingForm({
                       </option>
                     ))}
                   </select>
-                </>
+                  <ChevronDown
+                    aria-hidden="true"
+                    className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-primary"
+                  />
+                </div>
               )}
             </Field>
           )}
@@ -281,13 +296,13 @@ export function BookingForm({
           >
             {(d) => (
               <>
-                <div className="inline-flex items-center rounded-sm border border-control bg-surface">
+                <div className="inline-flex h-field items-stretch self-start justify-self-start rounded-sm border border-control bg-surface focus-within:border-primary">
                   <button
                     type="button"
                     onClick={() => setTravellers((n) => Math.max(1, n - 1))}
                     disabled={travellers <= 1}
                     aria-label={t.fewer}
-                    className="grid size-11 place-items-center rounded-sm text-heading hover:bg-surface-tint disabled:opacity-40"
+                    className="grid w-11 place-items-center rounded-sm text-heading hover:bg-surface-tint disabled:opacity-40"
                   >
                     <Minus aria-hidden="true" className="size-4" />
                   </button>
@@ -313,7 +328,7 @@ export function BookingForm({
                     onClick={() => setTravellers((n) => Math.min(MAX_TRAVELLERS, n + 1))}
                     disabled={travellers >= MAX_TRAVELLERS}
                     aria-label={t.more}
-                    className="grid size-11 place-items-center rounded-sm text-heading hover:bg-surface-tint disabled:opacity-40"
+                    className="grid w-11 place-items-center rounded-sm text-heading hover:bg-surface-tint disabled:opacity-40"
                   >
                     <Plus aria-hidden="true" className="size-4" />
                   </button>
@@ -391,8 +406,18 @@ export function BookingForm({
           <legend className="font-display text-h3 text-heading">
             <StepNumber n={4} /> {t.stepDetails}
           </legend>
-          <div className="grid gap-5 sm:grid-cols-2">
-            <Field label={t.name} htmlFor={fieldId("name")} error={errors.name} required>
+          {/* Two equal columns from `sm`. Each field is a subgrid of three rows (label, control,
+              message), so labels, inputs and messages line up across a row even when one label
+              wraps in a longer language or an error appears. */}
+          <div className="grid grid-cols-1 gap-x-5 sm:grid-cols-2">
+            <Field
+              label={t.name}
+              htmlFor={fieldId("name")}
+              error={errors.name}
+              required
+              requiredLabel={t.required}
+              subgrid
+            >
               {(d) => (
                 <>
                   <input
@@ -412,6 +437,7 @@ export function BookingForm({
               htmlFor={fieldId("email")}
               error={errors.email}
               optional={t.optional}
+              subgrid
             >
               {(d) => (
                 <>
@@ -427,7 +453,13 @@ export function BookingForm({
                 </>
               )}
             </Field>
-            <Field label={t.phone} htmlFor={fieldId("phone")} optional={t.optional}>
+            <Field
+              label={t.phone}
+              htmlFor={fieldId("phone")}
+              optional={t.optional}
+              hint={t.phoneHint}
+              subgrid
+            >
               {(d) => (
                 <>
                   <input
@@ -435,13 +467,20 @@ export function BookingForm({
                     id={fieldId("phone")}
                     name="phone"
                     type="tel"
+                    inputMode="tel"
                     autoComplete="tel"
                     className={inputClass(false)}
                   />
                 </>
               )}
             </Field>
-            <Field label={t.diet} htmlFor={fieldId("diet")} hint={t.dietHint}>
+            <Field
+              label={t.diet}
+              htmlFor={fieldId("diet")}
+              optional={t.optional}
+              hint={t.dietHint}
+              subgrid
+            >
               {(d) => (
                 <>
                   <input
@@ -462,7 +501,7 @@ export function BookingForm({
                   id={fieldId("message")}
                   name="message"
                   rows={4}
-                  className={cn(inputClass(false), "min-h-28 py-3")}
+                  className={cn(inputClass(false), "h-auto min-h-28 py-3")}
                 />
               </>
             )}
@@ -471,7 +510,10 @@ export function BookingForm({
       </div>
 
       {/* Summary */}
-      <aside aria-label={t.summary} className="lg:sticky lg:top-24 lg:self-start">
+      <aside
+        aria-label={t.summary}
+        className="mx-auto w-full max-w-form lg:sticky lg:top-24 lg:max-w-none lg:self-start"
+      >
         <div className="rounded-md border border-line bg-surface p-6 shadow-sm">
           <h3 className="text-h3">{t.yourRequest}</h3>
           <dl className="mt-4 space-y-3 text-sm">
@@ -505,7 +547,7 @@ export function BookingForm({
                   {travellers === 1 && option?.singleSupplementUsd ? t.inclSupplement : ""}.{" "}
                   {t.weConfirm}
                 </p>
-                <CurrencyNote className="mt-2" />
+                <ApproximateNote className="mt-2" />
               </>
             ) : (
               <p className="text-muted">{trip.priceOnRequest ?? t.quote}</p>
@@ -536,9 +578,7 @@ export function BookingForm({
               {t.sendEmail}
             </Button>
           </div>
-          <p className="mt-4 text-sm text-muted">
-            {t.nothingCharged} {replyPromise}
-          </p>
+          <p className="mt-4 text-sm text-muted">{replyPromise}</p>
 
           <div role="status" aria-live="polite">
             {sentVia ? (
@@ -604,7 +644,9 @@ function Field({
   error,
   hint,
   required,
+  requiredLabel,
   optional,
+  subgrid = false,
   children,
 }: {
   label: string;
@@ -612,37 +654,44 @@ function Field({
   error?: string;
   hint?: string;
   required?: boolean;
+  /** Screen-reader word for the required asterisk. */
+  requiredLabel?: string;
   /** The word for "(optional)" when the field is optional. */
   optional?: string;
+  /** Inside a two-column grid: share the parent's rows so fields line up. */
+  subgrid?: boolean;
   children: (describedBy: string | undefined) => React.ReactNode;
 }) {
-  const describedBy =
-    [error ? `${htmlFor}-error` : null, hint ? `${htmlFor}-hint` : null]
-      .filter(Boolean)
-      .join(" ") || undefined;
+  // The message slot shows the error when there is one, otherwise the hint. It always keeps
+  // one line of space, so a message appearing never moves the fields below.
+  const messageId = error ? `${htmlFor}-error` : hint ? `${htmlFor}-hint` : undefined;
   return (
-    <div className="space-y-1.5">
-      <label htmlFor={htmlFor} className="block font-display text-sm text-heading">
+    <div
+      className={cn(
+        "grid content-start gap-y-1.5",
+        subgrid && "sm:row-span-3 sm:grid-rows-subgrid",
+      )}
+    >
+      <label htmlFor={htmlFor} className="block self-end font-display text-sm text-heading">
         {label}
         {required ? (
-          <span className="text-accent" aria-hidden="true">
-            {" "}
-            *
-          </span>
+          <>
+            <span className="text-accent" aria-hidden="true">
+              {" "}
+              *
+            </span>
+            {requiredLabel ? <span className="sr-only"> ({requiredLabel})</span> : null}
+          </>
         ) : null}
-        {optional ? <span className="font-sans text-base text-muted"> {optional}</span> : null}
+        {optional ? <span className="font-sans text-sm text-muted"> {optional}</span> : null}
       </label>
-      {children(describedBy)}
-      {hint ? (
-        <p id={`${htmlFor}-hint`} className="text-sm text-muted">
-          {hint}
-        </p>
-      ) : null}
-      {error ? (
-        <p id={`${htmlFor}-error`} className="text-sm text-accent">
-          {error}
-        </p>
-      ) : null}
+      {children(messageId)}
+      <p
+        id={messageId}
+        className={cn("mb-3 min-h-line text-sm", error ? "text-accent" : "text-muted")}
+      >
+        {error ?? hint}
+      </p>
     </div>
   );
 }
@@ -658,7 +707,7 @@ function SummaryRow({ term, value }: { term: string; value: ReactNode }) {
 
 function inputClass(invalid: boolean) {
   return cn(
-    "block min-h-12 w-full rounded-sm border bg-surface px-4 text-base text-ink transition-colors duration-fast placeholder:text-muted focus:border-primary focus:outline-2 focus:outline-offset-0 focus:outline-focus",
+    "block h-field w-full rounded-sm border bg-surface px-4 text-base text-ink transition-colors duration-fast placeholder:text-muted focus:border-primary focus:outline-2 focus:outline-offset-0 focus:outline-focus",
     invalid ? "border-accent" : "border-control hover:border-primary",
   );
 }

@@ -129,8 +129,9 @@
   --container-note: 18rem;
   --container-fact: 12rem;
   --container-mark: 28rem;
-  --container-embed: 26rem; /* TikTok dialog: fits the official embed (325–605 px wide) */
-  --spacing-embed: 45rem; /* height reserved for the TikTok embed while it loads */
+  --spacing-tiktok: 15rem; /* TikTok video width in the mobile scroll row (9:16 frame) */
+  --spacing-field: 3rem; /* every single-line form control: inputs, selects, steppers */
+  --container-form: 48rem; /* the booking/contact details block */
 
   --grid-template-columns-hero: 1.05fr 1fr;
   --grid-template-columns-intro: 0.8fr 1.2fr; /* heading left, content right */
@@ -143,6 +144,7 @@
   --grid-template-columns-label: 7rem 1fr;
   --grid-template-columns-price: 1fr auto;
   --grid-template-columns-summary: 18rem minmax(0, 1fr); /* rating summary + review list */
+  --grid-template-columns-faq: minmax(0, 2fr) minmax(0, 3fr); /* question list + answer panel */
 
   /* ── Shape & depth ──────────────────────────────────────── */
   --radius-*: initial;
@@ -167,6 +169,9 @@
   --duration-base: 200ms;
   --duration-page: 220ms; /* route fade */
   --duration-slow: 2400ms; /* the river drawing itself */
+  --duration-reveal: 560ms; /* scroll reveal of sections and cards */
+  --reveal-shift: 0.75rem; /* how far revealed content rises */
+  --reveal-stagger: 70ms; /* delay between items of a revealed group */
 
   --animate-*: initial;
   --animate-draw: draw var(--duration-slow) var(--ease-out) 0.2s both;
@@ -479,4 +484,41 @@ html:lang(th) {
   transition-property: width, height;
   transition-duration: var(--duration-base);
   transition-timing-function: var(--ease-standard);
+}
+
+/* ── Scroll reveal (src/components/effects/reveal.tsx) ─────────────────────────
+ * Content is always in the HTML and visible by default. The script marks only elements that
+ * start below the fold as `data-reveal-state="pending"`, then flips them to "shown" once as
+ * they scroll into view. With JavaScript off or failing, nothing is ever hidden. Opacity and
+ * transform only, so no layout shift. Off for visitors who prefer reduced motion.
+ * Markup: data-reveal on a block; data-reveal="group" fades its children in one by one.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal-state] {
+    transition:
+      opacity var(--duration-reveal) var(--ease-out),
+      transform var(--duration-reveal) var(--ease-out);
+    transition-delay: calc(var(--reveal-i, 0) * var(--reveal-stagger));
+  }
+  [data-reveal-state="pending"] {
+    opacity: 0;
+    transform: translateY(var(--reveal-shift));
+  }
+}
+@media print {
+  [data-reveal-state] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* A field's helper/error line keeps one line of space even when empty, so messages never
+   push the next field down. */
+@utility min-h-line {
+  min-height: calc(1em * var(--text-sm--line-height));
+}
+
+/* The consent banner never grows taller than the viewport (it scrolls inside instead). */
+@utility max-h-banner {
+  max-height: calc(100dvh - 1.5rem);
 }

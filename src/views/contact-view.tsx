@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { BookingForm } from "@/components/booking/booking-form";
 import { BookingReview } from "@/components/reviews/reviews-section";
@@ -14,14 +15,30 @@ export function ContactView() {
   const { locale, m } = getI18n();
   const copy = m.contactPage;
   const { contact } = site;
-  const channels = [
+  const action =
+    "inline-flex min-h-11 items-center gap-2 rounded-sm border border-control bg-surface px-3 font-display text-sm text-primary transition-colors duration-fast hover:border-primary hover:bg-surface-tint";
+  const channels: { icon: typeof Phone; term: string; value: ReactNode; href?: string }[] = [
     {
-      icon: MessageCircle,
-      term: m.common.whatsapp,
-      value: contact.phoneDisplay,
-      href: contact.whatsappHref,
+      // One number for calls and WhatsApp: shown once, with both actions.
+      icon: Phone,
+      term: copy.phoneWhatsApp,
+      value: (
+        <>
+          <span className="block">{contact.phoneDisplay}</span>
+          <span className="mt-2 flex flex-wrap gap-2">
+            <a href={contact.phoneHref} className={action}>
+              <Phone aria-hidden="true" className="size-4" />
+              {copy.call}
+              <span className="sr-only"> {contact.phoneDisplay}</span>
+            </a>
+            <a href={contact.whatsappHref} className={action}>
+              <MessageCircle aria-hidden="true" className="size-4" />
+              {m.common.askOnWhatsApp}
+            </a>
+          </span>
+        </>
+      ),
     },
-    { icon: Phone, term: copy.phone, value: contact.phoneDisplay, href: contact.phoneHref },
     { icon: Mail, term: copy.email, value: contact.email, href: `mailto:${contact.email}` },
     { icon: Clock, term: copy.hours, value: contact.hours },
     {
@@ -41,7 +58,7 @@ export function ContactView() {
       >
         <dl className="mt-10 grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
           {channels.map(({ icon: Icon, term, value, href }) => (
-            <div key={term} className="grid grid-cols-icon gap-x-3">
+            <div key={term} className="grid grid-cols-icon content-start gap-x-3">
               <Icon aria-hidden="true" className="row-span-2 mt-1 size-5 text-primary" />
               <dt className="font-display text-eyebrow text-muted uppercase">{term}</dt>
               <dd className="mt-0.5 min-w-0 break-words text-ink">

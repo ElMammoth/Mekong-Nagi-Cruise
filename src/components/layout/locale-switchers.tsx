@@ -9,7 +9,6 @@ import { useI18n } from "@/i18n/client";
 import { LOCALE_COOKIE, localeInfo, locales, type Locale } from "@/i18n/config";
 import { fmt } from "@/i18n/format";
 import { alternatesFor, locate, pathFor } from "@/i18n/routes";
-import { cn } from "@/lib/cn";
 import {
   availableCurrencies,
   currencyName,
@@ -151,9 +150,6 @@ export function CurrencyOptions() {
           </li>
         ))}
       </ul>
-      <p className="mt-2 border-t border-line px-3 pt-2 text-sm text-muted">
-        {m.switcher.currencyHint}
-      </p>
     </div>
   );
 }
@@ -181,7 +177,6 @@ export function MobileSwitchers({ onNavigate }: { onNavigate?: () => void }) {
           id={`${id}-cur`}
           value={currency}
           onChange={(e) => setCurrency(e.target.value as CurrencyCode)}
-          aria-describedby={`${id}-cur-hint`}
           className="mt-2 block min-h-12 w-full rounded-sm border border-control bg-surface px-3 text-base text-ink hover:border-primary"
         >
           {availableCurrencies().map((code) => (
@@ -190,9 +185,6 @@ export function MobileSwitchers({ onNavigate }: { onNavigate?: () => void }) {
             </option>
           ))}
         </select>
-        <p id={`${id}-cur-hint`} className={cn("mt-2 text-sm text-muted")}>
-          {m.switcher.currencyHint}
-        </p>
       </div>
     </div>
   );

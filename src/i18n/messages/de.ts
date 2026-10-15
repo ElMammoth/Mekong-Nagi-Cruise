@@ -63,8 +63,6 @@ const de: Messages = {
     currency: "Währung",
     languageButton: "Sprache: {name}",
     currencyButton: "Währung: {name}",
-    currencyHint:
-      "Gebucht und abgerechnet wird in US-Dollar. Andere Währungen dienen nur zur Orientierung.",
   },
 
   banner: {
@@ -75,13 +73,24 @@ const de: Messages = {
     dismissLabel: "Schließen und in dieser Sprache bleiben",
   },
 
+  consent: {
+    title: "Cookies und TikTok-Videos",
+    text: "Diese Website nutzt nur notwendigen Speicher für Ihre Sprache und Währung. Wenn Sie zustimmen, laufen TikTok-Videos direkt auf der Seite, und TikTok setzt eigene Cookies.",
+    privacy: "Datenschutzerklärung",
+    acceptAll: "Alle akzeptieren",
+    rejectAll: "Alle ablehnen",
+    customize: "Anpassen",
+    save: "Auswahl speichern",
+    essential: "Notwendig",
+    essentialHint: "Sprach- und Währungseinstellungen. Immer aktiv.",
+    tiktok: "TikTok-Videos",
+    tiktokHint: "Zeigt hier Videos von Reisenden auf TikTok. TikTok setzt Cookies.",
+    settings: "Cookie-Einstellungen",
+  },
+
   currency: {
-    approx: "ca. {amount}",
-    note: "Beträge in {currency} sind Richtwerte. Abgerechnet wird in US-Dollar.",
-    noteUsd: "Preise in US-Dollar, der Währung, in der abgerechnet wird.",
-    rates: "Wechselkurs: Europäische Zentralbank über Frankfurter, {date}.",
-    ratesTitle: "Kurse vom {date}",
-    noRates: "Wechselkurse nicht verfügbar: Preise in US-Dollar.",
+    approx: "≈ {amount}",
+    note: "Beträge in {currency} sind Richtwerte.",
   },
 
   facts: [
@@ -93,7 +102,6 @@ const de: Messages = {
   contact: {
     replyPromise: "Wir beantworten jede Buchungsanfrage innerhalb von 24 Stunden.",
     country: "Thailand",
-    locationNote: "Gegenüber von Houay Xai (Laos), auf der anderen Flussseite",
   },
 
   home: {
@@ -198,8 +206,6 @@ const de: Messages = {
   reviews: {
     eyebrow: "Bewertungen",
     title: "Das sagen Reisende",
-    intro:
-      "Unbearbeitete Bewertungen von Tripadvisor und Viator, jeweils mit Link zum Original und in der Sprache, in der sie geschrieben wurden.",
     ratingsLabel: "Bewertungen von Reisenden",
     reviewCount: "{count} Bewertungen",
     asOf: "Stand {date}",
@@ -222,25 +228,53 @@ const de: Messages = {
     },
   },
 
+  why: {
+    eyebrow: "Warum Nagi of Mekong",
+    title: "Zwei Tage auf dem Fluss, ohne etwas organisieren zu müssen",
+    intro:
+      "Der Fluss ist der einfache Teil. Wir kümmern uns um alles drumherum und veröffentlichen genau, was dazugehört und was es kostet.",
+    points: [
+      {
+        title: "Von Hotel zu Hotel, nicht von Anleger zu Anleger",
+        text: "Wir holen Sie in Ihrem Hotel in Chiang Khong oder Houay Xai ab, helfen Ihnen über die Grenze und bringen Sie zu Ihrem Hotel in Luang Prabang.",
+        proof: "Abholung, Gepäck und Transfers sind in jedem Paket flussabwärts enthalten.",
+      },
+      {
+        title: "Jemand an Ihrer Seite, beide Tage",
+        text: "Ein englischsprachiger Gastgeber begleitet Sie vom ersten bis zum letzten Anleger, und jeder Passagier hat eine Schwimmweste.",
+        proof: "Die Reiseversicherung ist im Preis enthalten.",
+      },
+      {
+        title: "Preise, die Sie vor der Anfrage sehen",
+        text: "Jedes Paket steht mit Preis auf dieser Website. Eine Anfrage ist kostenlos und unverbindlich, und wir antworten innerhalb von 24 Stunden.",
+        proof: "Ab {price} pro Person.",
+      },
+    ],
+  },
+
+  newsletter: {
+    title: "Neuigkeiten vom Mekong",
+    intro:
+      "Gelegentliche E-Mails mit neuen Abfahrtsterminen, saisonalen Angeboten und Neuem vom Fluss. Jederzeit abbestellbar.",
+    label: "Ihre E-Mail-Adresse",
+    placeholder: "name@beispiel.de",
+    submit: "Anmelden",
+    consent:
+      "Mit der Anmeldung stimmen Sie dem Erhalt dieser E-Mails zu. Lesen Sie unsere <privacy>Datenschutzerklärung</privacy>.",
+    sending: "Anmeldung läuft…",
+    success: "Vielen Dank. Bitte bestätigen Sie Ihre Adresse über den Link in Ihrem Postfach.",
+    errorInvalid: "Bitte geben Sie eine gültige E-Mail-Adresse ein, z. B. name@beispiel.de.",
+    errorFailed:
+      "Das hat leider nicht geklappt. Bitte versuchen Sie es erneut oder schreiben Sie uns an {email}.",
+    honeypot: "Dieses Feld leer lassen",
+  },
+
   tiktok: {
     eyebrow: "Auf TikTok",
     title: "Das sagen Reisende auf TikTok",
-    intro:
-      "Reisende, die mit uns gefahren sind und es gefilmt haben. Ihre Videos und Bildunterschriften, unverändert und in ihren eigenen Worten. Das sind keine Bewertungen.",
-    play: "TikTok von @{handle} abspielen",
-    privacy: "Wird erst nach Ihrem Klick von TikTok geladen. TikTok kann dann Cookies setzen.",
+    rowLabel: "TikTok-Videos, seitlich scrollen",
     watchOn: "Auf TikTok ansehen",
-    opensTikTok: "Öffnet TikTok",
-    captionLabel: "Bildunterschrift von @{handle}:",
-    showMore: "Ganze Bildunterschrift zeigen",
-    showLess: "Weniger zeigen",
-    dialogTitle: "TikTok von @{handle}",
-    dialogDescription:
-      "Das Video wird von TikTok geladen. Mit Esc oder Schließen kehren Sie zurück.",
-    close: "Schließen",
-    loading: "Video wird von TikTok geladen …",
-    retrieved: "Bildunterschriften wie auf TikTok veröffentlicht, übernommen am {date}.",
-    placeholder: "Bildunterschrift noch nicht verfügbar: in src/content/tiktok.ts ergänzen.",
+    videoTitle: "TikTok-Video von @{handle}",
   },
 
   trip: {
@@ -273,11 +307,6 @@ const de: Messages = {
     validUntil: "Gültig bis {date}",
     validFrom: "Ab {date}",
     kind: { cruise: "Flusskreuzfahrt", landCruise: "Land & Fluss" },
-  },
-
-  nextSailings: {
-    label: "Nächste Abfahrten",
-    every: "jeden {days}",
   },
 
   nextSteps: {
@@ -321,11 +350,13 @@ const de: Messages = {
     nightIn: "Nacht in Pak Beng",
     alsoAsk: "Fragen Sie uns auch nach",
     optional: "(optional)",
+    required: "Pflichtfeld",
     alsoAskHint: "Wir gehen in unserer Antwort darauf ein. Unverbindlich.",
     stepDetails: "Ihre Angaben",
     name: "Vollständiger Name",
     email: "E-Mail",
     phone: "Telefon oder WhatsApp",
+    phoneHint: "Mit Ländervorwahl, z. B. +49",
     diet: "Ernährungswünsche",
     dietHint: "Vegan, vegetarisch und halal möglich",
     message: "Sonst noch etwas?",
@@ -346,8 +377,6 @@ const de: Messages = {
     quote: "Wir schicken Ihnen ein Angebot.",
     sendWhatsApp: "Per WhatsApp senden",
     sendEmail: "Per E-Mail senden",
-    nothingCharged:
-      "Online wird nichts abgebucht. Ihre Nachricht öffnet sich in WhatsApp oder Ihrem E-Mail-Programm, bereit zum Senden.",
     readyIn: "Ihre Anfrage ist in {channel} bereit. Drücken Sie dort auf Senden.",
     channelWhatsApp: "WhatsApp",
     channelEmail: "Ihrem E-Mail-Programm",
@@ -394,6 +423,7 @@ const de: Messages = {
     boatTitle: "Komfort und Sicherheit an Bord",
     faqEyebrow: "FAQ",
     faqTitle: "Häufige Fragen",
+    listLabel: "Fragen",
   },
 
   faq: [
@@ -538,19 +568,19 @@ const de: Messages = {
     eyebrow: "Buchen & Kontakt",
     heading: "Verfügbarkeit prüfen",
     intro: "Senden Sie uns Ihre Anfrage: kostenlos und unverbindlich.",
-    phone: "Telefon",
+    phoneWhatsApp: "Telefon / WhatsApp",
+    call: "Anrufen",
     email: "E-Mail",
     hours: "Erreichbar",
     basedIn: "Sitz",
     bookingTitle: "Ihre Buchungsanfrage",
-    bookingIntro:
-      "Vier kurze Schritte. Ihre Nachricht öffnet sich in WhatsApp oder Ihrem E-Mail-Programm, bereit zum Senden.",
+    bookingIntro: "Vier kurze Schritte.",
   },
 
   privacy: {
     title: "Datenschutz",
     description:
-      "Wie die Website von Nagi of Mekong mit Ihren Daten umgeht: kein Tracking, zwei kleine Einstellungen in Ihrem Browser.",
+      "Wie die Website von Nagi of Mekong mit Ihren Daten umgeht: kein Tracking, ein paar kleine Einstellungen in Ihrem Browser.",
     heading: "Datenschutz",
     intro: "Diese Website ist darauf ausgelegt, so wenig wie möglich zu erfassen.",
     sections: [
@@ -564,11 +594,15 @@ const de: Messages = {
       },
       {
         title: "TikTok-Videos",
-        text: "Die TikTok-Videos werden erst geladen, wenn Sie auf eines klicken. Erst dann verbindet sich Ihr Browser mit TikTok, das nach seiner eigenen Datenschutzerklärung eigene Cookies setzen kann. Die Links „Auf TikTok ansehen“ öffnen die Website von TikTok.",
+        text: "TikTok-Videos werden nur geladen, wenn Sie sie im Cookie-Banner erlauben („Alle akzeptieren“ oder „TikTok-Videos“ unter „Anpassen“). Ihre Wahl wird im lokalen Speicher Ihres Browsers gespeichert. Wenn Sie zustimmen, laufen die Videos beim Scrollen hier von TikTok, und TikTok setzt eigene Cookies nach seiner eigenen Datenschutzerklärung. Andernfalls wird nichts von TikTok geladen, und jedes Video ist ein einfacher Link zu TikTok. Sie können Ihre Wahl jederzeit über „Cookie-Einstellungen“ unten auf jeder Seite ändern.",
       },
       {
         title: "Das Buchungsformular",
         text: "Das Buchungsformular sendet Ihre Angaben an keinen Server. Wenn Sie auf „Per WhatsApp senden“ oder „Per E-Mail senden“ drücken, wird Ihre Nachricht in Ihrem Browser vorbereitet und in WhatsApp oder Ihrem E-Mail-Programm geöffnet. Nichts wird verschickt, bevor Sie dort auf Senden drücken.",
+      },
+      {
+        title: "Neuigkeiten per E-Mail",
+        text: "Wenn Sie sich in der Fußzeile für Neuigkeiten anmelden, werden Ihre E-Mail-Adresse und die Sprache der Seite an Brevo (Sendinblue SAS, Frankreich) übermittelt, den E-Mail-Dienst, den wir nutzen, damit er Ihnen diese E-Mails senden kann. Brevo schickt Ihnen zuerst einen Link, mit dem Sie Ihre Adresse bestätigen. Sie werden für nichts anderes verwendet. Jede E-Mail enthält einen Abmeldelink, und Sie können uns jederzeit bitten, Ihre Adresse zu löschen.",
       },
       {
         title: "Wenn Sie uns kontaktieren",

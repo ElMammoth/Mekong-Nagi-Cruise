@@ -1,1 +1,110 @@
-{}
+{
+  "freshly-cooked-lunch-on-board": {
+    "width": 1179,
+    "height": 2054,
+    "widths": [
+      480,
+      768,
+      1080
+    ],
+    "blurDataURL": "data:image/webp;base64,UklGRtAAAABXRUJQVlA4IMQAAADQBACdASoQABwAPu1iqU2ppaQiMAgBMB2JbACdMoAlrhiuY0YbqPmwOyk/39HLwAD+6ufihzo3qD4WDdTP52IBCGj7jncns6qOiyRFVAHvR/SmCcukuudAzI7qT3Z+1RIfRn1V9PBPhemmhBIr7Qp0R5JmXEku23AhyaOK8IhgtOPrMVd8OlcMKmp2SLI01oKhDI5UUASRD/HiFD6ApVUVgeJHp9XkdHd6kYisfI7XUlO4svdr3ZSksONe8cd8iwigAAAA"
+  },
+  "luang-prabang-pier-early-morning": {
+    "width": 1800,
+    "height": 1200,
+    "widths": [
+      480,
+      768,
+      1080,
+      1440
+    ],
+    "blurDataURL": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAADQAQCdASoQAAsAA4BaJQBOgCHPAPSAAAD+ypSsSYVDCpIvX+LYFGXorbJstY/v6vqNmBb21zPQpLB+q0MlhIrVrJmNXbaushsU1cDQ3QIQJqWTMYAAAA=="
+  },
+  "mekong-riverbanks-between-houay-xai-and-pak-beng": {
+    "width": 1500,
+    "height": 1000,
+    "widths": [
+      480,
+      768,
+      1080,
+      1440
+    ],
+    "blurDataURL": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADwAQCdASoQAAsAA4BaJZQCdAENhEyTcgAA/ugzmapQyO0+3d/qndxRjkica/f2SWfKsG/5PmExvExh+Jq/egfH2BrblXxIAAA="
+  },
+  "nagi-of-mekong-boat-at-the-pier": {
+    "width": 2133,
+    "height": 1200,
+    "widths": [
+      480,
+      768,
+      1080,
+      1440,
+      1920
+    ],
+    "blurDataURL": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAAAQAgCdASoQAAkAA4BaJYwC7ADhmpThouQAAP7yNXU1SQLoFZCdh3yFayrAWu+WXY8JVpiBr7GuarLiWBPGiywG3bnwc5aD0ye+AAAA"
+  },
+  "nagi-of-mekong-boat-cruising-the-mekong": {
+    "width": 1600,
+    "height": 1067,
+    "widths": [
+      480,
+      768,
+      1080,
+      1440
+    ],
+    "blurDataURL": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAAAwAgCdASoQAAsAA4BaJbACdAD0okczykTcAAD+5TlzW3omm8DhaQGgYCO6gb7ONwT96YX802pHc4NQTvt6sFz8RM6/oI361njjK0vcNQc2hDF15Zc1j7huyG7KQ3dG9Phe8Sz34TYAAA=="
+  },
+  "nagi-of-mekong-boat-seats-and-tables": {
+    "width": 1600,
+    "height": 2400,
+    "widths": [
+      480,
+      768,
+      1080,
+      1440
+    ],
+    "blurDataURL": "data:image/webp;base64,UklGRqwAAABXRUJQVlA4IKAAAACQBACdASoQABgAPu1iqU2ppaOiMAgBMB2JbACdMoRwACnIvTUtZRdpashX2AAA/vKgcwmUfgw5e1xO2fIk2Pu28FkUHb7BFxPiipFSglANVqVTb/ZDG9nsAZzGOvdsY/EB5OKESk8CcxHE/Jgjx/iFchigK4ilftYe0a9wFEFiMuvTXYDXHNkZx3c7NSY7ifs6gCqjQ5g3PpNdpQNwtwAA"
+  },
+  "nan-temple-and-old-town": {
+    "width": 1280,
+    "height": 853,
+    "widths": [
+      480,
+      768,
+      1080
+    ],
+    "blurDataURL": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAAAwAgCdASoQAAsAA4BaJbACdAEC2RMns1oGAAD9PRTBDKjMzWwt41imqt+QgDzHL+4OZivN4EY+4o5UA3SGsuIO75Kgn/s3JmjnUF/cjleEXKOh9fch+3zQ2d4OvtS1lYAAAA=="
+  },
+  "pak-ou-cave-buddha-images": {
+    "width": 1920,
+    "height": 1200,
+    "widths": [
+      480,
+      768,
+      1080,
+      1440,
+      1920
+    ],
+    "blurDataURL": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAAAQAgCdASoQAAoAA4BaJQBOgMWg5RxyX5IAAP7m0cGgOaDmNxcTtnU/7fU4mfcRLEd7wecSCj+IADSOJsCmmOvfiaEJeOdY62xWMsUsoB1QYAAA"
+  },
+  "riverside-village-stop-on-the-mekong": {
+    "width": 1500,
+    "height": 2250,
+    "widths": [
+      480,
+      768,
+      1080,
+      1440
+    ],
+    "blurDataURL": "data:image/webp;base64,UklGRqAAAABXRUJQVlA4IJQAAAAQBACdASoQABgAPu1iqU2ppaOiMAgBMB2JQBOmUAS3Qty+ikBnFhgasADhwbihxT5Ql7EF6T/pzpVIGvGARoHFmNQvIrxkmIW/EaiHFzskJN8xUSMm4Gzfafwy4i6z8q0QIjtkY9wbx8jWctRCekKJ9tO8cf477YCEqeKPcMsx4bPbemuZBCELIZ6YpBnnfkQYG0AA"
+  },
+  "white-temple-chiang-rai": {
+    "width": 1024,
+    "height": 683,
+    "widths": [
+      480,
+      768
+    ],
+    "blurDataURL": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAAAQAgCdASoQAAsAA4BaJZACdAENtDHARC4AAP60AIV2IWBHB6haCf7KiMsREN5KgMGHuyT1aEtrSkY1PZtfxdk2CmKEzDJT2RKqbDiUq63Sy6AA"
+  }
+}

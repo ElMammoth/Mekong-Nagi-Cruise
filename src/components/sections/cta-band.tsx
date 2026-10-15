@@ -27,7 +27,7 @@ export function CtaBand({
   const { locale, m } = getI18n();
   const nav = navigation(locale);
   return (
-    <section aria-labelledby="cta-title" className="py-section">
+    <section data-reveal aria-labelledby="cta-title" className="py-section">
       <Container>
         <div className="relative overflow-hidden rounded-md bg-primary px-6 py-12 text-on-primary-muted inverse sm:px-12 sm:py-16">
           <BoatMark

@@ -10,6 +10,7 @@
     "dev": "next dev",
     "prebuild": "npm run data",
     "build": "next build",
+    "postbuild": "node scripts/flatten-segments.mjs",
     "start": "npx serve@14 out",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
@@ -24,7 +25,9 @@
     "tiktok": "node scripts/fetch-tiktok.mjs",
     "data": "npm run photos && npm run rates && npm run tiktok",
     "test:i18n": "node scripts/check-hreflang.mjs",
-    "test:rates": "node scripts/check-rates.mjs"
+    "test:rates": "node scripts/check-rates.mjs",
+    "test:embeds": "node scripts/check-embeds.mjs",
+    "test:form": "node scripts/check-form.mjs"
   },
   "engines": {
     "node": ">=20.9"

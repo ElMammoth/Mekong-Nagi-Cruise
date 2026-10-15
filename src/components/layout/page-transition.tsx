@@ -1,6 +1,7 @@
 "use client";
 
 import { ViewTransition, useLayoutEffect, type ReactNode } from "react";
+import { Reveal } from "@/components/effects/reveal";
 
 /*
  * Page transitions, used as the `template.tsx` of both root layouts (English and the
@@ -12,6 +13,8 @@ import { ViewTransition, useLayoutEffect, type ReactNode } from "react";
  *  - On each new route the window lands at the top, instantly (no smooth-scroll jump);
  *    links to an anchor (e.g. /cruises/downstream/#book) land on that anchor instead.
  *    Back/forward keeps the browser's restored position.
+ *  - <Reveal> then arms the scroll reveal for the new page, after the scroll reset, so it
+ *    measures what is really on screen.
  * Switching language crosses root layouts, so the browser does a full page load: it lands
  * at the top (or on the anchor) natively, and the currency choice comes from localStorage.
  */
@@ -43,6 +46,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
   return (
     <ViewTransition enter="page" exit="page" default="none">
       {children}
+      <Reveal />
     </ViewTransition>
   );
 }

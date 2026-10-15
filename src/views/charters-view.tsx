@@ -34,7 +34,7 @@ export function ChartersView() {
       </PageHeader>
       <section aria-label={copy.offerLabel} className="py-section">
         <Container>
-          <ul className="grid gap-6 md:grid-cols-3">
+          <ul data-reveal="group" className="grid gap-6 md:grid-cols-3">
             {copy.points.map(({ title, text }, i) => {
               const Icon = icons[i % icons.length]!;
               return (

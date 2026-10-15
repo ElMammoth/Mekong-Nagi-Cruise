@@ -22,7 +22,7 @@ const itemClass =
 
 /**
  * Main navigation: Radix NavigationMenu (roving focus, arrow keys, Esc, hover + click),
- * with a shared Viewport so the Cruises panel animates its size, and an Indicator arrow.
+ * with a shared Viewport so the Cruises panel animates its size (no arrow above it).
  * The language and currency menus sit on the right in a second Radix NavigationMenu.
  * Below `lg` the Dialog-based MobileNav takes over (it holds both switchers too).
  */
@@ -93,10 +93,9 @@ export function SiteHeader({ nav }: { nav: Navigation }) {
                 </NavigationMenu.Link>
               </NavigationMenu.Item>
             ))}
-
-            <NavigationMenu.Indicator className="top-full z-10 flex h-2 items-end justify-center overflow-hidden">
-              <span className="relative top-1 size-2.5 rotate-45 rounded-xs border-t border-l border-line bg-surface" />
-            </NavigationMenu.Indicator>
+            {/* Kept, but empty and zero-height: no arrow above the panel. Radix needs the
+                indicator mounted for the Cruises panel to render in the shared viewport. */}
+            <NavigationMenu.Indicator className="top-full h-0 overflow-hidden" />
           </NavigationMenu.List>
 
           <div className="absolute top-full left-0 flex w-full justify-start pt-2">

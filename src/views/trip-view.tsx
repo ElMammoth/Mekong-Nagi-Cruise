@@ -3,14 +3,13 @@ import { notFound } from "next/navigation";
 import { CalendarDays, Clock, MessageCircle, Users } from "lucide-react";
 import { RouteStrip } from "@/components/brand/route-strip";
 import { BookingForm } from "@/components/booking/booking-form";
-import { CurrencyNote, Price } from "@/components/currency/price";
+import { Price } from "@/components/currency/price";
 import { JsonLd } from "@/components/layout/json-ld";
 import { RatingSummary } from "@/components/reviews/rating-summary";
 import { BookingReview, ReviewsSection } from "@/components/reviews/reviews-section";
 import { CtaBand } from "@/components/sections/cta-band";
 import { Included } from "@/components/sections/included";
 import { Itinerary } from "@/components/sections/itinerary";
-import { NextSailings } from "@/components/sections/next-sailings";
 import { NextSteps } from "@/components/sections/next-steps";
 import { Packages } from "@/components/sections/packages";
 import { PageHeader } from "@/components/sections/page-header";
@@ -112,7 +111,6 @@ export function TripView({ slug }: { slug: TripSlug }) {
                 <div className="mt-8">
                   <PriceList options={options} />
                   {trip.minimum ? <p className="mt-4 text-muted">{trip.minimum}</p> : null}
-                  <NextSailings weekdays={trip.departures.weekdays} className="mt-6" />
                 </div>
               ) : null}
             </section>
@@ -121,7 +119,7 @@ export function TripView({ slug }: { slug: TripSlug }) {
           {trip.goodToKnow.length ? (
             <section aria-labelledby="know-title">
               <SectionHeading id="know-title" eyebrow={t.knowEyebrow} title={t.knowTitle} />
-              <ul className="mt-6 space-y-3">
+              <ul data-reveal="group" className="mt-6 space-y-3">
                 {trip.goodToKnow.map((item) => (
                   <li key={item} className="flex gap-3">
                     <span
@@ -150,10 +148,8 @@ export function TripView({ slug }: { slug: TripSlug }) {
             ) : (
               <p className="font-display text-2xl text-heading">{m.common.priceOnRequest}</p>
             )}
-            {from ? <CurrencyNote className="mt-2" /> : null}
             <p className="mt-4 text-sm text-muted">{trip.departures.label}</p>
             <DayChips days={trip.departures.weekdays} className="mt-1.5" />
-            <NextSailings weekdays={trip.departures.weekdays} className="mt-3" />
             {trip.departures.note ? (
               <p className="mt-2 text-sm text-muted">
                 {fmt(t.askEarly, { note: trip.departures.note })}
@@ -198,7 +194,6 @@ export function TripView({ slug }: { slug: TripSlug }) {
             <div className="mt-14">
               <Packages trip={trip} />
             </div>
-            <NextSailings weekdays={trip.departures.weekdays} className="mt-8" />
           </Container>
         </section>
       ) : null}
@@ -237,7 +232,7 @@ export function TripView({ slug }: { slug: TripSlug }) {
       <section aria-labelledby="more-title" className="pt-section">
         <Container>
           <SectionHeading id="more-title" eyebrow={t.moreEyebrow} title={t.moreTitle} />
-          <ul className="mt-10 grid gap-6 lg:grid-cols-3">
+          <ul data-reveal="group" className="mt-10 grid gap-6 lg:grid-cols-3">
             {others.map((other) => (
               <li key={other.slug}>
                 <TripCard trip={other} />

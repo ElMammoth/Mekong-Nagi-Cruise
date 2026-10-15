@@ -1,8 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { photoSlots } from "@/content/photos";
-import { getPhotos } from "@/content/localized";
+import { faqIds } from "@/content/faq";
+import { getFaqs, getPhotos } from "@/content/localized";
 import { ratings, reviews, reviewsRetrievedAt } from "@/content/reviews";
 import { trips } from "@/content/trips";
+import { locales } from "@/i18n/config";
+import { getMessages } from "@/i18n/index";
+import { plainFaqs } from "@/lib/faq";
 import { buildInquiryMessage } from "@/lib/inquiry";
 import { formatReviewDate, ratingProblems, reviewProblems } from "@/lib/reviews";
 import { breadcrumbJsonLd, faqJsonLd } from "@/lib/structured-data";
@@ -109,6 +113,24 @@ describe("photo slots", () => {
   });
 });
 
+describe("FAQ", () => {
+  it("every language has one question per id, and ids are unique", () => {
+    expect(new Set(faqIds).size).toBe(faqIds.length);
+    for (const locale of locales) {
+      expect(getMessages(locale).faq, locale).toHaveLength(faqIds.length);
+      expect(getFaqs(locale).map((f) => f.id)).toEqual([...faqIds]);
+    }
+  });
+
+  it("the FAQPage markup carries exactly the visible questions and answers", () => {
+    for (const locale of locales) {
+      const faqs = getFaqs(locale);
+      const data = faqJsonLd(locale, plainFaqs(locale, faqs));
+      expect(data.mainEntity.map((q) => q.name)).toEqual(faqs.map((f) => f.question));
+    }
+  });
+});
+
 describe("structured data", () => {
   it("builds a breadcrumb trail from Home", () => {
     const data = breadcrumbJsonLd("en", [{ href: "/where-to-stay/", label: "Where to stay" }]);
@@ -117,7 +139,7 @@ describe("structured data", () => {
   });
 
   it("marks up FAQs one to one", () => {
-    const data = faqJsonLd("fr", [{ question: "Q?", answer: "A." }]);
+    const data = faqJsonLd("fr", [{ id: "q", question: "Q?", answer: "A." }]);
     expect(data.mainEntity[0]?.acceptedAnswer.text).toBe("A.");
     expect(data.inLanguage).toBe("fr");
   });

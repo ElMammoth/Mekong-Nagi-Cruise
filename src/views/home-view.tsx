@@ -1,19 +1,18 @@
 import Link from "next/link";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import { RouteMap } from "@/components/brand/route-map";
-import { CurrencyNote, Price } from "@/components/currency/price";
+import { Price } from "@/components/currency/price";
 import { TextLoop } from "@/components/effects/text-loop";
-import { JsonLd } from "@/components/layout/json-ld";
 import { Photo, isPhotoShown } from "@/components/media/photo";
 import { RatingSummary } from "@/components/reviews/rating-summary";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { BoatFeatures } from "@/components/sections/boat-features";
 import { CtaBand } from "@/components/sections/cta-band";
-import { FaqList } from "@/components/sections/faq-list";
+import { FaqSection } from "@/components/sections/faq-section";
 import { HandledForYou } from "@/components/sections/handled-for-you";
-import { NextSailings } from "@/components/sections/next-sailings";
 import { Packages } from "@/components/sections/packages";
 import { TripCard } from "@/components/sections/trip-card";
+import { WhyNagi } from "@/components/sections/why-nagi";
 import { TikTokSection } from "@/components/tiktok/tiktok-section";
 import { ButtonAnchor, ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -26,9 +25,7 @@ import { pathFor } from "@/i18n/routes";
 import { getI18n } from "@/i18n/server";
 import { fromPriceUsd } from "@/lib/currency";
 import { availableOptions } from "@/lib/departures";
-import { faqPrices, plainFaqs } from "@/lib/faq";
 import { navigation } from "@/lib/navigation";
-import { faqJsonLd } from "@/lib/structured-data";
 
 /**
  * Section order follows the traveller's questions (docs/04-offer-brief.md §2):
@@ -79,7 +76,6 @@ export function HomeView() {
                 </div>
               ) : null}
             </dl>
-            <NextSailings weekdays={downstream.departures.weekdays} className="mt-4" />
 
             <div className="mt-8 flex flex-wrap gap-3">
               <ButtonLink href={nav.downstreamBookingHref} size="lg" variant="cta">
@@ -134,8 +130,11 @@ export function HomeView() {
         </Container>
       </section>
 
-      {/* 3 · The offer: everything handled */}
-      <Container className="py-section">
+      {/* 3 · Why us: three claims, each with its proof */}
+      <WhyNagi />
+
+      {/* 4 · The offer: everything handled */}
+      <Container className="border-t border-line py-section">
         <HandledForYou
           action={
             <>
@@ -146,7 +145,7 @@ export function HomeView() {
         />
       </Container>
 
-      {/* 4 · Proof, right after the promise: written reviews, then TikTok videos */}
+      {/* 5 · Proof, right after the promise: written reviews, then TikTok videos */}
       <div className="border-y border-line bg-surface-subtle py-section">
         <Container className="space-y-section">
           <ReviewsSection />
@@ -154,7 +153,7 @@ export function HomeView() {
         </Container>
       </div>
 
-      {/* 5 · The journey */}
+      {/* 6 · The journey */}
       <section aria-labelledby="journey-title" className="py-section">
         <Container>
           <div className="grid items-center gap-12 lg:grid-cols-2">
@@ -165,7 +164,7 @@ export function HomeView() {
                 title={h.journeyTitle}
                 intro={downstream.summary}
               />
-              <ol className="mt-10 space-y-8">
+              <ol data-reveal="group" className="mt-10 space-y-8">
                 {[day1, day2].map((day, i) =>
                   day ? (
                     <li key={day.label} className="flex gap-4">
@@ -199,7 +198,7 @@ export function HomeView() {
             <RouteMap className="mx-auto w-full max-w-xl lg:max-w-none" />
           </div>
           {journeyPhotos.length ? (
-            <ul className="mt-14 grid gap-6 sm:grid-cols-3">
+            <ul data-reveal="group" className="mt-14 grid gap-6 sm:grid-cols-3">
               {journeyPhotos.map((photo) => (
                 <li key={photo.file}>
                   <Photo photo={photo} sizes="(min-width: 640px) 33vw, 100vw" />
@@ -210,7 +209,7 @@ export function HomeView() {
         </Container>
       </section>
 
-      {/* 6 · Packages and prices */}
+      {/* 7 · Packages and prices */}
       <section
         aria-labelledby="packages-title"
         className="border-y border-line bg-surface-subtle py-section"
@@ -234,11 +233,10 @@ export function HomeView() {
           <div className="mt-14">
             <Packages trip={downstream} />
           </div>
-          <NextSailings weekdays={downstream.departures.weekdays} className="mt-8" />
         </Container>
       </section>
 
-      {/* 7 · On board and the people */}
+      {/* 8 · On board and the people */}
       <section aria-labelledby="onboard-title" className="bg-primary py-section inverse">
         <Container>
           <div className="grid gap-14 lg:grid-cols-intro">
@@ -252,7 +250,7 @@ export function HomeView() {
             <BoatFeatures />
           </div>
           {onboardPhotos.length || teamPhotos.length ? (
-            <ul className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <ul data-reveal="group" className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {[...onboardPhotos, ...teamPhotos].map((photo) => (
                 <li key={photo.file}>
                   <figure>
@@ -273,7 +271,7 @@ export function HomeView() {
         </Container>
       </section>
 
-      {/* 8 · Other ways to travel */}
+      {/* 9 · Other ways to travel */}
       <section aria-labelledby="journeys-title" className="py-section">
         <Container>
           <div className="flex flex-wrap items-end justify-between gap-6">
@@ -291,7 +289,7 @@ export function HomeView() {
               <ArrowRight aria-hidden="true" className="size-4" />
             </Link>
           </div>
-          <ul className="mt-12 grid gap-6 lg:grid-cols-3">
+          <ul data-reveal="group" className="mt-12 grid gap-6 lg:grid-cols-3">
             {getTrips(locale)
               .filter((trip) => trip.slug !== "downstream")
               .map((trip) => (
@@ -300,29 +298,31 @@ export function HomeView() {
                 </li>
               ))}
           </ul>
-          <CurrencyNote className="mt-6" />
         </Container>
       </section>
 
-      {/* 9 · Objections */}
+      {/* 10 · Objections */}
       <section aria-labelledby="faq-title" className="border-t border-line bg-surface py-section">
-        <Container className="grid gap-10 lg:grid-cols-intro">
-          <div>
-            <SectionHeading id="faq-title" eyebrow={h.faqEyebrow} title={h.faqTitle} />
-            <Link
-              href={pathFor(locale, "faq")}
-              className="mt-6 inline-flex items-center gap-1.5 text-primary hover:underline"
-            >
-              {h.allQuestions}
-              <ArrowRight aria-hidden="true" className="size-4" />
-            </Link>
-          </div>
-          <FaqList faqs={homeFaqs} prices={faqPrices()} />
+        <Container>
+          <FaqSection
+            id="faq-title"
+            eyebrow={h.faqEyebrow}
+            title={h.faqTitle}
+            faqs={homeFaqs}
+            action={
+              <Link
+                href={pathFor(locale, "faq")}
+                className="inline-flex items-center gap-1.5 text-primary hover:underline"
+              >
+                {h.allQuestions}
+                <ArrowRight aria-hidden="true" className="size-4" />
+              </Link>
+            }
+          />
         </Container>
-        <JsonLd data={faqJsonLd(locale, plainFaqs(locale, homeFaqs))} />
       </section>
 
-      {/* 10 · Book */}
+      {/* 11 · Book */}
       <CtaBand href={nav.downstreamBookingHref} />
     </>
   );

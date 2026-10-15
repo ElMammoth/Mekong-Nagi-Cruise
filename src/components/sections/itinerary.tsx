@@ -26,7 +26,7 @@ export function Itinerary({ days }: { days: readonly ItineraryDay[] }) {
                 {day.meals}
               </p>
             ) : null}
-            <ol className="timeline mt-5">
+            <ol data-reveal="group" className="timeline mt-5">
               {day.stops.map((stop) => (
                 <li key={stop.title}>
                   <p className="timeline-title font-display text-base text-heading">

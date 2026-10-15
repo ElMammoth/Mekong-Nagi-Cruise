@@ -6,7 +6,7 @@ const icons = [Armchair, LifeBuoy, Soup, UserRound];
 export function BoatFeatures({ tone = "dark" }: { tone?: "light" | "dark" }) {
   const { m } = getI18n();
   return (
-    <ul className="grid gap-x-10 gap-y-10 sm:grid-cols-2">
+    <ul data-reveal="group" className="grid gap-x-10 gap-y-10 sm:grid-cols-2">
       {m.boat.map((item, i) => {
         const Icon = icons[i % icons.length]!;
         return (

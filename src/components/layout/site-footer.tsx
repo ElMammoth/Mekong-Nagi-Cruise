@@ -2,6 +2,8 @@ import Link from "next/link";
 import { BoatMark } from "@/components/brand/boat-mark";
 import { Container } from "@/components/ui/container";
 import { RouteLabel } from "@/components/ui/route-label";
+import { CookieSettingsButton } from "./cookie-settings-button";
+import { NewsletterForm } from "./newsletter-form";
 import { site } from "@/content/site";
 import { fmt } from "@/i18n/index";
 import { getI18n } from "@/i18n/server";
@@ -15,6 +17,20 @@ export function SiteFooter({ nav }: { nav: Navigation }) {
   const { contact } = site;
   return (
     <footer className="bg-primary text-on-primary-muted inverse">
+      {/* Travel updates sign-up */}
+      <div className="border-b border-primary-hover">
+        <Container className="grid gap-8 py-12 md:grid-cols-12 md:items-center">
+          <div data-reveal className="md:col-span-5">
+            <h2 id="newsletter-title" className="font-display text-h3 text-on-primary">
+              {m.newsletter.title}
+            </h2>
+            <p className="mt-2 max-w-md">{m.newsletter.intro}</p>
+          </div>
+          <div className="md:col-span-7 lg:col-span-6 lg:col-start-7">
+            <NewsletterForm copy={m.newsletter} privacyHref={nav.privacyHref} />
+          </div>
+        </Container>
+      </div>
       <Container className="grid gap-12 py-16 md:grid-cols-12">
         <div className="md:col-span-4">
           <BoatMark title={site.name} className="h-8 w-auto text-on-primary" />
@@ -73,9 +89,12 @@ export function SiteFooter({ nav }: { nav: Navigation }) {
           <p>
             © {new Date().getFullYear()} {site.name}
           </p>
-          <Link href={nav.privacyHref} className={linkClass}>
-            {m.nav.privacy}
-          </Link>
+          <p className="flex flex-wrap gap-x-6 gap-y-2">
+            <Link href={nav.privacyHref} className={linkClass}>
+              {m.nav.privacy}
+            </Link>
+            <CookieSettingsButton className={`${linkClass} text-left`} />
+          </p>
         </Container>
       </div>
     </footer>
