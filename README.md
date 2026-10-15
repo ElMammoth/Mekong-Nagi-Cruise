@@ -212,10 +212,18 @@ visitor's browser from the real weekdays, so they're never stale.
 
 ## Deploying
 
-Any static host works: upload `out/`. Netlify and Cloudflare Pages also read
+Any static host works: upload `out/`. Cloudflare (Workers and Pages) and Netlify also read
 `public/_headers` (so the social card `/opengraph-image` is served as a PNG); on other hosts,
 serve that file with `Content-Type: image/png`.
 
+- **Cloudflare Workers** (recommended; Workers & Pages > Create > Import a repository):
+  build command `npm run build`, deploy command `npx wrangler deploy` (the default).
+  `wrangler.jsonc` in the repo tells wrangler to upload `out/` as static assets; without it,
+  wrangler tries to set up a Next.js server adapter (OpenNext) and the deploy fails, because
+  this site is a static export. The Worker name in the dashboard must match `name` in
+  `wrangler.jsonc` (`mekong-nagi-cruise`). `_headers`, `_redirects` and `404.html` are applied.
+  For the daily rates refresh: Settings > Builds > Deploy Hooks, add a hook on `main`, and save
+  its URL as the GitHub secret `DEPLOY_HOOK_URL`.
 - **Netlify / Cloudflare Pages**: build `npm run build`, publish `out`. Old GoDaddy URLs are
   redirected by `public/_redirects`.
 - **Vercel**: import the repo; it detects Next.js.

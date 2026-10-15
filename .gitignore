@@ -9,3 +9,6 @@ next-env.d.ts
 
 # Generated from photos/ by scripts/build-photos.mjs
 /public/images/*.webp
+
+# Wrangler (Cloudflare) local state
+.wrangler

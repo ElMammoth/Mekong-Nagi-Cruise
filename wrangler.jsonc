@@ -1,0 +1,14 @@
+// Cloudflare Workers deployment: the site is a static export (`npm run build` writes ./out),
+// so it is served as static assets only. No server code and no OpenNext adapter.
+// out/_headers and out/_redirects (copied from public/) are applied by Cloudflare;
+// out/404.html is served for unknown URLs. The name must match the Worker in the dashboard.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mekong-nagi-cruise",
+  "compatibility_date": "2026-10-12",
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash",
+  },
+}
