@@ -33,6 +33,7 @@ colours mixed with white; hover states mix the flag colours with each other.
 | `accent-hover`             | `#A51633`             | red 80% + blue 20% | Main CTA hover                                |
 | `accent-soft`              | `#FBECEE`             | red 8%             | Seasonal badge background                     |
 | `brand-tripadvisor/viator` | `#002B11` / `#008768` | official logos     | Only inside the review source logos           |
+| `success`, `on-success`    | `#157347` / `#FFFFFF` | semantic exception | "Included" check marks only                   |
 
 **Rules:**
 
@@ -41,7 +42,9 @@ colours mixed with white; hover states mix the flag colours with each other.
   primary actions.
 - Red is used sparingly: the main "Check availability" button (one per view), the current
   page in the nav, rating stars, badges and errors.
-- No other hues.
+- No other hues, with one exception: `success` green, used only for the "included" check
+  marks in the comparison table. It's a status colour, never decoration, and it always
+  appears with a check shape and a text label.
 
 **Contrast (all AA, from `npm run test:contrast`):**
 
@@ -56,6 +59,7 @@ colours mixed with white; hover states mix the flag colours with each other.
 | accent on white / subtle / accent-soft      | 5.6 / 5.3 / 4.9    |
 | control border on white (UI, ≥ 3)           | 3.1                |
 | focus ring (blue on white, white on blue)   | 14.0               |
+| success on white / white on success         | 5.9                |
 
 ## Typography: two fonts, one weight each
 

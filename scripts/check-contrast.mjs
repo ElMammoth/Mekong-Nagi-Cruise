@@ -54,6 +54,8 @@ const PAIRS = [
   ["focus", "surface-subtle", UI, "focus ring on alternate bands"],
   ["focus-inverse", "primary", UI, "focus ring on blue"],
   ["accent", "canvas", UI, "star rating graphics"],
+  ["success", "canvas", TEXT, "included check marks (text-level, stricter than UI)"],
+  ["on-success", "success", UI, "tick inside the check mark"],
 ];
 
 let failed = 0;

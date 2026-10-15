@@ -35,7 +35,7 @@ export const site = {
   ],
 
   /** Short phrase looped in the hero ribbon (complements the h1, never replaces it). */
-  loopPhrase: "Door to door on the Mekong",
+  loopPhrase: "Two days by slow boat to Luang Prabang",
 
   /** Name of the core offer (docs/04-offer-brief.md §4). */
   offerName: "The two-day Mekong cruise, door to door",
@@ -43,34 +43,41 @@ export const site = {
   /**
    * The offer, as the problems a traveller would otherwise solve alone, each matched to
    * something already included in the downstream cruise (see docs/04-offer-brief.md).
+   * `handled` is one short sentence in the same form on every row: "We + verb + what".
    */
   handledForYou: [
     {
       task: "Getting from your hotel to the pier",
-      handled: "Hotel pick-up in Chiang Khong or Houay Xai and transfer to the pier",
+      handled: "We pick you up at your hotel and drive you to the pier.",
     },
     {
       task: "The Thai–Lao border and visa on arrival",
-      handled: "Help with the border crossing and the visa on arrival",
+      handled: "We help you cross the border and get your visa.",
     },
-    { task: "Carrying bags through the border and on board", handled: "Luggage handling" },
+    {
+      task: "Carrying bags through the border and on board",
+      handled: "We carry your luggage for you.",
+    },
     {
       task: "Finding food for a long day on the river",
-      handled: "A freshly cooked lunch each day, with vegan, vegetarian and halal options",
+      handled: "We cook a fresh lunch every day, with vegan and halal options.",
     },
     {
       task: "Finding a bed in Pak Beng",
-      handled: "One night at the hotel you choose, with breakfast",
+      handled: "We book your hotel in Pak Beng, with breakfast.",
     },
     {
       task: "Knowing where to stop along the way",
-      handled: "Village stops and Pak Ou cave, with an English-speaking host",
+      handled: "We stop at villages and Pak Ou Cave, with an English-speaking host.",
     },
     {
       task: "Getting from the Luang Prabang pier into town",
-      handled: "Transfer to your hotel in Luang Prabang",
+      handled: "We drive you from the pier to your hotel in Luang Prabang.",
     },
-    { task: "Worrying about the unexpected", handled: "Travel insurance and life vests for all" },
+    {
+      task: "Worrying about the unexpected",
+      handled: "We give everyone travel insurance and a life vest.",
+    },
   ],
 
   boat: [

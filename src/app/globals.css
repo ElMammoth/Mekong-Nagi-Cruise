@@ -3,7 +3,8 @@
 /*
  * Nagi of Mekong — design tokens. The ONLY place design values live.
  *
- * Palette: derived solely from the flag of Laos — blue #002868, white #FFFFFF, red #CE1126.
+ * Palette: derived solely from the flag of Laos — blue #002868, white #FFFFFF, red #CE1126 —
+ * plus one semantic exception, a success green for "included" check marks.
  * Tints are those colours mixed with white (percentages in the comments); hover states mix
  * flag colours with each other. Every text/background pairing used is checked by
  * `npm run test:contrast` (scripts/check-contrast.mjs) and listed in docs/03-design-system.md.
@@ -47,6 +48,11 @@
   --color-on-accent: #ffffff;
   --color-focus: #002868;
   --color-focus-inverse: #ffffff;
+
+  /* Status — the one accepted exception to the flag palette: a semantic green for "included"
+     check marks only (5.9:1 on white, so it passes AA as text and as a graphic). */
+  --color-success: #157347;
+  --color-on-success: #ffffff;
 
   /* Third-party brand marks (official logo colours, used only inside those logos) */
   --color-brand-tripadvisor: #002b11;
@@ -124,7 +130,7 @@
   --grid-template-columns-toc: 16rem minmax(0, 1fr);
   --grid-template-columns-media: 1.15fr 1fr;
   --grid-template-columns-cta: 1.3fr 1fr;
-  --grid-template-columns-compare: 1fr 1.25fr;
+  --grid-template-columns-compare: minmax(0, 1fr) minmax(0, 1.25fr); /* "on your own" vs "with us" */
   --grid-template-columns-icon: auto 1fr;
   --grid-template-columns-label: 7rem 1fr;
   --grid-template-columns-price: 1fr auto;

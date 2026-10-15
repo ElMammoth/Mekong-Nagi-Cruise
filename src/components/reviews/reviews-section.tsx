@@ -1,4 +1,4 @@
-import { ExternalLink } from "lucide-react";
+import { ChevronDown, ExternalLink } from "lucide-react";
 import { reviewPlatforms, reviews, reviewsRetrievedAt } from "@/content/reviews";
 import { showPlaceholders } from "@/content/settings";
 import type { RatingSnapshot, ReviewPlatform } from "@/content/types";
@@ -7,6 +7,7 @@ import {
   allPlatforms,
   bookingReview,
   formatReviewDate,
+  moreReviews,
   offerReviews,
   ratingFor,
 } from "@/lib/reviews";
@@ -42,6 +43,7 @@ export function ReviewsSection({
   className?: string;
 }) {
   const shown = offerReviews(SLOTS);
+  const more = moreReviews(shown);
   if (reviews.length === 0 && !showPlaceholders) return null;
   const empty = showPlaceholders ? Math.max(0, SLOTS - shown.length) : 0;
 
@@ -67,18 +69,40 @@ export function ReviewsSection({
           </p>
         </div>
 
-        <ul className="divide-y divide-line border-y border-line">
-          {shown.map((review) => (
-            <li key={review.url + review.reviewer} className="py-6">
-              <ReviewCard review={review} />
-            </li>
-          ))}
-          {Array.from({ length: empty }, (_, i) => (
-            <li key={`slot-${i}`} className="py-6">
-              <ReviewPlaceholder />
-            </li>
-          ))}
-        </ul>
+        <div>
+          <ul className="divide-y divide-line border-y border-line">
+            {shown.map((review) => (
+              <li key={review.url + review.reviewer} className="py-6">
+                <ReviewCard review={review} />
+              </li>
+            ))}
+            {Array.from({ length: empty }, (_, i) => (
+              <li key={`slot-${i}`} className="py-6">
+                <ReviewPlaceholder />
+              </li>
+            ))}
+          </ul>
+          {more.length ? (
+            <details className="group border-b border-line">
+              <summary className="cursor-pointer list-none rounded-sm py-4 font-display text-base text-primary [&::-webkit-details-marker]:hidden">
+                <span className="flex items-center justify-between gap-3">
+                  Show all {reviews.length} reviews
+                  <ChevronDown
+                    aria-hidden="true"
+                    className="size-5 shrink-0 transition-transform duration-base group-open:rotate-180"
+                  />
+                </span>
+              </summary>
+              <ul className="divide-y divide-line border-t border-line">
+                {more.map((review) => (
+                  <li key={review.url + review.reviewer} className="py-6">
+                    <ReviewCard review={review} />
+                  </li>
+                ))}
+              </ul>
+            </details>
+          ) : null}
+        </div>
       </div>
     </section>
   );
@@ -102,10 +126,12 @@ function PlatformSummary({
             <span>
               <Stars rating={rating.rating} />
               <span className="block text-sm text-muted">
-                {rating.count.toLocaleString("en-GB")} reviews · {formatReviewDate(rating.asOf)}
+                {rating.count.toLocaleString("en-GB")} reviews · as of{" "}
+                {formatReviewDate(rating.asOf)}
               </span>
             </span>
           </p>
+          {rating.note ? <p className="mt-2 text-sm text-muted">{rating.note}</p> : null}
           {rating.distribution ? (
             <dl className="mt-4 space-y-1.5 text-sm">
               {LEVELS.map((level) => {

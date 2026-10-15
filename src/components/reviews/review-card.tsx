@@ -45,7 +45,11 @@ export function ReviewCard({
         {review.title ? (
           <p className="font-display text-base text-heading">{review.title}</p>
         ) : null}
-        <p className={cn("text-ink", review.title && "mt-1")}>{review.text}</p>
+        {review.text.split(/\n+/).map((paragraph, i) => (
+          <p key={i} className={cn("text-ink", (review.title || i > 0) && "mt-2")}>
+            {paragraph}
+          </p>
+        ))}
       </blockquote>
       <p className="flex flex-wrap items-center gap-2 text-sm text-muted">
         <span>Review from</span>

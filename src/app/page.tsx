@@ -55,9 +55,9 @@ export default function HomePage() {
             </h1>
             <RatingSummary className="mt-5" />
             <p className="mt-6 max-w-xl text-lead text-muted">
-              Two days down the Mekong with a night in Pak Beng. We pick you up from your hotel in
-              Chiang Khong or Houay Xai, help you through the border, serve lunch on board and drop
-              you at your hotel in Luang Prabang.
+              Two days down the Mekong, with a night in Pak Beng. We pick you up from your hotel in
+              Chiang Khong or Houay Xai, help you across the border, serve lunch on board and drop
+              you off at your hotel in Luang Prabang.
             </p>
 
             <dl className="mt-8 flex flex-wrap gap-x-10 gap-y-5">

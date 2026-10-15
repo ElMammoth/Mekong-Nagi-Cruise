@@ -26,6 +26,11 @@ export function offerReviews(limit = 3): Review[] {
   return [...placed, ...rest].slice(0, limit);
 }
 
+/** Every review not already shown in the offer cards, newest first. */
+export function moreReviews(shown: readonly Review[]): Review[] {
+  return reviews.filter((r) => !shown.includes(r)).sort((a, b) => b.date.localeCompare(a.date));
+}
+
 /** The single review shown next to the booking form. */
 export function bookingReview(): Review | undefined {
   return reviews.find((r) => r.placement === "booking");

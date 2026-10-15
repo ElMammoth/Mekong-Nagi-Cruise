@@ -131,6 +131,8 @@ export interface RatingSnapshot {
   asOf: string;
   /** Optional breakdown as shown on the platform: number of reviews per star level. */
   distribution?: Partial<Record<1 | 2 | 3 | 4 | 5, number>>;
+  /** What the figures cover, in the platform's own words when it says (shown with them). */
+  note?: string;
 }
 
 export interface Review {

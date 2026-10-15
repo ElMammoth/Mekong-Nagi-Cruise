@@ -35,7 +35,7 @@ export function RatingSummary({ className }: { className?: string }) {
                   <span className="group-hover:underline">
                     {rating.count.toLocaleString("en-GB")} reviews
                   </span>
-                  <span className="text-muted">· {formatReviewDate(rating.asOf)}</span>
+                  <span className="text-muted">· as of {formatReviewDate(rating.asOf)}</span>
                 </>
               ) : (
                 <span
